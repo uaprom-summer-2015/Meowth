@@ -1,13 +1,19 @@
 import os
+
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = False
+class Config(object):
+    DEBUG = True
+    DEVELOPMENT = True
+    SECRET_KEY = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://root:qwerty@localhost/hrportal'
 
-SECRET_KEY = 'This string will be replaced with a proper key in production.'
-
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'app.db')
-DATABASE_CONNECT_OPTIONS = {}
 
 
-CSRF_ENABLED = True
-CSRF_SESSION_KEY = "somethingimpossibletoguess"
+
+
+
+
+
+
+
