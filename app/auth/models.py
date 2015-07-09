@@ -22,7 +22,6 @@ class User(Base):
         self.surname = surname
         self.role = role
 
-
     def __repr__(self):
         return '<User %r>' % (self.name + ' ' + self.surname)
 
