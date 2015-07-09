@@ -1,11 +1,10 @@
 from flask import render_template, Blueprint, flash, request, session, redirect, url_for
-
 from project.auth.forms import LoginForm, RegisterForm
 from project.auth.decorators import login_required
 from project.auth.models import User
 
-
 auth = Blueprint('auth', __name__)
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -23,8 +22,8 @@ def login():
             return redirect(url_for('admin.vacancy_list'))
         form = LoginForm()
     return render_template('login.html',
-                            title='Sign in',
-                            form=form)
+                           title='Sign in',
+                           form=form)
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -42,19 +41,12 @@ def register():
     else:
         form = RegisterForm()
     return render_template('login.html',
-                            title='Registration',
-                            form=form)
+                           title='Registration',
+                           form=form)
+
 
 @auth.route('/logout', methods=['GET'])
 @login_required
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('auth.login'))
-
-
-
-
-
-
-
-

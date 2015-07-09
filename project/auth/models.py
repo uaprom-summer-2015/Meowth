@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from project.database import Base, db_session
 from hashlib import sha256
-
 from project import app
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -12,9 +12,9 @@ class User(Base):
     name = Column(String(30))
     surname = Column(String(30))
     email = Column(String(30), unique=True)
-    role = Column(Boolean) #False for staff, True for superuser
+    role = Column(Boolean)  # False for staff, True for superuser
 
-    def __init__(self, login, password, name=None, surname=None, email=None, role = False):
+    def __init__(self, login, password, name=None, surname=None, email=None, role=False):
         self.name = name
         self.email = email
         self.login = login
@@ -50,7 +50,3 @@ class User(Base):
         u = User.query.filter(User.login == login).one()
         if u.password == User.hash(password):
             return u
-
-
-
-

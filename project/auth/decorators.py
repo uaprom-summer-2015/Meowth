@@ -1,5 +1,6 @@
-from flask import g, redirect, url_for, session
+from flask import redirect, url_for, session
 from functools import wraps
+
 
 def login_required(func):
     @wraps(func)
@@ -9,7 +10,3 @@ def login_required(func):
             return redirect(url_for('auth.login'))
         return func(*args, **kwargs)
     return wrapped
-
-
-
-

@@ -8,6 +8,7 @@ class LoginForm(Form):
     login = StringField('Логин', validators=[DataRequired('Обязательное поле')])
     password = PasswordField('Пароль', validators=[DataRequired('Обязательное поле')])
 
+
 class RegisterForm(Form):
     login = StringField(label='Логин',
                         validators=[LoginFormat,
