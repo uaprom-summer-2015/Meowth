@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Enum
 from project.database import Base, db_session
 from hashlib import sha256
 from project import app
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 roles_enum = ('superuser', 'staff')
@@ -41,12 +42,7 @@ class User(Base):
         return True if self.role == 'superuser' else False
 
     def set_password(self, password):
-        self.password = self.hash(password)
-
-    @staticmethod
-    def hash(password):
-        encoded = (password + app.config['SALT']).encode('utf-8')
-        return sha256(sha256(encoded).hexdigest().encode('utf-8')).hexdigest()  # two iterations
+        self.password = generate_password_hash(password)
 
     @staticmethod
     def create_superuser(login, password):
@@ -60,5 +56,5 @@ class User(Base):
     @staticmethod
     def authenticate(login, password):
         u = User.query.filter(User.login == login).first()
-        if u and u.password == User.hash(password):
+        if u and check_password_hash(u.password, password):
             return u
