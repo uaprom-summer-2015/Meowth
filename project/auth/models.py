@@ -1,7 +1,11 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Enum
 from project.database import Base, db_session
 from hashlib import sha256
 from project import app
+from werkzeug.security import generate_password_hash, check_password_hash
+
+
+roles_enum = ('superuser', 'staff')
 
 
 class User(Base):
@@ -11,10 +15,10 @@ class User(Base):
     password = Column(String(100))
     name = Column(String(30))
     surname = Column(String(30))
-    email = Column(String(30), unique=True)
-    role = Column(Boolean)  # False for staff, True for superuser
+    email = Column(String(30))
+    role = Column(Enum(*roles_enum, name='roles_enum'))
 
-    def __init__(self, login, password, name=None, surname=None, email=None, role=False):
+    def __init__(self, login, password, name=None, surname=None, email=None, role='staff'):
         self.name = name
         self.email = email
         self.login = login
@@ -35,18 +39,22 @@ class User(Base):
         db.close()
 
     def is_superuser(self):
-        return self.role
-
-    @staticmethod
-    def hash(password):
-        encoded = (password + app.config['SALT']).encode('utf-8')
-        return sha256(encoded).hexdigest()
+        return True if self.role == 'superuser' else False
 
     def set_password(self, password):
-        self.password = self.hash(password)
+        self.password = generate_password_hash(password)
+
+    @staticmethod
+    def create_superuser(login, password):
+        superuser = User(login, password, role='superuser')
+        u = User.query.filter(User.login == login).first()
+        if not u:
+            superuser.save()
+            return True
+        return False
 
     @staticmethod
     def authenticate(login, password):
-        u = User.query.filter(User.login == login).one()
-        if u.password == User.hash(password):
+        u = User.query.filter(User.login == login).first()
+        if u and check_password_hash(u.password, password):
             return u

@@ -1,4 +1,5 @@
-from flask import render_template, Blueprint, flash, request, session, redirect, url_for
+from flask import render_template, Blueprint, flash, request, session, \
+    redirect, url_for
 from project.auth.forms import LoginForm, RegisterForm
 from project.auth.decorators import login_required
 from project.auth.models import User
