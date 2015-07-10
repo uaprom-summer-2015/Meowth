@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, EqualTo, Email, Length
-from project.auth.validators import LoginFormat, PasswordFormat
+from project.auth.validators import LoginFormat, PasswordFormat, LoginExists
 
 
 class LoginForm(Form):
@@ -12,6 +12,7 @@ class LoginForm(Form):
 class RegisterForm(Form):
     login = StringField(label='Логин',
                         validators=[LoginFormat,
+                                    LoginExists,
                                     Length(4, 16,
                                            message='Логин должен быть от 6 до 16 символов в длину')])
     password = PasswordField(label='Пароль',
@@ -29,6 +30,4 @@ class RegisterForm(Form):
                                           message='Имя должно быть от 2 до 16 символов в длину')])
     surname = StringField(label='Фамилия',
                           validators=[Length(2, 25,
-                                             message='Фамилия должна быть от 2 до 20 символов в длину')])
-
-
+                                             message='Фамилия должна быть от 2 до 25 символов в длину')])
