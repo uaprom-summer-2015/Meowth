@@ -3,7 +3,9 @@
 {% block content %}
     <ul class="list-group">
         {% for vacancy in vacancies %}
-            <li class="list-group-item">{{ vacancy.title }}</li>
+            <a href="{{ url_for('admin.vacancy_detail', vacancy_id=vacancy.id) }}">
+                <li class="list-group-item">{{ vacancy.title }}</li>
+            </a>
         {% endfor %}
     </ul>
 {% endblock %}

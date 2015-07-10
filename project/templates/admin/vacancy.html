@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{ vacancy }}
+    <!--<div class="panel panel-default">-->
+        <!--<div class="panel-heading">-->
+            <!--<h3 class="panel-title"> {{ vacancy_form.title }}</h3>-->
+        <!--</div>-->
+        <!--<div class="panel-body">-->
+            <!--{{ vacancy_form.text }}-->
+        <!--</div>-->
+    <!--</div>-->
+    <form method="post">
+        {% for field in vacancy_form %}
+            {{ field }}
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
 {% endblock %}

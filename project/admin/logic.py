@@ -13,7 +13,6 @@ def get_vacancy(vacancy_id):
 
 
 def new_vacancy(data):
-
     vacancy = Vacancy(**data)
     db_session.add(vacancy)
     db_session.commit()
@@ -21,7 +20,6 @@ def new_vacancy(data):
 
 
 def update_vacancy(data):
-
     vacancy = Vacancy.query.get(data['id'])
     vacancy.update(**data)
     db_session.add(vacancy)
