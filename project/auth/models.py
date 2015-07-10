@@ -1,11 +1,7 @@
-from sqlalchemy import Column, Integer, String, Enum
+from sqlalchemy import Column, Integer, String
 from project.database import Base, db_session
-from hashlib import sha256
-from project import app
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
-roles_enum = ('superuser', 'staff')
+from project.auth.constants import TypeEnum
 
 
 class User(Base):
@@ -16,9 +12,10 @@ class User(Base):
     name = Column(String(30))
     surname = Column(String(30))
     email = Column(String(30))
-    role = Column(Enum(*roles_enum, name='roles_enum'))
+    role = Column(TypeEnum())
 
-    def __init__(self, login, password, name=None, surname=None, email=None, role='staff'):
+    def __init__(self, login, password, email, name=None,
+                 surname=None, role='staff'):
         self.name = name
         self.email = email
         self.login = login
@@ -46,7 +43,7 @@ class User(Base):
 
     @staticmethod
     def create_superuser(login, password):
-        superuser = User(login, password, role='superuser')
+        superuser = User(login, password, email=None, role='superuser')
         u = User.query.filter(User.login == login).first()
         if not u:
             superuser.save()

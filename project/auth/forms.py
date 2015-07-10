@@ -21,11 +21,12 @@ class RegisterForm(Form):
     password = PasswordField(label='Пароль',
                              validators=[PasswordFormat,
                                          EqualTo('confirmation',
-                                                 message='Пароли не совпадают'),
+                                                 message='Пароли не ' +
+                                                         'совпадают'),
                                          Length(6, 16,
-                                                message='Пароль должен быть ' +
-                                                        'от 6 до 16 символов ' +
-                                                        'в длину')])
+                                                message='Пароль должен ' +
+                                                        'быть от 6 до 16 ' +
+                                                        'символов в длину')])
     confirmation = PasswordField(label='Подтвердите пароль')
     email = StringField(label='Email',
                         validators=[Email('Неверный e-mail адрес'),
