@@ -1,25 +1,42 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 from project.database import Base, db_session
-from hashlib import sha256
-from project import app
+from werkzeug.security import generate_password_hash, check_password_hash
+from enum import IntEnum
+from sqlalchemy.types import SmallInteger, TypeDecorator
+
+
+class TypeEnum(TypeDecorator):
+
+    impl = SmallInteger
+
+    def process_bind_param(self, value, dialect):
+        return User.ROLE[value].value
+
+    def process_result_value(self, value, dialect):
+        return User.ROLE(value)
 
 
 class User(Base):
     __tablename__ = 'users'
+
+    ROLE = IntEnum('role', {'STAFF': 0,
+                            'SUPERUSER': 1})
+
     id = Column(Integer, primary_key=True)
     login = Column(String(30), unique=True)
     password = Column(String(100))
     name = Column(String(30))
     surname = Column(String(30))
-    email = Column(String(30), unique=True)
-    role = Column(Boolean)  # False for staff, True for superuser
+    email = Column(String(30))
+    role = Column(TypeEnum())
 
-    def __init__(self, login, password, name=None, surname=None, email=None, role=False):
+    def __init__(self, login, password, email, name=None,
+                 surname=None):
         self.name = name
         self.email = email
         self.login = login
         self.surname = surname
-        self.role = role
+        self.role = self.ROLE.STAFF
         self.set_password(password)
 
     def __repr__(self):
@@ -35,18 +52,23 @@ class User(Base):
         db.close()
 
     def is_superuser(self):
-        return self.role
-
-    @staticmethod
-    def hash(password):
-        encoded = (password + app.config['SALT']).encode('utf-8')
-        return sha256(encoded).hexdigest()
+        return self.role == self.ROLE.SUPERUSER
 
     def set_password(self, password):
-        self.password = self.hash(password)
+        self.password = generate_password_hash(password)
+
+    @staticmethod
+    def create_superuser(login, password):
+        superuser = User(login, password, email=None)
+        superuser.role = User.ROLE.SUPERUSER
+        u = User.query.filter(User.login == login).first()
+        if not u:
+            superuser.save()
+            return True
+        return False
 
     @staticmethod
     def authenticate(login, password):
-        u = User.query.filter(User.login == login).one()
-        if u.password == User.hash(password):
+        u = User.query.filter(User.login == login).first()
+        if u and check_password_hash(u.password, password):
             return u
