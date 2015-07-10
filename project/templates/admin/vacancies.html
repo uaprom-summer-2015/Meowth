@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for vacancy in vacancies %}
-{{ vacancy }}
-{% endfor %}
+    <ul class="list-group">
+        {% for vacancy in vacancies %}
+            <li class="list-group-item">{{ vacancy.title }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
