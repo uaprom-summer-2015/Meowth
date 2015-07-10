@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from app.admin.logic import get_vacancies
+from project.admin.logic import get_vacancies
 
 
 admin_app = Blueprint('admin', __name__)
