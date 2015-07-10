@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text
-from project.database import Base
+from project.database import Base, get_db
 
 
 class Vacancy(Base):
@@ -13,6 +13,12 @@ class Vacancy(Base):
         self.title = title
         self.text = text
         self.category = category
+        self.save()
 
-    def __str__(self):
+    def __repr__(self):
         return self.title
+
+    def save(self):
+        db = get_db()
+        db.add(self)
+        db.commit()
