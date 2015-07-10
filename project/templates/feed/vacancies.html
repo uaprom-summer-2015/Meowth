@@ -6,7 +6,7 @@
 </head>
 <body>
 {% for vacancy in vacancies %}
-<h3>{{ vacancy.title }}</h3>
+<h3><a href="{{ url_for('feed.get_vacancy', id=vacancy.id) }}">{{ vacancy.title }}</a></h3>
 <p>{{ vacancy.text }}</p>
 <p>{{ vacancy.category }}</p>
 {% endfor %}
