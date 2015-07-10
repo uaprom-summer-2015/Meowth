@@ -5,8 +5,10 @@ from project.auth.validators import LoginFormat, PasswordFormat, LoginExists
 
 
 class LoginForm(Form):
-    login = StringField('Логин', validators=[DataRequired('Обязательное поле')])
-    password = PasswordField('Пароль', validators=[DataRequired('Обязательное поле')])
+    login = StringField('Логин',
+                        validators=[DataRequired('Обязательное поле')])
+    password = PasswordField('Пароль',
+                             validators=[DataRequired('Обязательное поле')])
 
 
 class RegisterForm(Form):
@@ -14,20 +16,26 @@ class RegisterForm(Form):
                         validators=[LoginFormat,
                                     LoginExists,
                                     Length(4, 16,
-                                           message='Логин должен быть от 6 до 16 символов в длину')])
+                                           message='Логин должен быть от 6' +
+                                                   'до 16 символов в длину')])
     password = PasswordField(label='Пароль',
                              validators=[PasswordFormat,
                                          EqualTo('confirmation',
                                                  message='Пароли не совпадают'),
                                          Length(6, 16,
-                                                message='Пароль должен быть от 6 до 16 символов в длину')])
+                                                message='Пароль должен быть ' +
+                                                        'от 6 до 16 символов ' +
+                                                        'в длину')])
     confirmation = PasswordField(label='Подтвердите пароль')
     email = StringField(label='Email',
                         validators=[Email('Неверный e-mail адрес'),
                                     DataRequired('Обязательное поле')])
     name = StringField(label='Имя',
                        validators=[Length(2, 16,
-                                          message='Имя должно быть от 2 до 16 символов в длину')])
+                                          message='Имя должно быть от 2 ' +
+                                                  'до 16 символов в длину')])
     surname = StringField(label='Фамилия',
                           validators=[Length(2, 25,
-                                             message='Фамилия должна быть от 2 до 25 символов в длину')])
+                                             message='Фамилия должна быть' +
+                                                     ' от 2 до 25 символов ' +
+                                                     'в длину')])
