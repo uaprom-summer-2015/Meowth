@@ -12,7 +12,8 @@ LoginFormat = Regexp(regex='^[a-zA-Z][a-zA-Z0-9-_.]+$',
 # Must contain at least one digit.
 PasswordFormat = Regexp(regex='^(?=.*[0-9])[a-zA-Z][a-zA-Z0-9-_.]+$',
                         message='Пароль должен состоять из латинских букв,' +
-                                ' цифр и символов (_.-), начинаться с буквы')
+                                ' цифр и символов (_.-), начинаться с буквы,' +
+                                '  содержать хоть одну цифру')
 
 
 class LoginExists(object):
