@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from project.admin.forms import VacancyForm
 from project.admin.logic import get_vacancies, get_vacancy, new_vacancy, \
     update_vacancy
@@ -20,6 +20,7 @@ def vacancy_new():
         form = VacancyForm(request.form)
         if form.validate():
             new_vacancy(form.data)
+            return redirect(url_for("admin.vacancy_list"))
 
     return render_template(
         "admin/vacancy.html",
@@ -38,6 +39,7 @@ def vacancy_detail(vacancy_id):
         form = VacancyForm(request.form)
         if form.validate():
             update_vacancy(vacancy_id, form.data)
+            return redirect(url_for("admin.vacancy_list"))
 
     return render_template(
         "admin/vacancy.html",
