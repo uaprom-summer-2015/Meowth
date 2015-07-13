@@ -12,12 +12,12 @@ class Vacancy(Base):
     name_in_url = Column(String(50))
     visits = Column(Integer)
     salary = Column(String(50))
-    description = Column(String(200)) #for search spider
+    description = Column(String(200))  # for search spider
     keywords = Column(String(1000))
 
     def __init__(self, title, short_description, text, category_id,
                  name_in_url, description=None,
-                 keywords=None, salary=None,  visits = 0):
+                 keywords=None, salary=None,  visits=0):
         self.title = title
         self.short_description = short_description
         self.text = text
@@ -27,7 +27,6 @@ class Vacancy(Base):
         self.salary = salary
         self.description = description
         self.keywords = keywords
-        self.save()
 
     def __repr__(self):
         return self.title
@@ -45,7 +44,9 @@ class Category(Base):
 
     def __init__(self, name):
         self.name = name
-        self.save()
+
+    def __repr__(self):
+        return self.name
 
     def save(self):
         db = get_db()

@@ -1,17 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!--<div class="panel panel-default">-->
-        <!--<div class="panel-heading">-->
-            <!--<h3 class="panel-title"> {{ vacancy_form.title }}</h3>-->
-        <!--</div>-->
-        <!--<div class="panel-body">-->
-            <!--{{ vacancy_form.text }}-->
-        <!--</div>-->
-    <!--</div>-->
     <form method="post">
+        {{ vacancy_form.hidden_tag() }}
         {% for field in vacancy_form if field.widget.input_type != 'hidden' %}
             {{ field.label }}
+            {% if field.errors %}
+                {{field.errors}}
+            {% endif %}
             <div class="form-group">
                 {{ field(class="form-control") }}
             </div>
