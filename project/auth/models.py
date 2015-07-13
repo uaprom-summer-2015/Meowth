@@ -2,7 +2,9 @@ from sqlalchemy import Column, Integer, String
 from project.database import Base, db_session
 from werkzeug.security import generate_password_hash
 from enum import IntEnum
-from project.bl import auth
+from project.bl.auth import authenticate as bl_authenticate
+from project.bl.auth import create_superuser as bl_create_superuser
+
 from project.lib.orm.types import TypeEnum
 
 
@@ -50,8 +52,8 @@ class User(Base):
 
     @staticmethod
     def authenticate(login, password):
-        return auth.authenticate(login, password)
+        return bl_authenticate(User, login, password)
 
     @staticmethod
     def create_superuser(login, password):
-        return auth.create_superuser(login, password)
+        return bl_create_superuser(User, login, password)
