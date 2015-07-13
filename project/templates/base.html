@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    {% block meta %}{% endblock%}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul class=flashes>
-            {% for message in messages %}
-              <li>{{ message }}</li>
-            {% endfor %}
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
         </ul>
-      {% endif %}
+        {% endif %}
     {% endwith %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-</head>
-<body>
-  {% block content %}{% endblock %}
+
+    {% block content %}{% endblock %}
 </body>
 </html>
