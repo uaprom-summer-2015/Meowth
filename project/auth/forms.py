@@ -14,7 +14,7 @@ class LoginForm(Form):
 class RegisterForm(Form):
     login = StringField(label='Логин',
                         validators=[LoginFormat,
-                                    LoginExists,
+                                    LoginExists(),
                                     Length(4, 16,
                                            message='Логин должен быть от 6' +
                                                    'до 16 символов в длину')])
