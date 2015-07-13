@@ -14,5 +14,5 @@
     {% if vacancy.salary %}
     <p>{{ vacancy.salary }}</p>
     {% endif %}
-    <p>{{ vacancy.text }}</p>
+    <p>{{ vacancy.text|safe }}</p>
 {% endblock %}
