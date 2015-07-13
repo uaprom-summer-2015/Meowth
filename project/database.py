@@ -13,6 +13,7 @@ Base.query = db_session.query_property()
 
 
 def init_db():
+    Base.metadata.drop_all(bind=engine)
     import project.auth.models  # NOQA
     import project.feed.models  # NOQA
     Base.metadata.create_all(bind=engine)
