@@ -1,5 +1,4 @@
-from project.database import db_session
-from project.feed.models import Vacancy
+from project.feed.models import Vacancy, Category
 
 
 def get_vacancies():
@@ -13,9 +12,9 @@ def get_vacancy(vacancy_id):
 
 
 def new_vacancy(data):
+    data['category_id'] = data['category_id'].id
     vacancy = Vacancy(**data)
-    db_session.add(vacancy)
-    db_session.commit()
+    vacancy.save()
     return vacancy
 
 
@@ -24,8 +23,14 @@ def update_vacancy(vacancy_id, data):
 
     vacancy.title = data["title"]
     vacancy.text = data["text"]
-    vacancy.category = data["category"]
+    vacancy.short_description = data["short_description"]
+    vacancy.category_id = data["category_id"].id
+    vacancy.name_in_url = data["name_in_url"]
 
-    db_session.add(vacancy)
-    db_session.commit()
+    vacancy.save()
     return vacancy
+
+
+def get_categories():
+    categories = Category.query.all()
+    return categories

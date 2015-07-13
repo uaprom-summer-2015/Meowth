@@ -36,7 +36,6 @@ def vacancy_detail(vacancy_id):
 
     elif request.method == 'POST':
         form = VacancyForm(request.form)
-        print(form.validate())
         if form.validate():
             update_vacancy(vacancy_id, form.data)
 

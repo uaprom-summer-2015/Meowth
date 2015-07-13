@@ -16,6 +16,7 @@ Base.query = db_session.query_property()
 def init_db():
     import project.auth.models
     import project.feed.models
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
 
