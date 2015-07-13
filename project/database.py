@@ -11,19 +11,8 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 Base = declarative_base()
 Base.query = db_session.query_property()
 
+
 def init_db():
     import project.auth.models
     import project.feed.models
     Base.metadata.create_all(bind=engine)
-
-
-def get_db():
-    if not hasattr(g, 'db'):
-        g.db = db_session()
-    return g.db
-
-
-@app.teardown_appcontext
-def close_db(error):
-    if hasattr(g, 'db'):
-        g.db.close()

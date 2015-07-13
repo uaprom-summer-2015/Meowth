@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
-from project.database import Base, get_db
+from sqlalchemy.orm import relationship, backref
+from project.database import Base, db_session
 
 
 class Vacancy(Base):
@@ -9,6 +10,7 @@ class Vacancy(Base):
     short_description = Column(String(300))
     text = Column(Text())
     category_id = Column(Integer, ForeignKey('category.id'))
+    category = relationship('Category', backref = backref('vacancies'))
     name_in_url = Column(String(50))
     visits = Column(Integer)
     salary = Column(String(50))
@@ -33,9 +35,8 @@ class Vacancy(Base):
         return self.title
 
     def save(self):
-        db = get_db()
-        db.add(self)
-        db.commit()
+        db_session.add(self)
+        db_session.commit()
 
 
 class Category(Base):
@@ -47,7 +48,9 @@ class Category(Base):
         self.name = name
         self.save()
 
+    def __repr__(self):
+        return self.name
+
     def save(self):
-        db = get_db()
-        db.add(self)
-        db.commit()
+        db_session.add(self)
+        db_session.commit()
