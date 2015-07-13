@@ -1,17 +1,19 @@
 from project.database import db_session
 from werkzeug.security import check_password_hash
+from project.auth.models import User
 
-def create_superuser(cls, login, password):
-    superuser = cls(login, password, email=None)
-    superuser.role = cls.ROLE.superuser
-    u = db_session.query(cls).filter(cls.login == login).first()
+
+def create_superuser(login, password):
+    superuser = User(login, password, email=None)
+    superuser.role = User.ROLE.superuser
+    u = db_session.query(User).filter(User.login == login).first()
     if not u:
         superuser.save()
         return True
     return False
 
 
-def authenticate(cls, login, password):
-    u = db_session.query(cls).filter(cls.login == login).first()
+def authenticate(login, password):
+    u = db_session.query(User).filter(User.login == login).first()
     if u and check_password_hash(u.password, password):
         return u
