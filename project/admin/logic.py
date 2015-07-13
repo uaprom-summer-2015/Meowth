@@ -19,9 +19,13 @@ def new_vacancy(data):
     return vacancy
 
 
-def update_vacancy(data):
-    vacancy = Vacancy.query.get(data['id'])
-    vacancy.update(**data)
+def update_vacancy(vacancy_id, data):
+    vacancy = Vacancy.query.get(vacancy_id)
+
+    vacancy.title = data["title"]
+    vacancy.text = data["text"]
+    vacancy.category = data["category"]
+
     db_session.add(vacancy)
     db_session.commit()
     return vacancy

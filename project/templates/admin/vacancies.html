@@ -7,5 +7,9 @@
                 <li class="list-group-item">{{ vacancy.title }}</li>
             </a>
         {% endfor %}
+
+        <a href="{{ url_for('admin.vacancy_new') }}">
+            <li class="list-group-item list-group-item-info">Добавить новую вакансию</li>
+        </a>
     </ul>
 {% endblock %}

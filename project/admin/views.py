@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request
 from project.admin.forms import VacancyForm
 from project.admin.logic import get_vacancies, get_vacancy, new_vacancy, \
     update_vacancy
@@ -11,21 +11,36 @@ def vacancy_list():
     return render_template("admin/vacancies.html", vacancies=get_vacancies())
 
 
-@admin_app.route('/vacancies/<int:vacancy_id>',
-                 methods=['GET', 'POST', 'PUT'])
-def vacancy_detail(vacancy_id):
+@admin_app.route("/vacancies/new", methods=['GET', 'POST'])
+def vacancy_new():
     if request.method == 'GET':
-        vacancy = get_vacancy(vacancy_id)
-        form = VacancyForm(obj=vacancy)
-        return render_template(
-            "admin/vacancy.html",
-            vacancy_form=form
-        )
+        form = VacancyForm()
 
     elif request.method == 'POST':
         form = VacancyForm(request.form)
         if form.validate():
             new_vacancy(form.data)
-    elif request.method == 'PUT':
-        update_vacancy(request.form)
-    return redirect(url_for("admin.vacancy_detail", vacancy_id=vacancy_id))
+
+    return render_template(
+        "admin/vacancy.html",
+        vacancy_form=form
+    )
+
+
+@admin_app.route('/vacancies/<int:vacancy_id>',
+                 methods=['GET', 'POST'])
+def vacancy_detail(vacancy_id):
+    if request.method == 'GET':
+        vacancy = get_vacancy(vacancy_id)
+        form = VacancyForm(obj=vacancy)
+
+    elif request.method == 'POST':
+        form = VacancyForm(request.form)
+        print(form.validate())
+        if form.validate():
+            update_vacancy(vacancy_id, form.data)
+
+    return render_template(
+        "admin/vacancy.html",
+        vacancy_form=form,
+    )
