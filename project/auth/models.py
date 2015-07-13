@@ -2,23 +2,9 @@ from sqlalchemy import Column, Integer, String
 from project.database import Base, db_session
 from werkzeug.security import generate_password_hash
 from enum import IntEnum
-from sqlalchemy.types import SmallInteger, TypeDecorator
 from project.bl import auth
+from .constants import TypeEnum
 
-
-class TypeEnum(TypeDecorator):
-
-    impl = SmallInteger
-
-    def __init__(self, enum, *args, **kwargs):
-        self._enum = enum
-        TypeDecorator.__init__(self, *args, **kwargs)
-
-    def process_bind_param(self, enum, dialect):
-        return enum.value
-
-    def process_result_value(self, value, dialect):
-        return self._enum(value)
 
 
 class User(Base):
