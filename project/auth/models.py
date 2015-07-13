@@ -3,6 +3,7 @@ from project.database import Base, db_session
 from werkzeug.security import generate_password_hash
 from enum import IntEnum
 from sqlalchemy.types import SmallInteger, TypeDecorator
+from project.auth import logic
 
 
 class TypeEnum(TypeDecorator):
@@ -59,3 +60,11 @@ class User(Base):
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
+
+    @staticmethod
+    def authenticate(login, password):
+        return logic.authenticate(login, password)
+
+    @staticmethod
+    def create_superuser(login, password):
+        return logic.create_superuser(login, password)
