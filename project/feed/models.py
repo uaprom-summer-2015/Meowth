@@ -29,10 +29,9 @@ class Vacancy(Base):
         self.salary = salary
         self.description = description
         self.keywords = keywords
-        self.save()
 
     def __repr__(self):
-        return self.title
+        return "[{}] {}".format(self.__class__.__name__, self.title)
 
     def save(self):
         db_session.add(self)
@@ -46,10 +45,9 @@ class Category(Base):
 
     def __init__(self, name):
         self.name = name
-        self.save()
 
     def __repr__(self):
-        return self.name
+        return "[{}] {}".format(self.__class__.__name__, self.name)
 
     def save(self):
         db_session.add(self)
