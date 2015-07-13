@@ -3,7 +3,7 @@ from project.database import Base, db_session
 from werkzeug.security import generate_password_hash
 from enum import IntEnum
 from project.bl import auth
-from .constants import TypeEnum
+from project.lib.orm.types import TypeEnum
 
 
 
