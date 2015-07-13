@@ -1,0 +1,23 @@
+[
+    {
+        "model": "project.auth.models.User",
+        "fields": {
+            "login": "superDarth",
+            "password": "iamyourfatherLuke111",
+            "email": "Darth@sith.com",
+            "name": "Anakin",
+            "surname": "Skywalker"
+        }
+    },
+   
+    {
+        "model": "project.auth.models.User",
+        "fields": {
+            "login": "PinkiePie",
+            "password": "Okey-Dokey-Lokey",
+            "email": "Pinkie@ponyville.org",
+            "name": "Pinkie",
+            "surname": "Pie"
+        }
+    }
+]
