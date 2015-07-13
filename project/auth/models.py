@@ -3,7 +3,7 @@ from project.database import Base, db_session
 from werkzeug.security import generate_password_hash
 from enum import IntEnum
 from sqlalchemy.types import SmallInteger, TypeDecorator
-from project.auth import logic
+from project.bl import auth
 
 
 class TypeEnum(TypeDecorator):
@@ -24,6 +24,7 @@ class TypeEnum(TypeDecorator):
 class User(Base):
     __tablename__ = 'users'
 
+    # noinspection PyTypeChecker
     ROLE = IntEnum('Role', {
         'staff': 0,
         'superuser': 1,
@@ -63,8 +64,8 @@ class User(Base):
 
     @staticmethod
     def authenticate(login, password):
-        return logic.authenticate(login, password)
+        return auth.authenticate(login, password)
 
     @staticmethod
     def create_superuser(login, password):
-        return logic.create_superuser(login, password)
+        return auth.create_superuser(login, password)
