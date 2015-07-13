@@ -1,25 +1,47 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 from project.database import Base, db_session
-from hashlib import sha256
-from project import app
+from werkzeug.security import generate_password_hash
+from enum import IntEnum
+from sqlalchemy.types import SmallInteger, TypeDecorator
+
+
+class TypeEnum(TypeDecorator):
+
+    impl = SmallInteger
+
+    def __init__(self, enum, *args, **kwargs):
+        self._enum = enum
+        TypeDecorator.__init__(self, *args, **kwargs)
+
+    def process_bind_param(self, enum, dialect):
+        return enum.value
+
+    def process_result_value(self, value, dialect):
+        return self._enum(value)
 
 
 class User(Base):
     __tablename__ = 'users'
+
+    ROLE = IntEnum('Role', {
+        'staff': 0,
+        'superuser': 1,
+    })
+
     id = Column(Integer, primary_key=True)
     login = Column(String(30), unique=True)
     password = Column(String(100))
     name = Column(String(30))
     surname = Column(String(30))
-    email = Column(String(30), unique=True)
-    role = Column(Boolean)  # False for staff, True for superuser
+    email = Column(String(30))
+    role = Column(TypeEnum(ROLE), default=ROLE.staff)
 
-    def __init__(self, login, password, name=None, surname=None, email=None, role=False):
-        self.name = name
+    def __init__(self, login, password, email, name=None,
+                 surname=None):
         self.email = email
         self.login = login
+        self.name = name
         self.surname = surname
-        self.role = role
         self.set_password(password)
 
     def __repr__(self):
@@ -29,24 +51,11 @@ class User(Base):
         return '{} {}'.format(self.name, self.surname)
 
     def save(self):
-        db = db_session()
-        db.add(self)
-        db.commit()
-        db.close()
+        db_session.add(self)
+        db_session.commit()
 
     def is_superuser(self):
-        return self.role
-
-    @staticmethod
-    def hash(password):
-        encoded = (password + app.config['SALT']).encode('utf-8')
-        return sha256(encoded).hexdigest()
+        return self.role == self.ROLE.superuser
 
     def set_password(self, password):
-        self.password = self.hash(password)
-
-    @staticmethod
-    def authenticate(login, password):
-        u = User.query.filter(User.login == login).one()
-        if u.password == User.hash(password):
-            return u
+        self.password = generate_password_hash(password)

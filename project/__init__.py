@@ -7,6 +7,7 @@ app.config.from_object('config')
 CsrfProtect(app)
 
 from project.admin.views import admin_app
-from project.auth.views import auth as AuthModule
+from project.auth.views import auth as auth_app
+
 app.register_blueprint(admin_app, url_prefix='/admin')
-app.register_blueprint(AuthModule, url_prefix='/auth')
+app.register_blueprint(auth_app, url_prefix='/auth')
