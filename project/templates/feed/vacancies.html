@@ -1,14 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Vacancies</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Вакансии{% endblock %}
+{% block content %}
+{% if categories %}
+<div class="categorys">
+    <ul>
+    {% for category in categories %}
+        <li>{{ category.name }}</li>
+    {% endfor %}
+    </ul>
+    <hr/>
+</div>
+{% endif %}
 {% for vacancy in vacancies %}
-<h3><a href="{{ url_for('feed.get_vacancy', id=vacancy.id) }}">{{ vacancy.title }}</a></h3>
-<p>{{ vacancy.text }}</p>
-<p>{{ vacancy.category }}</p>
+<div class="vacancy">
+    <h3><a href="{{ url_for('feed.get_vacancy', name_in_url=vacancy.name_in_url) }}">{{ vacancy.title }}</a></h3>
+    <p>{{ vacancy.short_description }}</p>
+</div>
 {% endfor %}
-</body>
-</html>
+{% endblock %}

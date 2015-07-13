@@ -1,12 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ vacancy.title }}</title>
-</head>
-<body>
-<h1>{{ vacancy.title }}</h1>
-<p>{{ vacancy.category }}</p>
-<p>{{ vacancy.text }}</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}{{ vacancy.title }}{% endblock %}
+{% block meta %}
+    {% if vacancy.description %}
+    <meta name="description" content="{{ vacancy.description }}"/>
+    {% endif %}
+    {% if vacancy.keywords %}
+    <meta name="keywords" content="{{ vacancy.keywords }}"/>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <h1>{{ vacancy.title }}</h1>
+    {% if vacancy.salary %}
+    <p>{{ vacancy.salary }}</p>
+    {% endif %}
+    <p>{{ vacancy.text }}</p>
+{% endblock %}
