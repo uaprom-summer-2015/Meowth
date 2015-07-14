@@ -12,7 +12,6 @@ def get_vacancy(vacancy_id):
 
 
 def create_vacancy(data):
-    data['category_id'] = data['category_id'].id  # FIXME code smells
     vacancy = Vacancy(**data)
     vacancy.save()
     return vacancy
@@ -23,7 +22,6 @@ def update_vacancy(vacancy_id, data):
     vacancy = Vacancy.query.get(vacancy_id)
     for key, value in data.items():
         setattr(vacancy, key, value)
-    vacancy.category_id = data["category_id"].id  # FIXME code smells
     vacancy.save()
     return vacancy
 
