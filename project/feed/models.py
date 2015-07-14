@@ -10,12 +10,13 @@ class Vacancy(Base):
     short_description = Column(String(300))
     text = Column(Text())
     category_id = Column(Integer, ForeignKey('category.id'))
-    category = relationship('Category', backref = backref('vacancies'))
+    category = relationship('Category', backref=backref('vacancies'))
     name_in_url = Column(String(50))
     visits = Column(Integer)
     salary = Column(String(50))
     description = Column(String(200))  # for search spider
     keywords = Column(String(1000))
+    # TODO: добавить город
 
     def __init__(self, title, short_description, text, category_id,
                  name_in_url, description=None,
