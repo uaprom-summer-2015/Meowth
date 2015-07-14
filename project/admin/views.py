@@ -62,7 +62,7 @@ def category_new():
         form = CategoryForm(request.form)
         if form.validate():
             bl.create_category(form.data)
-            return redirect(url_for("admin.vacancy_list"))
+            return redirect(url_for("admin.category_list"))
 
     return render_template(
         "admin/category.html",
