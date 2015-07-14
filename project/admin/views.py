@@ -1,15 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from project.admin.forms import VacancyForm, CategoryForm
-from project.admin.logic import get_vacancies, get_vacancy, create_vacancy, \
-    update_vacancy, get_categories, update_category, get_category, \
-    create_category
+from project.admin import logic as bl
 
 admin_app = Blueprint('admin', __name__)
 
 
 @admin_app.route("/vacancies")
 def vacancy_list():
-    return render_template("admin/vacancies.html", vacancies=get_vacancies())
+    return render_template("admin/vacancies.html",
+                           vacancies=bl.get_vacancies())
 
 
 @admin_app.route("/vacancies/new", methods=['GET', 'POST'])
@@ -20,7 +19,7 @@ def vacancy_new():
     elif request.method == 'POST':
         form = VacancyForm(request.form)
         if form.validate():
-            create_vacancy(form.data)
+            bl.create_vacancy(form.data)
             return redirect(url_for("admin.vacancy_list"))
 
     return render_template(
@@ -33,13 +32,13 @@ def vacancy_new():
                  methods=['GET', 'POST'])
 def vacancy_detail(vacancy_id):
     if request.method == 'GET':
-        vacancy = get_vacancy(vacancy_id)
+        vacancy = bl.get_vacancy(vacancy_id)
         form = VacancyForm(obj=vacancy)
 
     elif request.method == 'POST':
         form = VacancyForm(request.form)
         if form.validate():
-            update_vacancy(vacancy_id, form.data)
+            bl.update_vacancy(vacancy_id, form.data)
             return redirect(url_for("admin.vacancy_list"))
 
     return render_template(
@@ -51,7 +50,7 @@ def vacancy_detail(vacancy_id):
 @admin_app.route("/categories")
 def category_list():
     return render_template("admin/categories.html",
-                           categories=get_categories())
+                           categories=bl.get_categories())
 
 
 @admin_app.route("/categories/new", methods=['GET', 'POST'])
@@ -62,7 +61,7 @@ def category_new():
     elif request.method == 'POST':
         form = CategoryForm(request.form)
         if form.validate():
-            create_category(form.data)
+            bl.create_category(form.data)
             return redirect(url_for("admin.vacancy_list"))
 
     return render_template(
@@ -75,13 +74,13 @@ def category_new():
                  methods=['GET', 'POST'])
 def category_detail(category_id):
     if request.method == 'GET':
-        category = get_category(category_id)
+        category = bl.get_category(category_id)
         form = CategoryForm(obj=category)
 
     elif request.method == 'POST':
         form = CategoryForm(request.form)
         if form.validate():
-            update_category(category_id, form.data)
+            bl.update_category(category_id, form.data)
             return redirect(url_for("admin.category_list"))
 
     return render_template(
