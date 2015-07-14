@@ -11,7 +11,7 @@ def get_vacancy(vacancy_id):
     return vacancy
 
 
-def new_vacancy(data):
+def create_vacancy(data):
     data['category_id'] = data['category_id'].id
     vacancy = Vacancy(**data)
     vacancy.save()
@@ -34,3 +34,21 @@ def update_vacancy(vacancy_id, data):
 def get_categories():
     categories = Category.query.all()
     return categories
+
+
+def get_category(category_id):
+    category = Category.query.get(category_id)
+    return category
+
+
+def create_category(data):
+    category = Category(**data)
+    category.save()
+    return category
+
+
+def update_category(category_id, data):
+    category = Category.query.get(category_id)
+    category.name = data["name"]
+    category.save()
+    return category

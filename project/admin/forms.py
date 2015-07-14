@@ -12,3 +12,7 @@ class VacancyForm(Form):
     text = TextAreaField('Текст вакансии', validators=[DataRequired()])
     category_id = QuerySelectField('Категория', query_factory=get_categories,
                                    validators=[DataRequired()])
+
+
+class CategoryForm(Form):
+    name = StringField("Название категории", validators=[DataRequired()])
