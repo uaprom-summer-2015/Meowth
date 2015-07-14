@@ -10,7 +10,7 @@ class VacancyForm(Form):
     name_in_url = StringField("URL-имя", validators=[DataRequired()])
     short_description = StringField("Краткое описание", [DataRequired()])
     text = TextAreaField('Текст вакансии', validators=[DataRequired()])
-    category_id = QuerySelectField('Категория', query_factory=get_categories,
+    category = QuerySelectField('Категория', query_factory=get_categories,
                                    validators=[DataRequired()])
 
 
