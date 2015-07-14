@@ -56,3 +56,7 @@ class VacancyForm(Form):
         query_factory=get_categories,
         validators=[DataRequired('Required field')]
     )
+
+
+class CategoryForm(Form):
+    name = StringField("Название категории", validators=[DataRequired()])
