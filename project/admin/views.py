@@ -18,7 +18,7 @@ def vacancy_new():
 
     elif request.method == 'POST':
         form = VacancyForm(request.form)
-        if form.validate():
+        if form.validate_on_submit():
             new_vacancy(form.data)
             return redirect(url_for("admin.vacancy_list"))
 
@@ -37,7 +37,7 @@ def vacancy_detail(vacancy_id):
 
     elif request.method == 'POST':
         form = VacancyForm(request.form)
-        if form.validate():
+        if form.validate_on_submit():
             update_vacancy(vacancy_id, form.data)
             return redirect(url_for("admin.vacancy_list"))
 
