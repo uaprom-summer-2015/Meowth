@@ -17,13 +17,13 @@ class Vacancy(Base):
     description = Column(String(200))  # for search spider
     keywords = Column(String(1000))
 
-    def __init__(self, title, short_description, text, category_id,
+    def __init__(self, title, short_description, text, category,
                  name_in_url, description=None,
                  keywords=None, salary=None,  visits=0):
         self.title = title
         self.short_description = short_description
         self.text = text
-        self.category_id = category_id
+        self.category_id = category
         self.name_in_url = name_in_url
         self.visits = visits
         self.salary = salary
