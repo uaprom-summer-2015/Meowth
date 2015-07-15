@@ -11,6 +11,7 @@ feed = Blueprint('feed', __name__)
 
 @feed.route('/')
 def vacancies():
+    db_session.rollback()
     return render_template('feed/reactvacancies.html')
 
 @feed.route('/list')

@@ -19,7 +19,7 @@ def vacancy_new():
     elif request.method == 'POST':
         form = VacancyForm(request.form)
         if form.validate_on_submit():
-            bl.create_vacancy(form.data)
+            bl.create_vacancy(form)
             return redirect(url_for("admin.vacancy_list"))
 
     return render_template(

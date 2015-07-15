@@ -3,7 +3,11 @@ var ExpandButton = React.createClass({
         this.props.click(e);
     },
     render: function() {
-        return (<img src="../static/media/jacob.jpg" onClick={this.handleClick} className="vacancyButton"></img>);
+
+        return (<button type="button" onClick={this.handleClick} className="vacancyButton btn btn-info btn-circle" aria-label="Left Align">
+                 <span className={this.props.expanded ? "glyphicon glyphicon-menu-up" : "glyphicon glyphicon-menu-down"}>
+                 </span>
+                </button> );
     }
 });
 
@@ -23,8 +27,8 @@ var VacancyNodeCompressed = React.createClass({
     },
     render: function() {
         return (
-            <div className="vacancyNodeCompressed">
-            <ExpandButton ref="button" click={this.handleButtonClick} />
+            <div className="panel panel-default">
+            <ExpandButton expanded={this.props.expanded} ref="button" click={this.handleButtonClick} />
             <p className="vacancyTitle">{this.state.data.title}</p>
             </div>
         );
@@ -48,8 +52,8 @@ var VacancyNodeExpanded = React.createClass({
     },
     render: function() {
         return (
-            <div className="vacancyNodeExpanded">
-            <ExpandButton ref="button" click={this.handleButtonClick} />
+            <div className="panel panel-default">
+            <ExpandButton expanded={this.props.expanded} ref="button" click={this.handleButtonClick} />
             <p className="vacancyTitle">{this.state.data.title}</p>
             <p className="vacancyDescr">{this.state.data.short_description}</p>
             </div>
@@ -76,9 +80,9 @@ var VacancyNode = React.createClass({
     },
     render: function() {
         if (!this.state.expanded) {
-            return (<VacancyNodeCompressed data={this.props.data} click={this.handleButtonClick} />);
+            return (<VacancyNodeCompressed expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
         } else {
-            return (<VacancyNodeExpanded data={this.props.data} click={this.handleButtonClick} />);
+            return (<VacancyNodeExpanded expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
         }
     }
 });
