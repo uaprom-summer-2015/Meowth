@@ -75,7 +75,8 @@ vacancy_view = EntryDetail.as_view(
     get_entry=bl.get_vacancy,
     update_entry=bl.update_vacancy,
     create_entry=bl.create_vacancy,
-    template="admin/vacancy.html"
+    template="admin/vacancy.html",
+    success_url="vacancy_list"
 )
 
 admin_app.add_url_rule(
@@ -89,6 +90,12 @@ admin_app.add_url_rule(
     view_func=vacancy_view
 )
 
+@admin_app.route("/categories")
+def category_list():
+    return render_template("admin/categories.html",
+                           categories=bl.get_categories())
+
+
 # CATEGORIES
 category_view = EntryDetail.as_view(
     name='category_detail',
@@ -96,13 +103,8 @@ category_view = EntryDetail.as_view(
     get_entry=bl.get_category,
     update_entry=bl.update_category,
     create_entry=bl.create_category,
+    success_url="category_list"
 )
-
-
-@admin_app.route("/categories")
-def category_list():
-    return render_template("admin/categories.html",
-                           categories=bl.get_categories())
 
 admin_app.add_url_rule(
     "/category/<int:entry_id>/",
