@@ -19,6 +19,7 @@ class Vacancy(Base):
     city = Column(String(20))
     hide = Column(Boolean)
 
+
     def __init__(self, title, short_description, text, category_id,
                  name_in_url, city, description=None,
                  keywords=None, salary=None,  visits=0, hide=False):

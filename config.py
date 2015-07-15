@@ -15,6 +15,8 @@ MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 CSRF = True
 CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
+FIXTURES_DIR = os.path.join(_basedir, 'fixtures')
+
 # Email
 MAIL_SERVER = 'smtp.yandex.ru'
 MAIL_PORT = 465
