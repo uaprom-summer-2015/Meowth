@@ -1,14 +1,14 @@
+import importlib
 import json
 import os
 from config import FIXTURES_DIR
 from project.database import db_session as session
 
 
-def import_class(cl):
-    d = cl.rfind(".")
-    classname = cl[d+1:len(cl)]
-    m = __import__(cl[0:d], globals(), locals(), [classname])
-    return getattr(m, classname)
+def import_class(what):
+    modulename, classname = what.rsplit('.', 1)
+    module = importlib.import_module(modulename)
+    return getattr(module, classname)
 
 
 def load_fixtures(filepath):
