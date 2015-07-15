@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, backref
 from project.database import Base, db_session
 
@@ -16,7 +16,8 @@ class Vacancy(Base):
     salary = Column(String(50))
     description = Column(String(200))  # for search spider
     keywords = Column(String(1000))
-    # TODO: добавить город
+    city = Column(String(20))
+    hide = Column(Boolean)
 
     def __init__(self, title, short_description, text, category_id,
                  name_in_url, description=None,
