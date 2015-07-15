@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import StringField, FileField
 from wtforms.validators import DataRequired, Email
-from project.feed.validators import allowed_extension, max_size
+from project.feed.validators import allowed_extension
 
 
 class ApplyForm(Form):
@@ -10,5 +10,5 @@ class ApplyForm(Form):
     email = StringField(label='Email',
                         validators=[Email('Неверный e-mail адрес'),
                                     DataRequired('Обязательное поле')])
-    file = FileField(label='Резюме',
-                     validators=[allowed_extension(), max_size()])
+    attachment = FileField(label='Резюме (макс. 15 Мб)',
+                           validators=[allowed_extension()])

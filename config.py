@@ -10,7 +10,7 @@ SALT = 'useaverystrongsaltLuke'
 
 UPLOAD_FOLDER = os.path.join(_basedir, 'media')
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx'}
-MAX_FILE_SIZE = 15 * 1024 * 1024
+MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 
 CSRF = True
 CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'

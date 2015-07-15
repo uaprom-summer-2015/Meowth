@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, flash, g
+from flask import render_template, Blueprint, flash, request
 from project.feed.models import Vacancy, Category
 from project.feed.forms import ApplyForm
 from project.bl.mail import send_mail
@@ -23,10 +23,12 @@ def get_vacancy(name_in_url):
 
     form = ApplyForm()
     if form.validate_on_submit():
+        attachment = request.files[form.attachment.name]
+
         send_mail(title='Ответ на вакансию',
                   body='Имя: {}\nEmail:{}'.format(form.name.data,
                                                   form.email.data),
-                  file=(g.file_name, g.file_type, g.file))
+                  attachment=attachment)
         flash('Ответ отправлен')
 
     return render_template('feed/vacancy.html',
