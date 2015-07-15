@@ -2,6 +2,7 @@ from flask import render_template, Blueprint, flash, request, jsonify
 from project.feed.models import Vacancy, Category
 from project.feed.forms import ApplyForm
 from project.bl.mail import send_mail
+from project.database import db_session
 
 
 
