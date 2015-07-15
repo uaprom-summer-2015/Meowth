@@ -23,7 +23,7 @@ class Vacancy(Base):
         self.title = title
         self.short_description = short_description
         self.text = text
-        self.category_id = category
+        self.category = category
         self.name_in_url = name_in_url
         self.visits = visits
         self.salary = salary

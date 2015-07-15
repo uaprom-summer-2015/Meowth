@@ -12,3 +12,5 @@ from project.feed.views import feed
 app.register_blueprint(admin_app, url_prefix='/admin')
 app.register_blueprint(auth_app, url_prefix='/auth')
 app.register_blueprint(feed, url_prefix='/vacancies')
+
+print(app.url_map)
