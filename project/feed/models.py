@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from project.database import Base, db_session
+from project.feed.ioc import Resource
 
 
 class Vacancy(Base):
@@ -42,6 +43,8 @@ class Category(Base):
     __tablename__ = 'category'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
+
+    bl = Resource('bl.category')
 
     def __init__(self, name):
         self.name = name

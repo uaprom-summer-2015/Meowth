@@ -1,3 +1,5 @@
+import weakref
+from project.feed.ioc import registry
 from project.feed.models import Vacancy, Category
 
 
@@ -48,3 +50,28 @@ def update_category(category_id, data):
         setattr(category, key, value)
     category.save()
     return category
+
+
+class CategoryBL:
+    _category = None
+
+    def __init__(self, category):
+        self._category = weakref.ref(category)
+
+    @property
+    def category(self):
+        return self._category()
+
+    def update(self, data):
+        category = self.category
+
+        for key, value in data.items():
+            setattr(category, key, value)
+
+        #category.save()
+
+        return category
+
+def init_resource_registry():
+    registry.put('bl.category', lambda category: CategoryBL(category))
+

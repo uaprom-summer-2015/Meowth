@@ -51,7 +51,7 @@ class VacancyForm(Form):
         'Текст вакансии',
         validators=[DataRequired('Required Field')]
     )
-    category_id = QuerySelectField(
+    category = QuerySelectField(
         'Категория',
         query_factory=get_categories,
         validators=[DataRequired('Required field')]

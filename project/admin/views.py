@@ -81,14 +81,15 @@ vacancy_view = EntryDetail.as_view(
 
 admin_app.add_url_rule(
     "/vacancy/<int:entry_id>/",
-    defaults={'entry_id': None},
     view_func=vacancy_view
 )
+
 admin_app.add_url_rule(
     "/vacancy/",
     defaults={'entry_id': None},
     view_func=vacancy_view
 )
+
 
 @admin_app.route("/categories")
 def category_list():
@@ -110,6 +111,7 @@ admin_app.add_url_rule(
     "/category/<int:entry_id>/",
     view_func=category_view
 )
+
 admin_app.add_url_rule(
     "/category/",
     defaults={'entry_id': None},
