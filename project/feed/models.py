@@ -20,8 +20,8 @@ class Vacancy(Base):
     hide = Column(Boolean)
 
     def __init__(self, title, short_description, text, category_id,
-                 name_in_url, description=None,
-                 keywords=None, salary=None,  visits=0):
+                 name_in_url, city, description=None,
+                 keywords=None, salary=None,  visits=0, hide=False):
         self.title = title
         self.short_description = short_description
         self.text = text
@@ -31,6 +31,8 @@ class Vacancy(Base):
         self.salary = salary
         self.description = description
         self.keywords = keywords
+        self.city = city
+        self.hide = hide
 
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.title)
