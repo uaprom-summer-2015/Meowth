@@ -1,13 +1,14 @@
 from flask_mail import Message
 from project import mail, app
-# TODO: прикрутить selery
+# TODO: прикрутить celery
 
 
-def send_mail(title, body, file_name=None,
-              file_type=None, file_bytes=None):
-    msg = Message(title,
-                  recipients=[app.config['MAIL_TO_SEND']])
+def send_mail(title, body, recipients=None, file=None):
+    if recipients is None:
+        recipients = [app.config['MAIL_TO_SEND']]
+    msg = Message(title, recipients=recipients)
     msg.body = body
-    if file_name:
+    if file:
+        file_name, file_type, file_bytes = file
         msg.attach(file_name, file_type, file_bytes)
     mail.send(msg)
