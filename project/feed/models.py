@@ -16,6 +16,7 @@ class Vacancy(Base):
     salary = Column(String(50))
     description = Column(String(200))  # for search spider
     keywords = Column(String(1000))
+    # TODO: добавить город
 
     def __init__(self, title, short_description, text, category,
                  name_in_url, description=None,

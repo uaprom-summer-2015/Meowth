@@ -15,4 +15,19 @@
     <p>{{ vacancy.salary }}</p>
     {% endif %}
     <p>{{ vacancy.text|safe }}</p>
-{% endblock %}
+
+<form enctype="multipart/form-data" action="" method="post" name="apply">
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+      <p>
+          <b>{{ field.label }}:</b>
+          {{ field }}
+          {% for error in field.errors %}
+          {{ error }}
+          {% endfor %}
+      </p>
+    {% endfor %}
+
+    <input type="submit" value="Ответить"/>
+
+</form>
