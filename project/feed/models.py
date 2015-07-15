@@ -23,7 +23,7 @@ class Vacancy(Base):
         self.title = title
         self.short_description = short_description
         self.text = text
-        self.category_id = category
+        self.category = category
         self.name_in_url = name_in_url
         self.visits = visits
         self.salary = salary
@@ -36,6 +36,9 @@ class Vacancy(Base):
     def save(self):
         db_session.add(self)
         db_session.commit()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class Category(Base):
@@ -53,5 +56,10 @@ class Category(Base):
         return "[{}] {}".format(self.__class__.__name__, self.name)
 
     def save(self):
+        db_session.rollback()
         db_session.add(self)
         db_session.commit()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+

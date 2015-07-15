@@ -1,16 +1,25 @@
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, jsonify, request
 from project.feed.models import Vacancy, Category
+from project.database import db_session
 
 feed = Blueprint('feed', __name__)
 
 
 @feed.route('/')
 def vacancies():
-    list_vacancies = Vacancy.query.all()
-    list_category = Category.query.all()
-    return render_template('feed/vacancies.html',
-                           vacancies=list_vacancies,
-                           categories=list_category)
+    return render_template('feed/reactvacancies.html')
+
+@feed.route('/list')
+def json_vacancies():
+    cat_id = request.args['category_id']
+    if cat_id != '0':
+        vacancies = Vacancy.query.filter(Vacancy.category_id == int(cat_id))
+    else:
+        vacancies = Vacancy.query.all()
+    categories = Category.query.all()
+    list_vacancies = list(map(lambda v: v.as_dict(), vacancies))
+    list_categories = list(map(lambda c: c.as_dict(), categories))
+    return jsonify(vacancies=list_vacancies, categories=list_categories)
 
 
 @feed.route('/vacancy/<name_in_url>')
