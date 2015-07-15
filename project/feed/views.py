@@ -1,6 +1,9 @@
-from flask import render_template, Blueprint, jsonify, request
+from flask import render_template, Blueprint, flash, request, jsonify
 from project.feed.models import Vacancy, Category
-from project.database import db_session
+from project.feed.forms import ApplyForm
+from project.bl.mail import send_mail
+
+
 
 feed = Blueprint('feed', __name__)
 
@@ -22,10 +25,22 @@ def json_vacancies():
     return jsonify(vacancies=list_vacancies, categories=list_categories)
 
 
-@feed.route('/vacancy/<name_in_url>')
+@feed.route('/vacancy/<name_in_url>', methods=['GET', 'POST'])
 def get_vacancy(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
-    category = Category.query.filter(Category.id == vacancy.category_id).one()
+    vacancy.visits += 1
+    vacancy.save()
+
+    form = ApplyForm()
+    if form.validate_on_submit():
+        attachment = request.files[form.attachment.name]
+
+        send_mail(title='Ответ на вакансию',
+                  body='Имя: {}\nEmail:{}'.format(form.name.data,
+                                                  form.email.data),
+                  attachment=attachment)
+        flash('Ответ отправлен')
+
     return render_template('feed/vacancy.html',
                            vacancy=vacancy,
-                           category=category)
+                           form=form)
