@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, flash
 from project.feed.models import Vacancy, Category
 from project.feed.forms import ApplyForm
-from project.bl.mail import mail_from_aplly_form
+from project.bl.mail import send_mail_from_form
 
 feed = Blueprint('feed', __name__)
 
@@ -23,7 +23,7 @@ def get_vacancy(name_in_url):
 
     form = ApplyForm()
     if form.validate_on_submit():
-        mail_from_aplly_form(form)
+        send_mail_from_form(form)
         flash('Ответ отправлен')
 
     return render_template('feed/vacancy.html',

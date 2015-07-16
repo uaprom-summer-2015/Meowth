@@ -25,3 +25,8 @@ MAIL_USERNAME = 'hrportal@yandex.ru'
 MAIL_PASSWORD = 'useaverystrongpasswordLuke'
 MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
 MAIL_TO_SEND = MAIL_DEFAULT_SENDER
+
+# redis
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# CELERY_BROKER_URL = 'amqp://root:qwerty@localhost:5672/myvhost' RabbitMQ
+CELERY_IMPORTS = ("project.celerytasks", )

@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_wtf.csrf import CsrfProtect
 from flask_mail import Mail
+from project.celery import make_celery
 
 app = Flask(__name__)
 app.config.from_object('config')
 mail = Mail(app)
+celery = make_celery(app)
 
 CsrfProtect(app)
 
