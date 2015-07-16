@@ -109,12 +109,11 @@ class City(Base):
         db_session.add(self)
         db_session.commit()
 
-<<<<<<< HEAD:project/feed/models.py
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-=======
+
 
 def init_db():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
->>>>>>> 0d97aadcf9a19d4593c82f84b8c9f578c4649f6a:project/models.py
+
