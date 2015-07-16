@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, flash, request, session, \
     redirect, url_for
 from .forms import LoginForm, RegisterForm
 from .decorators import login_required
-from .models import User
+from project.models import User
 
 auth = Blueprint('auth', __name__)
 

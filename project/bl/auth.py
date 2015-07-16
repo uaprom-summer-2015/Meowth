@@ -1,6 +1,6 @@
 from project.database import db_session
 from werkzeug.security import check_password_hash
-from project.auth.models import User
+from project.models import User
 
 
 def create_superuser(login, password):

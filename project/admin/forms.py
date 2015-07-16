@@ -2,7 +2,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, TextAreaField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
-from project.admin.logic import get_categories
+from project.models import Category
 
 
 class VacancyForm(Form):
@@ -53,7 +53,7 @@ class VacancyForm(Form):
     )
     category = QuerySelectField(
         'Категория',
-        query_factory=get_categories,
+        query_factory=Category.bl.all,
         validators=[DataRequired('Required field')]
     )
 

@@ -1,5 +1,5 @@
 from flask import render_template, Blueprint
-from project.feed.models import Vacancy, Category
+from project.models import Vacancy, Category
 
 feed = Blueprint('feed', __name__)
 
