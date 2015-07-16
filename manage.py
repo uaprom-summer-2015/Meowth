@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from flask.ext.script import Manager
 from project import app
-from project.database import init_db as init
+from project.models import init_db as init
 from project.fixtures import load_fixtures
 import logging
 from contextlib import contextmanager
