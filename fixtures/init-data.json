@@ -1,6 +1,6 @@
 [
     {
-        "model": "project.auth.models.User",
+        "model": "project.models.User",
         "fields": {
             "login": "cthulhu",
             "password": "pbkdf2:sha1:1000$jVFPJFdN$9ae3ead6fa039e7bbf032822cafe11da460b6654",
@@ -12,56 +12,56 @@
     },
 
     {
-        "model": "project.feed.models.Category",
+        "model": "project.models.Category",
         "fields": {
             "name": "Python"
         }
     },
 
     {
-        "model": "project.feed.models.Category",
+        "model": "project.models.Category",
         "fields": {
             "name": "Android"
         }
     },
 
     {
-        "model": "project.feed.models.Category",
+        "model": "project.models.Category",
         "fields": {
             "name": ".Net"
         }
     },
 
     {
-        "model": "project.feed.models.Category",
+        "model": "project.models.Category",
         "fields": {
             "name": "Marketing"
         }
     },
 
     {
-        "model": "project.feed.models.City",
+        "model": "project.models.City",
         "fields": {
             "name": "Kyiv"
         }
     },
 
     {
-        "model": "project.feed.models.City",
+        "model": "project.models.City",
         "fields": {
             "name": "Cherkasy"
         }
     },
 
     {
-        "model": "project.feed.models.City",
+        "model": "project.models.City",
         "fields": {
             "name": "Lviv"
         }
     },
 
     {
-        "model": "project.feed.models.Vacancy",
+        "model": "project.models.Vacancy",
         "fields": {
             "title": "Junior Python Developer",
             "short_description": "You will repair our toasters for the lowest salary ever",
@@ -74,7 +74,7 @@
     },
 
     {
-        "model": "project.feed.models.Vacancy",
+        "model": "project.models.Vacancy",
         "fields": {
             "title": "Senior Android Developer",
             "short_description": "We are looking for a skilled Android developer",
@@ -87,7 +87,7 @@
     },
 
     {
-        "model": "project.feed.models.Vacancy",
+        "model": "project.models.Vacancy",
         "fields": {
             "title": "Junior Android Developer",
             "short_description": "We are looking for Junior Android developer",
@@ -100,7 +100,7 @@
     },
 
     {
-        "model": "project.feed.models.Vacancy",
+        "model": "project.models.Vacancy",
         "fields": {
             "title": ".Net developer",
             "short_description": "Can you handle this .Net job",
@@ -113,7 +113,7 @@
     },
 
     {
-        "model": "project.feed.models.Vacancy",
+        "model": "project.models.Vacancy",
         "fields": {
             "title": ".Net idiot",
             "short_description": "Yes, I am not a fan of dotNet",
@@ -126,7 +126,7 @@
     },
 
     {
-        "model": "project.feed.models.Vacancy",
+        "model": "project.models.Vacancy",
         "fields": {
             "title": "Sales manager",
             "short_description": "Lorem ipsum dolor sit amet",
