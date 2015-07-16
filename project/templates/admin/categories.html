@@ -3,12 +3,12 @@
 {% block content %}
     <ul class="list-group">
         {% for category in categories %}
-            <a href="{{ url_for('admin.category_detail', category_id=category.id) }}">
+            <a href="{{ url_for('admin.category_detail', entry_id=category.id) }}">
                 <li class="list-group-item">{{ category.name }}</li>
             </a>
         {% endfor %}
 
-        <a href="{{ url_for('admin.category_new') }}">
+        <a href="{{ url_for('admin.category_detail') }}">
             <li class="list-group-item list-group-item-info">Добавить новую категорию</li>
         </a>
     </ul>
