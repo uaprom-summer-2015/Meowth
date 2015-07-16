@@ -87,3 +87,5 @@ class City(Base):
         db_session.add(self)
         db_session.commit()
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

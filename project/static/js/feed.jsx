@@ -1,13 +1,16 @@
+var React = require('react');
+var $ = require('jquery');
+var Select = require('react-select');
+
 var ExpandButton = React.createClass({
     handleClick: function(e) {
         this.props.click(e);
     },
     render: function() {
-
         return (<button type="button" onClick={this.handleClick} className="vacancyButton btn btn-info btn-circle" aria-label="Left Align">
                  <span className={this.props.expanded ? "glyphicon glyphicon-menu-up" : "glyphicon glyphicon-menu-down"}>
                  </span>
-                </button> );
+                </button>);
     }
 });
 
@@ -91,21 +94,35 @@ var VacancyList = React.createClass({
     getInitialState: function() {
         return {
             data: [],
-            category: 0
+            dataToRender: [],
+            category: 0,
+            city: 0
         };
     },
-    getList: function(value) {
-        $.get('list?category_id='+value.toString(), function(result) {
-            this.setState({
-                data: result.vacancies
+    getList: function() {
+        $.get(
+            'list',
+            function(result) {
+                this.setState({
+                    data: result.vacancies,
+                    dataToRender: result.vacancies
+                });
+            }.bind(this));
+    },
+    calcList: function() {
+        var city = this.state.city;
+        var category = this.state.category;
+        var newdata = this.state.data.filter(function(i,n) {
+                return n.category_id==category;
             });
-        }.bind(this));
+        this.setState({dataToRender: newdata});
     },
     componentDidMount: function() {
-        this.getList('0');
+        this.getList();
     },
+
     render: function() {
-        var vaclist = this.state.data.map(function(p) {
+        var vaclist = this.state.dataToRender.map(function(p) {
             return <VacancyNode key={p.id} data={p} />
         });
         return (
@@ -118,39 +135,44 @@ var SpecSelect = React.createClass({
     getInitialState: function() {
         return {
             choices: [],
-            value: 0
         };
     },
     getList: function() {
-        $.get('list?category_id=0', function(result) {
-            this.setState({
-                choices: result.categories
-            });
-        }.bind(this));
+        $.getJSON(
+            'list',
+            function(result) {
+                    this.setState({
+                        choices: result.categories
+                    });
+            }.bind(this));
     },
+
     componentDidMount: function() {
         this.getList();
     },
-    handleChange: function(e) {
-        this.props.onChange(this, e);
+
+    handleChange: function(val) {
+        this.props.onChange(this, val);
     },
+
     render: function() {
-        var catlist = this.state.choices.map(function(p) {
-            return <option value={p.id}>{p.name}</option>
+        var options = [
+            { value: '0', label: 'Все категории' },
+        ];
+        this.state.choices.map(function(p) {
+            options.push({ value: p.id, label: p.name })
         });
-        var blank = <option value="0">Любой</option>
         return (
-            <select onChange={this.handleChange} value={this.state.value} className="categoryDropdown"> {blank} {catlist} </select>
+            <Select onChange={this.handleChange} clearable={false} options={options} placeholder="Категория" className="categoryDropdown">
+            </Select>
         );
     }
 });
 
 var VacancyBox = React.createClass({
-    handleSelect: function(childComponent, e) {
-        childComponent.setState({
-            value: e.target.value
-        });
-        this.refs.list.getList(e.target.value);
+    handleSelect: function(childComponent, val) {
+        this.refs.list.setState({category: parseInt(val)});
+        this.refs.list.calcList();
     },
     render: function() {
         return (
@@ -162,8 +184,5 @@ var VacancyBox = React.createClass({
     }
 });
 
+module.exports = VacancyBox;
 
-React.render(
-    <VacancyBox />,
-    document.body
-);

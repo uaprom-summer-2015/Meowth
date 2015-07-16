@@ -12,7 +12,7 @@ def get_vacancy(vacancy_id):
 
 
 def create_vacancy(form):
-    vacancy = Vacancy('', '', '', None, '')
+    vacancy = Vacancy('', '', '', None, '', None)
     form.populate_obj(vacancy)
     vacancy.save()
     return vacancy
