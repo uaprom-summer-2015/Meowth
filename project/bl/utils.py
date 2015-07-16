@@ -1,6 +1,4 @@
 import weakref
-# from project.bl.auth import UserBL
-# from project.bl.feed import CategoryBL, VacancyBL, CityBL
 
 
 class Registry:
@@ -11,9 +9,6 @@ class Registry:
 
     def __setitem__(self, name, func):
         self._resources[name] = func
-
-    # def __getattr__(self, attr_name):
-    #     return self.get(attr_name)
 
 
 registry = Registry()
