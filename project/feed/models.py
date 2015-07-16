@@ -20,7 +20,6 @@ class Vacancy(Base):
     city = relationship('City', backref=backref('vacancies'))
     hide = Column(Boolean)
 
-
     def __init__(self, title, short_description, text, category,
                  name_in_url, city, description=None,
                  keywords=None, salary=None,  visits=0, hide=False):

@@ -111,4 +111,3 @@ def city_edit(city_id=None):
         'admin/city.html',
         city_form=form,
     )
-
