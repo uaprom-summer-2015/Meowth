@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, flash, request
+from flask import render_template, Blueprint, flash
 from project.feed.models import Vacancy, Category
 from project.feed.forms import ApplyForm
 from project.bl.mail import mail_from_aplly_form
