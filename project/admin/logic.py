@@ -1,4 +1,4 @@
-from project.feed.models import Vacancy, Category
+from project.feed.models import Vacancy, Category, City
 
 
 def get_vacancies():
@@ -48,3 +48,23 @@ def update_category(category_id, data):
         setattr(category, key, value)
     category.save()
     return category
+
+
+def get_cities():
+    cities = City.query.all()
+    return cities
+
+
+def get_city(city_id):
+    return City.query.get(city_id)
+
+
+def edit_city(data, city_id=None):
+    if city_id is None:
+        city = City(**data)
+    else:
+        city = City.query.get(city_id)
+        for key, value in data.items():
+            setattr(city, key, value)
+    city.save()
+    return city
