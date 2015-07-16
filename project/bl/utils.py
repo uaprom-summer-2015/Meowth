@@ -1,6 +1,6 @@
 import weakref
-from project.bl.auth import UserBL
-from project.bl.feed import CategoryBL, VacancyBL, CityBL
+# from project.bl.auth import UserBL
+# from project.bl.feed import CategoryBL, VacancyBL, CityBL
 
 
 class Registry:
@@ -12,8 +12,8 @@ class Registry:
     def __setitem__(self, name, func):
         self._resources[name] = func
 
-    def __getattr__(self, attr_name):
-        return self.get(attr_name)
+    # def __getattr__(self, attr_name):
+    #     return self.get(attr_name)
 
 
 registry = Registry()
@@ -32,7 +32,7 @@ class Resource:
             target = clazz
 
         if self.resource_name not in target.__dict__:
-            func = registry.get(self.resource_name)(target)
+            func = registry[self.resource_name](target)
             setattr(target, self.resource_name, func)
 
         return target.__dict__[self.resource_name]
@@ -62,10 +62,3 @@ class BaseBL:
             setattr(model, key, value)
         model.save()
         return model
-
-
-def init_resource_registry():
-    registry['bl.category'] = lambda category: CategoryBL(category)
-    registry['bl.vacancy'] = lambda vacancy: VacancyBL(vacancy)
-    registry['bl.city'] = lambda city: CityBL(city)
-    registry['bl.user'] = lambda user: UserBL(user)
