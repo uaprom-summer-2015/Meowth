@@ -1,12 +1,12 @@
 from enum import IntEnum
 
-from sqlalchemy import Text, ForeignKey
+from sqlalchemy import Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String
 from werkzeug.security import generate_password_hash
 
 from project.bl.utils import Resource
-from project.database import Base, db_session
+from project.database import Base, db_session, engine
 from project.lib.orm.types import TypeEnum
 
 
@@ -23,12 +23,15 @@ class Vacancy(Base):
     salary = Column(String(50))
     description = Column(String(200))  # for search spider
     keywords = Column(String(1000))
+    city_id = Column(Integer, ForeignKey('city.id'))
+    city = relationship('City', backref=backref('vacancies'))
+    hide = Column(Boolean)
 
-    bl = Resource('bl.vacancy')
+    bl = Resource("bl.vacancy")
 
     def __init__(self, title, short_description, text, category,
-                 name_in_url, description=None,
-                 keywords=None, salary=None, visits=0):
+                 name_in_url, city, description=None,
+                 keywords=None, salary=None,  visits=0, hide=False):
         self.title = title
         self.short_description = short_description
         self.text = text
@@ -38,6 +41,8 @@ class Vacancy(Base):
         self.salary = salary
         self.description = description
         self.keywords = keywords
+        self.city = city
+        self.hide = hide
 
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.title)
@@ -85,6 +90,8 @@ class User(Base):
     email = Column(String(30))
     role = Column(TypeEnum(ROLE), default=ROLE.staff)
 
+    bl = Resource('bl.user')
+
     def __init__(self, login, password, email, name=None,
                  surname=None):
         self.email = email
@@ -109,14 +116,27 @@ class User(Base):
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
-    @staticmethod
-    def authenticate(login, password):
-        from project.bl.auth import authenticate as bl_authenticate
 
-        return bl_authenticate(login, password)
+class City(Base):
+    __tablename__ = 'city'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20))
+    bl = Resource('bl.city')
 
-    @staticmethod
-    def create_superuser(login, password):
-        from project.bl.auth import create_superuser as bl_create_superuser
+    def __init__(self, name):
+        self.name = name
 
-        return bl_create_superuser(login, password)
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return "[{}] {}".format(self.__class__.__name__, self.name)
+
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
+
+
+def init_db():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)

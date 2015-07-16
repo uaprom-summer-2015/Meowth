@@ -3,12 +3,12 @@
 {% block content %}
     <ul class="list-group">
         {% for city in cities %}
-            <a href="{{ url_for('admin.city_edit', city_id=city.id) }}">
+            <a href="{{ url_for('admin.city_detail', entry_id=city.id) }}">
                 <li class="list-group-item">{{ city.name }}</li>
             </a>
         {% endfor %}
 
-        <a href="{{ url_for('admin.city_edit') }}">
+        <a href="{{ url_for('admin.city_detail') }}">
             <li class="list-group-item list-group-item-info">Добавить новый город</li>
         </a>
     </ul>

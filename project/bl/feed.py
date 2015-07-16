@@ -7,3 +7,7 @@ class CategoryBL(BaseBL):
 
 class VacancyBL(BaseBL):
     pass
+
+
+class CityBL(BaseBL):
+    pass
