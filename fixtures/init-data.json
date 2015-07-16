@@ -40,13 +40,36 @@
     },
 
     {
+        "model": "project.feed.models.City",
+        "fields": {
+            "name": "Kyiv"
+        }
+    },
+
+    {
+        "model": "project.feed.models.City",
+        "fields": {
+            "name": "Cherkasy"
+        }
+    },
+
+    {
+        "model": "project.feed.models.City",
+        "fields": {
+            "name": "Lviv"
+        }
+    },
+
+    {
         "model": "project.feed.models.Vacancy",
         "fields": {
             "title": "Junior Python Developer",
             "short_description": "You will repair our toasters for the lowest salary ever",
             "text": "<p>We need python developer for the rescue!</p><p>There are a lot of broken toasters, but we have no person to fix them. You will fix them for the lowest salary ever. You will be our hero!</p>",
             "category": 1,
-            "name_in_url": "junior-python-developer"
+            "name_in_url": "junior-python-developer",
+            "city": 1,
+            "salary": "$800"
         }
     },
 
@@ -57,7 +80,9 @@
             "short_description": "We are looking for a skilled Android developer",
             "text": "<p>This is a hands on role where you will be developing a native application for Android capable devices. The ideal candidate will be responsible for the technical design, development and implementation of the mobile product. You will work in a small team, so effective communication is essential. We will keep you challenged and learning while utilizing the full range of your skills.</p>",
             "category": 2,
-            "name_in_url": "senior-android-developer"
+            "name_in_url": "senior-android-developer",
+            "city": 2,
+            "salary": "$4000"
         }
     },
 
@@ -68,7 +93,9 @@
             "short_description": "We are looking for Junior Android developer",
             "text": "<p> Our most critical asset at Symantec is the talent we hire - you! We look for people who have a desire to excel and reflect our values: Innovation, Action, Customer-Driven, and Trust. We recognize that every opening in our company is a chance to increase Symantec's competitive advantage, and we are willing to invest in you in order to win</p>",
             "category": 2,
-            "name_in_url": "junior-android-developer"
+            "name_in_url": "junior-android-developer",
+            "city": 2,
+            "salary": "$700"
         }
     },
 
@@ -79,7 +106,9 @@
             "short_description": "Can you handle this .Net job",
             "text": "<p>We need a hands-on .NET Developer / Software Developer (ASP.NET / C#) to join a rapidly expanding, friendly software house based in Central London. This role is primarily home based but developers are required to visit the office at regular intervals, at least once per month.</p><p>With major clients that include RBS, Symantec and HP this small software house are pioneers of user-centric service catalog, self-service portal and request automation solutions. They employ a highly experienced team who are at their best working with the latest technology on fast moving projects with clients based in the UK and across the world.</p>",
             "category": 3,
-            "name_in_url": "dot-net-developer"
+            "name_in_url": "dot-net-developer",
+            "city": 1,
+            "salary": "$1000"
         }
     },
 
@@ -90,7 +119,9 @@
             "short_description": "Yes, I am not a fan of dotNet",
             "text": "<p>We want to make a job of .Net developer more dificult. Since we need a guy who will bother our dotNet developer a whole day long! Great salary guaranteed</p>",
             "category": 3,
-            "name_in_url": "dot-net-idiot"
+            "name_in_url": "dot-net-idiot",
+            "city": 1,
+            "salary": "$2000"
         }
     },
 
@@ -101,7 +132,9 @@
             "short_description": "Lorem ipsum dolor sit amet",
             "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
             "category": 4,
-            "name_in_url": "lorem-ipsum-dolor"
+            "name_in_url": "lorem-ipsum-dolor",
+            "city": 3,
+            "salary": "$2500"
         }
     }
 ]
