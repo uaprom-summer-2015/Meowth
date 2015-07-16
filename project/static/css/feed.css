@@ -10,9 +10,11 @@
     font-size: 20px;
     text-align: center;
     margin-top: 8px;
+    font-family: sans-serif;
 }
 .vacancyDescr {
     margin-left: 55px;
+    font-family: sans-serif;
 }
 
 .panel {
@@ -34,9 +36,17 @@
 }
 
 .categoryDropdown {
-    width: 40%;
+    width: 45%;
     margin-bottom: 10px;
-    margin-left: 2px;
+    margin-left: 0.5%;
+    display: inline-block;
+}
+
+.cityDropdown {
+    width: 45%;
+    margin-bottom: 10px;
+    margin-left: 9%;
+    display: inline-block;
 }
 
 .btn-circle {

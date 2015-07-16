@@ -91,38 +91,23 @@ var VacancyNode = React.createClass({
 });
 
 var VacancyList = React.createClass({
-    getInitialState: function() {
-        return {
-            data: [],
-            dataToRender: [],
-            category: 0,
-            city: 0
-        };
-    },
     getList: function() {
-        $.get(
-            'list',
-            function(result) {
-                this.setState({
-                    data: result.vacancies,
-                    dataToRender: result.vacancies
-                });
+        var filtered_data = this.props.data;
+        if (this.props.category != 0) {
+            filtered_data = filtered_data.filter(function(entry) {
+                return (entry.category_id == this.props.category)
             }.bind(this));
+        }
+        if (this.props.city != 0) {
+            filtered_data = filtered_data.filter(function(entry) {
+                return (entry.city_id == this.props.city);
+            }.bind(this));
+        }
+        return filtered_data;
     },
-    calcList: function() {
-        var city = this.state.city;
-        var category = this.state.category;
-        var newdata = this.state.data.filter(function(i,n) {
-                return n.category_id==category;
-            });
-        this.setState({dataToRender: newdata});
-    },
-    componentDidMount: function() {
-        this.getList();
-    },
-
     render: function() {
-        var vaclist = this.state.dataToRender.map(function(p) {
+        filtered_data = this.getList()
+        var vaclist = filtered_data.map(function(p) {
             return <VacancyNode key={p.id} data={p} />
         });
         return (
@@ -132,34 +117,17 @@ var VacancyList = React.createClass({
 });
 
 var SpecSelect = React.createClass({
-    getInitialState: function() {
-        return {
-            choices: [],
-        };
-    },
-    getList: function() {
-        $.getJSON(
-            'list',
-            function(result) {
-                    this.setState({
-                        choices: result.categories
-                    });
-            }.bind(this));
-    },
-
-    componentDidMount: function() {
-        this.getList();
-    },
-
     handleChange: function(val) {
         this.props.onChange(this, val);
     },
-
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return this.props.list !== nextProps.list;
+    },
     render: function() {
         var options = [
             { value: '0', label: 'Все категории' },
         ];
-        this.state.choices.map(function(p) {
+        this.props.list.map(function(p) {
             options.push({ value: p.id, label: p.name })
         });
         return (
@@ -169,16 +137,61 @@ var SpecSelect = React.createClass({
     }
 });
 
+var CitySelect = React.createClass({
+    handleChange: function(val) {
+        this.props.onChange(this, val);
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        return this.props.list !== nextProps.list;
+    },
+    render: function() {
+        var options = [
+            { value: '0', label: 'Все города' },
+        ];
+        this.props.list.map(function(p) {
+            options.push({ value: p.id, label: p.name })
+        });
+        return (
+            <Select onChange={this.handleChange} clearable={false} options={options} placeholder="Город" className="cityDropdown">
+            </Select>
+        );
+    }
+});
+
+
 var VacancyBox = React.createClass({
-    handleSelect: function(childComponent, val) {
-        this.refs.list.setState({category: parseInt(val)});
-        this.refs.list.calcList();
+    getInitialState: function () {
+        return {
+            category: 0,
+            city: 0,
+            data: {categories: [], cities:[], vacancies:[],}
+        };
+    },
+    handleSpecSelect: function(childComponent, val) {
+        this.setState({
+            category: parseInt(val)
+        });
+    },
+    handleCitySelect: function(childComponent, val) {
+        this.setState({
+            city: parseInt(val)
+        });
+    },
+    componentDidMount: function() {
+        $.get(
+            'list',
+            function(result) {
+                this.setState({
+                    data: result
+                });
+            }.bind(this));
     },
     render: function() {
         return (
             <div className="vacancyBox">
-            <SpecSelect onChange={this.handleSelect} ref="select" />
-            <VacancyList ref="list"/>
+            <SpecSelect onChange={this.handleSpecSelect} list={this.state.data.categories} ref="select" />
+            <CitySelect onChange={this.handleCitySelect} list={this.state.data.cities} ref="select" />
+            <VacancyList data={this.state.data.vacancies} category={this.state.category} city={this.state.city} ref="list"/>
             </div>
         );
     }
