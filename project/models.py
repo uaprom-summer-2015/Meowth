@@ -1,6 +1,11 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, Boolean
+from enum import IntEnum
+
+from sqlalchemy import Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, backref
-from project.database import Base, db_session
+from sqlalchemy import Column, Integer, String
+from project.bl.utils import Resource
+from project.database import Base, db_session, engine
+from project.lib.orm.types import TypeEnum
 
 
 class Vacancy(Base):
@@ -20,20 +25,7 @@ class Vacancy(Base):
     city = relationship('City', backref=backref('vacancies'))
     hide = Column(Boolean)
 
-    def __init__(self, title, short_description, text, category,
-                 name_in_url, city, description=None,
-                 keywords=None, salary=None,  visits=0, hide=False):
-        self.title = title
-        self.short_description = short_description
-        self.text = text
-        self.category = category
-        self.name_in_url = name_in_url
-        self.visits = visits
-        self.salary = salary
-        self.description = description
-        self.keywords = keywords
-        self.city = city
-        self.hide = hide
+    bl = Resource("bl.vacancy")
 
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.title)
@@ -51,8 +43,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
 
-    def __init__(self, name):
-        self.name = name
+    bl = Resource('bl.category')
 
     def __str__(self):
         return self.name
@@ -69,13 +60,44 @@ class Category(Base):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
+class User(Base):
+    __tablename__ = 'users'
+
+    #  noinspection PyTypeChecker
+    ROLE = IntEnum('Role', {
+        'staff': 0,
+        'superuser': 1,
+    })
+
+    id = Column(Integer, primary_key=True)
+    login = Column(String(30), unique=True)
+    password = Column(String(100))
+    name = Column(String(30))
+    surname = Column(String(30))
+    email = Column(String(30))
+    role = Column(TypeEnum(ROLE), default=ROLE.staff)
+
+    bl = Resource('bl.user')
+
+    def __repr__(self):
+        return '<User {}>'.format(self.get_full_name())
+
+    def get_full_name(self):
+        return '{} {}'.format(self.name, self.surname)
+
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
+
+    def is_superuser(self):
+        return self.role == self.ROLE.superuser
+
+
 class City(Base):
     __tablename__ = 'city'
     id = Column(Integer, primary_key=True)
     name = Column(String(20))
-
-    def __init__(self, name):
-        self.name = name
+    bl = Resource('bl.city')
 
     def __str__(self):
         return self.name
@@ -87,5 +109,12 @@ class City(Base):
         db_session.add(self)
         db_session.commit()
 
+<<<<<<< HEAD:project/feed/models.py
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+=======
+
+def init_db():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+>>>>>>> 0d97aadcf9a19d4593c82f84b8c9f578c4649f6a:project/models.py

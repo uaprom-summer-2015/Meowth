@@ -1,9 +1,7 @@
-from flask import render_template, Blueprint, flash, request, jsonify
-from project.feed.models import Vacancy, Category, City
+from flask import render_template, Blueprint, flash
+from project.models import Vacancy, Category
 from project.feed.forms import ApplyForm
-from project.bl.mail import send_mail
-from project.database import db_session
-
+from project.bl.mail import mail_from_aplly_form
 
 
 feed = Blueprint('feed', __name__)
@@ -32,12 +30,7 @@ def get_vacancy(name_in_url):
 
     form = ApplyForm()
     if form.validate_on_submit():
-        attachment = request.files[form.attachment.name]
-
-        send_mail(title='Ответ на вакансию',
-                  body='Имя: {}\nEmail:{}'.format(form.name.data,
-                                                  form.email.data),
-                  attachment=attachment)
+        mail_from_aplly_form(form)
         flash('Ответ отправлен')
 
     return render_template('feed/vacancy.html',

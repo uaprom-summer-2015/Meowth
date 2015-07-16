@@ -2,7 +2,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, TextAreaField, BooleanField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
-from project.admin.logic import get_categories, get_cities
+from project.models import Category, City
 
 
 class VacancyForm(Form):
@@ -53,12 +53,12 @@ class VacancyForm(Form):
     )
     category = QuerySelectField(
         'Категория',
-        query_factory=get_categories,
+        query_factory=Category.query.all,
         validators=[DataRequired('Required field')]
     )
     city = QuerySelectField(
         'Город',
-        query_factory=get_cities,
+        query_factory=City.query.all,
         validators=[DataRequired('Required field')]
     )
     hide = BooleanField(label='Не показывать вакансию')

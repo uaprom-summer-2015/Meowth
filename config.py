@@ -1,4 +1,6 @@
 import os
+import logging
+import logging.config
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -25,3 +27,52 @@ MAIL_USERNAME = 'hrportal@yandex.ru'
 MAIL_PASSWORD = 'useaverystrongpasswordLuke'
 MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
 MAIL_TO_SEND = MAIL_DEFAULT_SENDER
+
+# Logger configuration
+LOG_CONFIG = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'INFO',
+            'formatter': 'detailed',
+            'stream': 'ext://sys.stdout',
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'INFO',
+            'formatter': 'detailed',
+            'filename': '/tmp/junk.log',
+            'mode': 'a',
+            'maxBytes': 10485760,
+            'backupCount': 5,
+        },
+
+    },
+    'formatters': {
+        'detailed': {
+            'format': '%(asctime)s %(module)-17s line:%(lineno)-4d '
+                      '%(levelname)-8s %(message)s',
+        },
+        'email': {
+            'format': 'Timestamp: %(asctime)s\nModule: %(module)s\n'
+                      'Line: %(lineno)d\nMessage: %(message)s',
+        },
+    },
+    'loggers': {
+        'extensive': {
+            'level': 'DEBUG',
+            'handlers': [
+                'file',
+            ],
+        },
+    },
+    'root': {
+        'level': 'INFO',
+        'handlers': [
+            'console',
+        ]
+    }
+}
+
+logging.config.dictConfig(LOG_CONFIG)
