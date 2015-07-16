@@ -43,7 +43,7 @@ class EntryDetail(MethodView):
             # Add a new entry
             form = self.form()
             if form.validate():
-                self.model.bl.create_entry(form.data)
+                self.model.bl.create(form.data)
                 return redirect(url_for("admin."+self.success_url))
         else:
             # Update an old entry

@@ -60,6 +60,11 @@ class BaseBL:
     def all(self):
         return self.model.query.all()
 
+    def create(self, data):
+        vacancy = self.model(**data)
+        vacancy.save()
+        return vacancy
+
     def update(self, data):
         model = self.model
         for key, value in data.items():
