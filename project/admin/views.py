@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for, abort
+from flask import Blueprint, render_template, redirect, url_for, abort
 from flask.views import MethodView
-from project.admin.forms import VacancyForm, CategoryForm
-from project.models import Vacancy, Category
+from project.admin.forms import VacancyForm, CategoryForm, CityForm
+from project.models import Vacancy, Category, City
 
 admin_app = Blueprint('admin', __name__)
 
@@ -42,13 +42,13 @@ class EntryDetail(MethodView):
         if entry_id is None:
             # Add a new entry
             form = self.form()
-            if form.validate():
+            if form.validate_on_submit():
                 self.model.bl.create(form.data)
                 return redirect(url_for("admin."+self.success_url))
         else:
             # Update an old entry
-            form = self.form(request.form)
-            if form.validate():
+            form = self.form()
+            if form.validate_on_submit():
                 model = self.model.bl.get(entry_id)
                 model.bl.update(form.data)
                 return redirect(url_for("admin."+self.success_url))
@@ -85,13 +85,15 @@ admin_app.add_url_rule(
 )
 
 
+# CATEGORIES
+
 @admin_app.route("/categories/")
 def category_list():
-    return render_template("admin/categories.html",
-                           categories=Category.bl.all())
+    return render_template(
+        "admin/categories.html",
+        categories=Category.bl.all(),
+    )
 
-
-# CATEGORIES
 category_view = EntryDetail.as_view(
     name='category_detail',
     form=CategoryForm,
@@ -108,4 +110,30 @@ admin_app.add_url_rule(
     "/category/",
     defaults={'entry_id': None},
     view_func=category_view
+)
+
+
+# Cities
+@admin_app.route("/cities/")
+def city_list():
+    return render_template("admin/cities.html",
+                           cities=City.bl.all())
+
+city_view = EntryDetail.as_view(
+    name='city_detail',
+    form=CityForm,
+    model=City,
+    # template="admin/vacancy.html",
+    success_url="city_list",
+)
+
+admin_app.add_url_rule(
+    "/city/<int:entry_id>/",
+    view_func=city_view
+)
+
+admin_app.add_url_rule(
+    "/city/",
+    defaults={'entry_id': None},
+    view_func=city_view
 )
