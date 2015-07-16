@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from project.admin.forms import VacancyForm, CategoryForm
+from project.admin.forms import VacancyForm, CategoryForm, CityForm
 from project.admin import logic as bl
 
 admin_app = Blueprint('admin', __name__)
@@ -86,4 +86,28 @@ def category_detail(category_id):
     return render_template(
         "admin/category.html",
         category_form=form,
+    )
+
+
+@admin_app.route("/cities")
+def cities_list():
+    return render_template("admin/cities.html",
+                           cities=bl.get_cities())
+
+
+@admin_app.route("/city/new", methods=['GET', 'POST'])
+@admin_app.route('/city/<int:city_id>', methods=['GET', 'POST'])
+def city_edit(city_id=None):
+    if city_id is not None:
+        city = bl.get_city(city_id)
+        form = CityForm(obj=city)
+    else:
+        form = CityForm()
+    if form.validate_on_submit():
+        bl.edit_city(form.data, city_id)
+        return redirect(url_for("admin.cities_list"))
+
+    return render_template(
+        'admin/city.html',
+        city_form=form,
     )

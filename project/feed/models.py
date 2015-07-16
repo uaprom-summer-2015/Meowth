@@ -16,12 +16,13 @@ class Vacancy(Base):
     salary = Column(String(50))
     description = Column(String(200))  # for search spider
     keywords = Column(String(1000))
-    city = Column(String(20))
+    city_id = Column(Integer, ForeignKey('city.id'))
+    city = relationship('City', backref=backref('vacancies'))
     hide = Column(Boolean)
 
     def __init__(self, title, short_description, text, category,
-                 name_in_url, description=None,
-                 keywords=None, salary=None,  visits=0):
+                 name_in_url, city, description=None,
+                 keywords=None, salary=None,  visits=0, hide=False):
         self.title = title
         self.short_description = short_description
         self.text = text
@@ -31,6 +32,8 @@ class Vacancy(Base):
         self.salary = salary
         self.description = description
         self.keywords = keywords
+        self.city = city
+        self.hide = hide
 
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.title)
@@ -64,4 +67,23 @@ class Category(Base):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class City(Base):
+    __tablename__ = 'city'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20))
+
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return "[{}] {}".format(self.__class__.__name__, self.name)
+
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
 
