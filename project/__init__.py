@@ -1,16 +1,10 @@
 from flask import Flask
 from flask_wtf.csrf import CsrfProtect
-from project.bl.feed import VacancyBL, CategoryBL, CityBL
-from project.bl.auth import UserBL
-from project.bl.utils import registry
 from flask_mail import Mail
 
-
-def init_resource_registry():
-    registry.put('bl.category', lambda category: CategoryBL(category))
-    registry.put('bl.vacancy', lambda vacancy: VacancyBL(vacancy))
-    registry.put('bl.city', lambda city: CityBL(city))
-    registry.put('bl.user', lambda user: UserBL(user))
+from project.bl.feed import VacancyBL, CategoryBL, CityBL
+from project.bl.auth import UserBL
+from project.bl.utils import registry, init_resource_registry
 
 init_resource_registry()
 

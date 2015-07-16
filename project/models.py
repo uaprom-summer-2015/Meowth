@@ -29,21 +29,6 @@ class Vacancy(Base):
 
     bl = Resource("bl.vacancy")
 
-    def __init__(self, title, short_description, text, category,
-                 name_in_url, city, description=None,
-                 keywords=None, salary=None,  visits=0, hide=False):
-        self.title = title
-        self.short_description = short_description
-        self.text = text
-        self.category = category
-        self.name_in_url = name_in_url
-        self.visits = visits
-        self.salary = salary
-        self.description = description
-        self.keywords = keywords
-        self.city = city
-        self.hide = hide
-
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.title)
 
@@ -58,9 +43,6 @@ class Category(Base):
     name = Column(String(50))
 
     bl = Resource('bl.category')
-
-    def __init__(self, name):
-        self.name = name
 
     def __str__(self):
         return self.name
@@ -122,9 +104,6 @@ class City(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(20))
     bl = Resource('bl.city')
-
-    def __init__(self, name):
-        self.name = name
 
     def __str__(self):
         return self.name

@@ -1,17 +1,15 @@
 import weakref
+from project.bl.auth import UserBL
+from project.bl.feed import CategoryBL, VacancyBL, CityBL
 
 
 class Registry:
-    _resources = None
+    _resources = {}
 
-    def __init__(self):
-        self._resources = {}
-        self._static_resources = {}
-
-    def get(self, name):
+    def __getitem__(self, name):
         return self._resources[name]
 
-    def put(self, name, func):
+    def __setitem__(self, name, func):
         self._resources[name] = func
 
     def __getattr__(self, attr_name):
@@ -27,9 +25,6 @@ class Resource:
     def __init__(self, resource_name):
         self.resource_name = resource_name
 
-    def _process_resource_bl(self, target, resource):
-        return resource(target)
-
     def __get__(self, instance, clazz):
         if instance:
             target = instance
@@ -37,9 +32,8 @@ class Resource:
             target = clazz
 
         if self.resource_name not in target.__dict__:
-            resource = registry.get(self.resource_name)
-            resource = self._process_resource_bl(target, resource)
-            setattr(target, self.resource_name, resource)
+            func = registry.get(self.resource_name)(target)
+            setattr(target, self.resource_name, func)
 
         return target.__dict__[self.resource_name]
 
@@ -57,9 +51,6 @@ class BaseBL:
     def get(self, id_):
         return self.model.query.get(id_)
 
-    def all(self):
-        return self.model.query.all()
-
     def create(self, data):
         vacancy = self.model(**data)
         vacancy.save()
@@ -71,3 +62,10 @@ class BaseBL:
             setattr(model, key, value)
         model.save()
         return model
+
+
+def init_resource_registry():
+    registry['bl.category'] = lambda category: CategoryBL(category)
+    registry['bl.vacancy'] = lambda vacancy: VacancyBL(vacancy)
+    registry['bl.city'] = lambda city: CityBL(city)
+    registry['bl.user'] = lambda user: UserBL(user)

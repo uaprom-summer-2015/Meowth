@@ -7,10 +7,12 @@ admin_app = Blueprint('admin', __name__)
 
 
 class EntryDetail(MethodView):
-    # /entities/ GET → list of all entities
-    # /entity/<id> GET → get entity
-    # /entity/<id> POST → update entity
-    # /entity/ GET → create new entity
+    """
+        /entities/ GET → list of all entities
+        /entity/<id> GET → get entity
+        /entity/<id> POST → update entity
+        /entity/ GET → create new entity
+    """
 
     form = None
     model = None
@@ -63,7 +65,7 @@ class EntryDetail(MethodView):
 @admin_app.route("/vacancies/")
 def vacancy_list():
     return render_template("admin/vacancies.html",
-                           vacancies=Vacancy.bl.all())
+                           vacancies=Vacancy.query.all())
 
 vacancy_view = EntryDetail.as_view(
     name='vacancy_detail',
@@ -91,7 +93,7 @@ admin_app.add_url_rule(
 def category_list():
     return render_template(
         "admin/categories.html",
-        categories=Category.bl.all(),
+        categories=Category.query.all(),
     )
 
 category_view = EntryDetail.as_view(
@@ -117,13 +119,12 @@ admin_app.add_url_rule(
 @admin_app.route("/cities/")
 def city_list():
     return render_template("admin/cities.html",
-                           cities=City.bl.all())
+                           cities=City.query.all())
 
 city_view = EntryDetail.as_view(
     name='city_detail',
     form=CityForm,
     model=City,
-    # template="admin/vacancy.html",
     success_url="city_list",
 )
 
