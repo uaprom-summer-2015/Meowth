@@ -22,8 +22,12 @@ def mail_from_aplly_form(form, recipitiens=None, title=None):
         title = 'Ответ на вакансию'
     body = 'Имя: {}\n' \
            'Email: {}\n' \
-           'Телефон: {}'.format(form.name.data,
-                                form.email.data, form.phone.data)
+           'Телефон: {}'\
+        .format(
+            form.name.data,
+            form.email.data,
+            form.phone.data,
+        )
     if form.comment.data:
         body += '\nКоментарий: {}'.format(form.comment.data)
     attachment = request.files[form.attachment.name]

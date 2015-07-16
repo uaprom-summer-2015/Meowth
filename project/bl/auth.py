@@ -1,19 +1,29 @@
-from project.database import db_session
-from werkzeug.security import check_password_hash
-from project.auth.models import User
+from project.bl.utils import BaseBL
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
-def create_superuser(login, password):
-    superuser = User(login, password, email=None)
-    superuser.role = User.ROLE.superuser
-    u = db_session.query(User).filter(User.login == login).first()
-    if not u:
+class UserBL(BaseBL):
+
+    def set_password(self, password):
+        model = self._model
+        model.password = generate_password_hash(password)
+        return model
+
+    def create_user(self, data):
+        model = self._model(data)
+        model.bl.set_password(data["password"])
+        model.save()
+        return model
+
+    def create_superuser(self, login, password):
+        user_model = self._model
+        superuser = user_model.bl.create_user(login, password, email=None)
+        superuser.role = user_model.ROLE.superuser
         superuser.save()
-        return True
-    return False
+        return superuser
 
-
-def authenticate(login, password):
-    u = db_session.query(User).filter(User.login == login).first()
-    if u and check_password_hash(u.password, password):
-        return u
+    def authenticate(self, login, password):
+        user_model = self._model
+        u = user_model.query.filter(user_model.login == login).first()
+        if u and check_password_hash(u.password, password):
+            return u
