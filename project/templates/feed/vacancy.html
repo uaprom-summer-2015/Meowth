@@ -10,9 +10,31 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-    <h1>{{ vacancy.title }}</h1>
-    {% if vacancy.salary %}
-    <p>{{ vacancy.salary }}</p>
-    {% endif %}
-    <p>{{ vacancy.text|safe }}</p>
+    <div class="vacancy">
+        <h1>{{ vacancy.title }}</h1>
+        {% if vacancy.salary %}
+        <p>{{ vacancy.salary }}</p>
+        {% endif %}
+        <p>{{ vacancy.city }}</p>
+        <p>{{ vacancy.text|safe }}</p>
+    </div>
+
+<br/>
+<br/>
+
+<form enctype="multipart/form-data" action="" method="post" name="apply">
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+      <p>
+          <b>{{ field.label }}:</b>
+          {{ field }}
+          {% for error in field.errors %}
+          {{ error }}
+          {% endfor %}
+      </p>
+    {% endfor %}
+
+    <input type="submit" value="Ответить"/>
+
+</form>
 {% endblock %}
