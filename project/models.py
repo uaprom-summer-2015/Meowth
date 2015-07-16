@@ -34,6 +34,9 @@ class Vacancy(Base):
         db_session.add(self)
         db_session.commit()
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Category(Base):
     __tablename__ = 'category'
@@ -49,8 +52,12 @@ class Category(Base):
         return "[{}] {}".format(self.__class__.__name__, self.name)
 
     def save(self):
+        db_session.rollback()
         db_session.add(self)
         db_session.commit()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class User(Base):
@@ -102,7 +109,11 @@ class City(Base):
         db_session.add(self)
         db_session.commit()
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 def init_db():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
+

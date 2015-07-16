@@ -16,11 +16,14 @@ def init_resource_registry():
 
 init_resource_registry()
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.config.from_object('config')
 mail = Mail(app)
 
 CsrfProtect(app)
+
+from .database import db_session
+db_session.rollback()
 
 from project.admin.views import admin_app
 from project.auth.views import auth as auth_app

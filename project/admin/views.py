@@ -87,6 +87,7 @@ admin_app.add_url_rule(
 )
 
 
+
 # CATEGORIES
 
 @admin_app.route("/categories/")
