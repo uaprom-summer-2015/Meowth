@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_wtf.csrf import CsrfProtect
 from flask_mail import Mail
+import logging
+import os
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -19,3 +21,7 @@ app.register_blueprint(feed, url_prefix='/vacancies')
 @app.errorhandler(413)
 def request_entity_too_large(error):
     return 'File Too Large', 413
+
+
+if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+    logging.info(app.url_map)
