@@ -23,7 +23,7 @@ def json_vacancies():
     return jsonify(vacancies=list_vacancies, categories=list_categories, cities=list_cities)
 
 
-@feed.route('/vacancy/<name_in_url>', methods=['GET', 'POST'])
+@feed.route('/<name_in_url>', methods=['GET', 'POST'])
 def get_vacancy(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
     vacancy.visits += 1
