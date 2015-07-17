@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, flash, jsonify
 from project.models import Vacancy, Category, City
 from project.feed.forms import ApplyForm
-from project.bl.mail import mail_from_aplly_form
+from project.bl.mail import send_mail_from_form
 
 
 feed = Blueprint('feed', __name__)
@@ -10,6 +10,7 @@ feed = Blueprint('feed', __name__)
 @feed.route('/')
 def vacancies():
     return render_template('feed/reactvacancies.html')
+
 
 @feed.route('/list')
 def json_vacancies():
@@ -30,7 +31,7 @@ def get_vacancy(name_in_url):
 
     form = ApplyForm()
     if form.validate_on_submit():
-        mail_from_aplly_form(form)
+        send_mail_from_form(form, vacancy)
         flash('Ответ отправлен')
 
     return render_template('feed/vacancy.html',

@@ -28,6 +28,11 @@ MAIL_PASSWORD = 'useaverystrongpasswordLuke'
 MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
 MAIL_TO_SEND = MAIL_DEFAULT_SENDER
 
+# Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BACKEND_URL = CELERY_BROKER_URL
+CELERY_IMPORTS = ("project.tasks.mail", )
+
 # Logger configuration
 LOG_CONFIG = {
     'version': 1,

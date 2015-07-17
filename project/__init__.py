@@ -1,6 +1,4 @@
 from flask import Flask
-from flask_wtf.csrf import CsrfProtect
-from flask_mail import Mail
 import logging
 import os
 from project.bl.auth import UserBL
@@ -18,9 +16,8 @@ init_resource_registry()
 
 app = Flask(__name__, static_url_path='/static')
 app.config.from_object('config')
-mail = Mail(app)
 
-CsrfProtect(app)
+from project.extensions import mail, celery, CsrfProtect
 
 from project.admin.views import admin_app
 from project.auth.views import auth as auth_app
