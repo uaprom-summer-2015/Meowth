@@ -52,7 +52,6 @@ class Category(Base):
         return "[{}] {}".format(self.__class__.__name__, self.name)
 
     def save(self):
-        db_session.rollback()
         db_session.add(self)
         db_session.commit()
 
