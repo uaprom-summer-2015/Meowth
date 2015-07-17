@@ -16,14 +16,14 @@ class UserBL(BaseBL):
         return model
 
     def create_superuser(self, login, password):
-        user_model = self.model
-        superuser = user_model.bl.create_user(login, password, email=None)
-        superuser.role = user_model.ROLE.superuser
+        model = self.model
+        superuser = model.bl.create_user(login, password, email=None)
+        superuser.role = model.ROLE.superuser
         superuser.save()
         return superuser
 
     def authenticate(self, login, password):
-        user_model = self.model
-        u = user_model.query.filter(user_model.login == login).first()
+        model = self.model
+        u = model.query.filter(model.login == login).first()
         if u and check_password_hash(u.password, password):
             return u

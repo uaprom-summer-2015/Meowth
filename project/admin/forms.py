@@ -53,12 +53,12 @@ class VacancyForm(Form):
     )
     category = QuerySelectField(
         'Категория',
-        query_factory=Category.query.all,
+        query_factory=lambda: Category.query.all(),
         validators=[DataRequired('Required field')]
     )
     city = QuerySelectField(
         'Город',
-        query_factory=City.query.all,
+        query_factory=lambda: City.query.all(),
         validators=[DataRequired('Required field')]
     )
     hide = BooleanField(label='Не показывать вакансию')
