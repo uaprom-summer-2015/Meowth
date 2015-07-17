@@ -47,9 +47,9 @@ class BaseBL:
         return self.model.query.get(id_)
 
     def create(self, data):
-        vacancy = self.model(**data)
-        vacancy.save()
-        return vacancy
+        model = self.model(**data)
+        model.save()
+        return model
 
     def update(self, data):
         model = self.model
