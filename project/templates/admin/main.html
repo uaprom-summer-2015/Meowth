@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+    {% for section in sections %}
+        <div class="panel panel-body col-md-6">
+          <div class="panel-body">
+            <a href="{{ section.url }}">{{ section.title }}</a>
+          </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

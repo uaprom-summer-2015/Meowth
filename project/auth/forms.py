@@ -11,7 +11,7 @@ class LoginForm(Form):
                              validators=[DataRequired('Обязательное поле')])
 
 
-class RegisterForm(Form):
+class UserForm(Form):
     login = StringField(label='Логин',
                         validators=[LoginFormat,
                                     LoginExists(),
@@ -20,14 +20,10 @@ class RegisterForm(Form):
                                                    'до 16 символов в длину')])
     password = PasswordField(label='Пароль',
                              validators=[PasswordFormat,
-                                         EqualTo('confirmation',
-                                                 message='Пароли не ' +
-                                                         'совпадают'),
                                          Length(6, 16,
                                                 message='Пароль должен ' +
                                                         'быть от 6 до 16 ' +
                                                         'символов в длину')])
-    confirmation = PasswordField(label='Подтвердите пароль')
     email = StringField(label='Email',
                         validators=[Email('Неверный e-mail адрес'),
                                     DataRequired('Обязательное поле')])
@@ -40,3 +36,11 @@ class RegisterForm(Form):
                                              message='Фамилия должна быть' +
                                                      ' от 2 до 25 символов ' +
                                                      'в длину')])
+
+
+class RegisterForm(UserForm):
+    confirmation = PasswordField(label='Подтвердите пароль',
+                                 validators=[
+                                     EqualTo('password',
+                                             message='Пароли не совпадают'),
+                                 ])
