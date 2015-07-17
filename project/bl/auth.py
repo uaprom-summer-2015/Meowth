@@ -10,14 +10,17 @@ class UserBL(BaseBL):
         return model
 
     def create_user(self, data):
-        model = self.model(data)
-        model.bl.set_password(data["password"])
+        model = self.model(**data)
+        model.bl.set_password(data['password'])
         model.save()
         return model
 
     def create_superuser(self, login, password):
         model = self.model
-        superuser = model.bl.create_user(login, password, email=None)
+        superuser = model.bl.create_user({
+            'login': login,
+            'password': password,
+        })
         superuser.role = model.ROLE.superuser
         superuser.save()
         return superuser
