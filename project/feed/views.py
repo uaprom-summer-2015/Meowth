@@ -15,6 +15,7 @@ def vacancies():
                            vacancies=vacancies,
                            categories=categories)
 
+
 @feed.route('/list')
 def json_vacancies():
     vacancies = Vacancy.query.all()
@@ -34,7 +35,7 @@ def get_vacancy(name_in_url):
 
     form = ApplyForm()
     if form.validate_on_submit():
-        send_mail_from_form(form)
+        send_mail_from_form(form, vacancy)
         flash('Ответ отправлен')
 
     return render_template('feed/vacancy.html',

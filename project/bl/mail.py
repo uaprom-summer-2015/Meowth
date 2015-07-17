@@ -1,7 +1,7 @@
 from flask import request
 from flask_mail import Message
 from project import app
-from project.celerytasks import celery_send_mail
+from project.tasks.mail import celery_send_mail
 
 
 def get_message(title, body, recipients, attachment_name=None,
@@ -15,17 +15,18 @@ def get_message(title, body, recipients, attachment_name=None,
     return msg
 
 
-def get_message_from_form(form):
+def get_message_from_form(form, vacancy):
     recipitiens = [app.config['MAIL_TO_SEND']]
-    title = 'Ответ на вакансию'
-    body = 'Имя: {}\n' \
-           'Email: {}\n' \
-           'Телефон: {}'\
-        .format(
-            form.name.data,
-            form.email.data,
-            form.phone.data,
-        )
+    title = 'Ответ на вакансию {}'.format(vacancy.title)
+    body = 'Ответ на вакансию {}'' \
+    ''Имя: {}\n'' \
+    ''Email: {}\n'' \
+    ''Телефон: {}'.format(
+        vacancy.title,
+        form.name.data,
+        form.email.data,
+        form.phone.data,
+    )
     if form.comment.data:
         body += '\nКоментарий: {}'.format(form.comment.data)
 
@@ -35,8 +36,8 @@ def get_message_from_form(form):
                        attachment.content_type, attachment)
 
 
-def send_mail_from_form(form):
-    msg = get_message_from_form(form)
+def send_mail_from_form(form, vacancy):
+    msg = get_message_from_form(form, vacancy)
     celery_send_mail.delay(msg)
 
 

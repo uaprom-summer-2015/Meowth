@@ -30,7 +30,8 @@ MAIL_TO_SEND = MAIL_DEFAULT_SENDER
 
 # Celery
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_IMPORTS = ("project.celerytasks", )
+CELERY_BACKEND_URL = CELERY_BROKER_URL
+CELERY_IMPORTS = ("project.tasks.mail", )
 
 # Logger configuration
 LOG_CONFIG = {
