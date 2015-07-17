@@ -133,11 +133,14 @@ class PageBlock(Base):
     text = Column(String(1024))  # block contents
     short_description = Column(String(256), nullable=True)  # used for homepage
     # by http://stackoverflow.com/a/219664:
-    image_url = Column(String(2083), nullable=True)
+    image = Column(String(2083), nullable=True)
     position = Column(Integer, nullable=False)  # ordering blocks on pages
     page_id = Column(Integer, ForeignKey('pages.id'))  # belongs to page
 
     bl = Resource('bl.pageblock')
+
+    def __str__(self):
+        return '%s: %s' % (self.title, self.text)
     
 
 class Page(Base):
