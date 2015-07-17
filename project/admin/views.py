@@ -1,9 +1,25 @@
+from collections import namedtuple
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask.views import MethodView
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
-from project.models import Vacancy, Category, City
+from project.auth.forms import RegisterForm
+from project.models import Vacancy, Category, City, User
+
 
 admin_app = Blueprint('admin', __name__)
+
+
+def add_admin_url_rule(rule, view):
+    admin_app.add_url_rule(
+        rule+"<int:entry_id>/",
+        view_func=view
+    )
+
+    admin_app.add_url_rule(
+        rule,
+        defaults={'entry_id': None},
+        view_func=view
+    )
 
 
 class EntryDetail(MethodView):
@@ -41,15 +57,14 @@ class EntryDetail(MethodView):
         return self.render_response(entry_form=entry_form)
 
     def post(self, entry_id):
+        form = self.form()
         if entry_id is None:
             # Add a new entry
-            form = self.form()
             if form.validate_on_submit():
                 self.model.bl.create(form.data)
                 return redirect(url_for("admin."+self.success_url))
         else:
             # Update an old entry
-            form = self.form()
             if form.validate_on_submit():
                 model = self.model.bl.get(entry_id)
                 model.bl.update(form.data)
@@ -61,7 +76,30 @@ class EntryDetail(MethodView):
         return render_template(self.template, **kwargs)
 
 
-# VACANCIES
+class UserDetail(EntryDetail):
+    def _clean_data(self, data):
+        _data = data
+        _data.pop('confirmation')
+        return _data
+
+    def post(self, entry_id):
+        form = self.form()
+        if entry_id is None:
+            if form.validate_on_submit():
+                data = self._clean_data(form.data)
+                self.model.bl.create(data)
+                return redirect(url_for("admin."+self.success_url))
+        else:
+            if form.validate_on_submit():
+                model = self.model.bl.get(entry_id)
+                data = self._clean_data(form.data)
+                model.bl.update(data)
+                return redirect(url_for("admin."+self.success_url))
+
+        return self.render_response(entry_form=form)
+
+
+# Vacancies
 @admin_app.route("/vacancies/")
 def vacancy_list():
     return render_template("admin/vacancies.html",
@@ -75,19 +113,10 @@ vacancy_view = EntryDetail.as_view(
     success_url="vacancy_list",
 )
 
-admin_app.add_url_rule(
-    "/vacancy/<int:entry_id>/",
-    view_func=vacancy_view
-)
-
-admin_app.add_url_rule(
-    "/vacancy/",
-    defaults={'entry_id': None},
-    view_func=vacancy_view
-)
+add_admin_url_rule('/vacancy/', vacancy_view)
 
 
-# CATEGORIES
+# Categories
 @admin_app.route("/categories/")
 def category_list():
     return render_template(
@@ -102,16 +131,7 @@ category_view = EntryDetail.as_view(
     success_url="category_list",
 )
 
-admin_app.add_url_rule(
-    "/category/<int:entry_id>/",
-    view_func=category_view
-)
-
-admin_app.add_url_rule(
-    "/category/",
-    defaults={'entry_id': None},
-    view_func=category_view
-)
+add_admin_url_rule('/category/', category_view)
 
 
 # Cities
@@ -127,13 +147,36 @@ city_view = EntryDetail.as_view(
     success_url="city_list",
 )
 
-admin_app.add_url_rule(
-    "/city/<int:entry_id>/",
-    view_func=city_view
+add_admin_url_rule("/city/", city_view)
+
+
+# Users
+@admin_app.route("/users/")
+def user_list():
+    return render_template("admin/users.html",
+                           users=User.query.all())
+
+user_view = UserDetail.as_view(
+    name='user_detail',
+    form=RegisterForm,
+    model=User,
+    success_url="user_list",
 )
 
-admin_app.add_url_rule(
-    "/city/",
-    defaults={'entry_id': None},
-    view_func=city_view
-)
+add_admin_url_rule("/user/", user_view)
+
+
+@admin_app.route("/")
+def mainpage():
+    # TODO code smells
+    section = namedtuple("Sect", ("title", "url"))
+    sect_cont = list()
+
+    sect_cont.append(section("Вакансии", url_for("admin.vacancy_list")))
+    sect_cont.append(section("Пользователи", url_for("admin.user_list")))
+    sect_cont.append(section("Категории", url_for("admin.category_list")))
+    sect_cont.append(section("Города", url_for("admin.city_list")))
+    return render_template(
+        "admin/main.html",
+        sections=sect_cont,
+    )
