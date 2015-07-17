@@ -2,6 +2,7 @@ var React = require('react');
 var $ = require('jquery');
 var Select = require('react-select');
 
+
 var ExpandButton = React.createClass({
     handleClick: function(e) {
         this.props.click(e);
@@ -53,12 +54,16 @@ var VacancyNodeExpanded = React.createClass({
     handleButtonClick: function(e) {
         this.props.click(e);
     },
+    handleToVacancyClick: function() {
+        window.location.href = this.state.data.name_in_url;
+    },
     render: function() {
         return (
             <div className="panel panel-default">
             <ExpandButton expanded={this.props.expanded} ref="button" click={this.handleButtonClick} />
             <p className="vacancyTitle">{this.state.data.title}</p>
             <p className="vacancyDescr">{this.state.data.short_description}</p>
+            <button type="button" onClick={this.handleToVacancyClick} className="btn btn-info goToVacancyButton">Перейти к вакансии</button>
             </div>
         );
     }
