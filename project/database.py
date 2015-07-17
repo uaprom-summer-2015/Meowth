@@ -17,3 +17,4 @@ def init_db():
     import project.auth.models  # NOQA
     import project.feed.models  # NOQA
     Base.metadata.create_all(bind=engine)
+

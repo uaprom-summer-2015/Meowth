@@ -11,8 +11,9 @@ def get_vacancy(vacancy_id):
     return vacancy
 
 
-def create_vacancy(data):
-    vacancy = Vacancy(**data)
+def create_vacancy(form):
+    vacancy = Vacancy('', '', '', None, '', None)
+    form.populate_obj(vacancy)
     vacancy.save()
     return vacancy
 

@@ -3,14 +3,14 @@
 {% block meta %}
 <script src="{{ url_for('static', filename='js/tinymce/tinymce.min.js') }}"
         type="text/javascript"></script>
-<script src="{{ url_for('static', filename='admin/js/tinymce.init.js') }}"
-        type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='admin/js/tinymce.init.js') }}"
+            type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
     <form method="post">
-        {{ vacancy_form.hidden_tag() }}
-        {% for field in vacancy_form if field.widget.input_type != 'hidden' %}
+        {{ entry_form.hidden_tag() }}
+        {% for field in entry_form if field.widget.input_type != 'hidden' %}
             {{ field.label }}
             {% if field.errors %}
                 {{field.errors}}

@@ -1,18 +1,25 @@
-from flask import render_template, Blueprint, flash
-from project.feed.models import Vacancy, Category
+from flask import render_template, Blueprint, flash, jsonify
+from project.models import Vacancy, Category, City
 from project.feed.forms import ApplyForm
 from project.bl.mail import send_mail_from_form
+
 
 feed = Blueprint('feed', __name__)
 
 
 @feed.route('/')
 def vacancies():
-    list_vacancies = Vacancy.query.all()
-    list_category = Category.query.all()
-    return render_template('feed/vacancies.html',
-                           vacancies=list_vacancies,
-                           categories=list_category)
+    return render_template('feed/reactvacancies.html')
+
+@feed.route('/list')
+def json_vacancies():
+    vacancies = Vacancy.query.all()
+    categories = Category.query.all()
+    cities = City.query.all()
+    list_vacancies = list(map(lambda v: v.as_dict(), vacancies))
+    list_categories = list(map(lambda c: c.as_dict(), categories))
+    list_cities = list(map(lambda v: v.as_dict(), cities))
+    return jsonify(vacancies=list_vacancies, categories=list_categories, cities=list_cities)
 
 
 @feed.route('/vacancy/<name_in_url>', methods=['GET', 'POST'])

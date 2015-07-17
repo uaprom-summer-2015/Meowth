@@ -20,8 +20,12 @@ def get_message_from_form(form):
     title = 'Ответ на вакансию'
     body = 'Имя: {}\n' \
            'Email: {}\n' \
-           'Телефон: {}'.format(form.name.data,
-                                form.email.data, form.phone.data)
+           'Телефон: {}'\
+        .format(
+            form.name.data,
+            form.email.data,
+            form.phone.data,
+        )
     if form.comment.data:
         body += '\nКоментарий: {}'.format(form.comment.data)
 

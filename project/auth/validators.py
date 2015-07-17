@@ -1,5 +1,5 @@
 from wtforms.validators import Regexp, ValidationError
-from project.auth.models import User
+from project.models import User
 
 # alphanumeric and special chars (-_.)
 # Can not start with a digit, underscore or special character
