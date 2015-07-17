@@ -5,6 +5,7 @@ from project.admin.forms import VacancyForm, CategoryForm, CityForm
 from project.auth.forms import RegisterForm
 from project.models import Vacancy, Category, City, User
 
+
 admin_app = Blueprint('admin', __name__)
 
 
@@ -96,7 +97,6 @@ class UserDetail(EntryDetail):
                 return redirect(url_for("admin."+self.success_url))
 
         return self.render_response(entry_form=form)
-
 
 
 # Vacancies
