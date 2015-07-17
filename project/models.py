@@ -137,6 +137,8 @@ class PageBlock(Base):
     position = Column(Integer, nullable=False)  # ordering blocks on pages
     page_id = Column(Integer, ForeignKey('pages.id'))  # belongs to page
 
+    bl = Resource('bl.pageblock')
+    
 
 class Page(Base):
     __tablename__ = 'pages'
@@ -150,6 +152,8 @@ class Page(Base):
         order_by='PageBlock.position',
         collection_class=ordering_list('position'),
     )
+
+    bl = Resource('bl.page')
 
 
 def init_db():
