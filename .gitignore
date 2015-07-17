@@ -12,8 +12,8 @@ __pycache__/
 .Python
 env/
 build/
+node_modules/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -25,6 +25,7 @@ venv/
 *.egg-info/
 .installed.cfg
 *.egg
+project/static/js/node_modules/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
