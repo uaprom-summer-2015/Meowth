@@ -2,7 +2,7 @@ from collections import namedtuple
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask.views import MethodView
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
-from project.auth.forms import UserForm
+from project.auth.forms import RegisterForm
 from project.models import Vacancy, Category, City, User
 
 admin_app = Blueprint('admin', __name__)
@@ -10,7 +10,7 @@ admin_app = Blueprint('admin', __name__)
 
 def add_admin_url_rule(rule, view):
     admin_app.add_url_rule(
-        rule+"/<int:entry_id>/",
+        rule+"<int:entry_id>/",
         view_func=view
     )
 
@@ -56,15 +56,14 @@ class EntryDetail(MethodView):
         return self.render_response(entry_form=entry_form)
 
     def post(self, entry_id):
+        form = self.form()
         if entry_id is None:
             # Add a new entry
-            form = self.form()
             if form.validate_on_submit():
                 self.model.bl.create(form.data)
                 return redirect(url_for("admin."+self.success_url))
         else:
             # Update an old entry
-            form = self.form()
             if form.validate_on_submit():
                 model = self.model.bl.get(entry_id)
                 model.bl.update(form.data)
@@ -75,6 +74,28 @@ class EntryDetail(MethodView):
     def render_response(self, **kwargs):
         return render_template(self.template, **kwargs)
 
+
+class UserDetail(EntryDetail):
+    def _clean_data(self, data):
+        _data = data
+        _data.pop('confirmation')
+        return _data
+
+    def post(self, entry_id):
+        form = self.form()
+        if entry_id is None:
+            if form.validate_on_submit():
+                data = self._clean_data(form.data)
+                self.model.bl.create(data)
+                return redirect(url_for("admin."+self.success_url))
+        else:
+            if form.validate_on_submit():
+                model = self.model.bl.get(entry_id)
+                data = self._clean_data(form.data)
+                model.bl.update(data)
+                return redirect(url_for("admin."+self.success_url))
+
+        return self.render_response(entry_form=form)
 
 
 
@@ -92,7 +113,7 @@ vacancy_view = EntryDetail.as_view(
     success_url="vacancy_list",
 )
 
-add_admin_url_rule('/vacancy', vacancy_view)
+add_admin_url_rule('/vacancy/', vacancy_view)
 
 
 # Categories
@@ -135,9 +156,9 @@ def user_list():
     return render_template("admin/users.html",
                            users=User.query.all())
 
-user_view = EntryDetail.as_view(
+user_view = UserDetail.as_view(
     name='user_detail',
-    form=UserForm,
+    form=RegisterForm,
     model=User,
     success_url="user_list",
 )
