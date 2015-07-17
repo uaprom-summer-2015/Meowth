@@ -46,4 +46,3 @@ def send_mail(title, body, recipients, attachment_name=None,
     msg = get_message(title, body, recipients, attachment_name,
                       attachment_type, attachment)
     celery_send_mail.delay(msg)
-
