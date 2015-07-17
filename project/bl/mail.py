@@ -17,11 +17,11 @@ def get_message(title, body, recipients, attachment_name=None,
 
 def get_message_from_form(form, vacancy):
     recipitiens = [app.config['MAIL_TO_SEND']]
-    title = 'Ответ на вакансию {}'.format(vacancy.title)
-    body = 'Ответ на вакансию {}'' \
-    ''Имя: {}\n'' \
-    ''Email: {}\n'' \
-    ''Телефон: {}'.format(
+    title = 'Ответ на вакансию: {}'.format(vacancy.title)
+    body = 'Ответ на вакансию: {}\n' \
+    'Имя: {}\n' \
+    'Email: {}\n' \
+    'Телефон: {}'.format(
         vacancy.title,
         form.name.data,
         form.email.data,
