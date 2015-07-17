@@ -3,6 +3,7 @@ var React = require('react');
 var $ = require('jquery');
 var Select = require('react-select');
 
+
 var ExpandButton = React.createClass({displayName: "ExpandButton",
     handleClick: function(e) {
         this.props.click(e);
@@ -54,12 +55,16 @@ var VacancyNodeExpanded = React.createClass({displayName: "VacancyNodeExpanded",
     handleButtonClick: function(e) {
         this.props.click(e);
     },
+    handleToVacancyClick: function() {
+        window.location.href = this.state.data.name_in_url;
+    },
     render: function() {
         return (
             React.createElement("div", {className: "panel panel-default"}, 
             React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}), 
             React.createElement("p", {className: "vacancyTitle"}, this.state.data.title), 
-            React.createElement("p", {className: "vacancyDescr"}, this.state.data.short_description)
+            React.createElement("p", {className: "vacancyDescr"}, this.state.data.short_description), 
+            React.createElement("button", {type: "button", onClick: this.handleToVacancyClick, className: "btn btn-info goToVacancyButton"}, "Перейти к вакансии")
             )
         );
     }
@@ -203,6 +208,7 @@ module.exports = VacancyBox;
 },{"jquery":4,"react":163,"react-select":5}],2:[function(require,module,exports){
 var React = require('react');
 var $ = require('jquery');
+
 
 var feed = React.createFactory(require('./feed.jsx')); // need to specify the jsx extension
 React.render(feed(), document.body);
