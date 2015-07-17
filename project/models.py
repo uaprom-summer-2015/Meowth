@@ -6,6 +6,7 @@ from sqlalchemy import Column, Integer, String
 from project.bl.utils import Resource
 from project.database import Base, db_session, engine
 from project.lib.orm.types import TypeEnum
+from sqlalchemy.ext.orderinglist import ordering_list
 
 
 class Vacancy(Base):
@@ -113,7 +114,44 @@ class City(Base):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
+class PageBlock(Base):
+    __tablename__ = 'pageblocks'
+
+    # noinspection PyTypeChecker
+    TYPE = IntEnum(
+        'Block_type',
+        {
+            'img_left': 0,
+            'img_right': 1,
+            'no_img': 2,
+        },
+    )
+
+    id = Column(Integer, primary_key=True)
+    block_type = Column(TypeEnum(TYPE), default=TYPE.img_left, nullable=False)
+    title = Column(String(128), nullable=True)  # if header needed
+    text = Column(String(1024))  # block contents
+    short_description = Column(String(256), nullable=True)  # used for homepage
+    # by http://stackoverflow.com/a/219664:
+    image_url = Column(String(2083), nullable=True)
+    position = Column(Integer, nullable=False)  # ordering blocks on pages
+    page_id = Column(Integer, ForeignKey('pages.id'))  # belongs to page
+
+
+class Page(Base):
+    __tablename__ = 'pages'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(128))
+    url = Column(String(2083))  # by http://stackoverflow.com/a/219664
+    blocks = relationship(
+        "PageBlock",
+        backref="page",
+        order_by='PageBlock.position',
+        collection_class=ordering_list('position'),
+    )
+
+
 def init_db():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
-
