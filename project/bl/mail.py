@@ -16,7 +16,7 @@ def get_message(title, body, recipients, attachment_name=None,
 
 
 def get_message_from_form(form, vacancy):
-    recipitiens = [app.config['MAIL_TO_SEND']]
+    recipients = [app.config['MAIL_TO_SEND']]
     title = 'Ответ на вакансию: {}'.format(vacancy.title)
     body = 'Ответ на вакансию: {}\n' \
     'Имя: {}\n' \
@@ -32,7 +32,7 @@ def get_message_from_form(form, vacancy):
 
     attachment = request.files[form.attachment.name]
 
-    return get_message(title, body, recipitiens, attachment.filename,
+    return get_message(title, body, recipients, attachment.filename,
                        attachment.content_type, attachment)
 
 
