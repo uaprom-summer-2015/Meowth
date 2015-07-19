@@ -140,8 +140,19 @@ class PageBlock(Base):
     bl = Resource('bl.pageblock')
 
     def __str__(self):
-        return '%s: %s' % (self.title, self.text)
-    
+        return '%s: %s' % (self.title, self.text or self.short_description)
+
+    def save(self):
+        # FIXME: temporary workaround (if) to support current workflow:
+        # TODO: replace w/ better logic later
+        if not self.position:
+            self.position = 1
+        db_session.add(self)
+        db_session.commit()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Page(Base):
     __tablename__ = 'pages'
@@ -157,6 +168,16 @@ class Page(Base):
     )
 
     bl = Resource('bl.page')
+
+    def __str__(self):
+        return '%s (%s)' % (self.title, self.url)
+
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 def init_db():
