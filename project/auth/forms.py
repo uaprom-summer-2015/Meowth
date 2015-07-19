@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, EqualTo, Email, Length
 from .validators import LoginFormat, PasswordFormat, LoginExists
 
 
+
 class LoginForm(Form):
     login = StringField('Логин',
                         validators=[DataRequired('Обязательное поле')])
@@ -18,16 +19,6 @@ class RegisterForm(Form):
                                     Length(4, 16,
                                            message='Логин должен быть от 6' +
                                                    'до 16 символов в длину')])
-    password = PasswordField(label='Пароль',
-                             validators=[PasswordFormat,
-                                         EqualTo('confirmation',
-                                                 message='Пароли не ' +
-                                                         'совпадают'),
-                                         Length(6, 16,
-                                                message='Пароль должен ' +
-                                                        'быть от 6 до 16 ' +
-                                                        'символов в длину')])
-    confirmation = PasswordField(label='Подтвердите пароль')
     email = StringField(label='Email',
                         validators=[Email('Неверный e-mail адрес'),
                                     DataRequired('Обязательное поле')])
@@ -40,3 +31,35 @@ class RegisterForm(Form):
                                              message='Фамилия должна быть' +
                                                      ' от 2 до 25 символов ' +
                                                      'в длину')])
+
+
+class UserEditForm(RegisterForm):
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        if 'obj' in kwargs:
+            setattr(UserEditForm, 'user_instance', kwargs['obj'])
+        obj = getattr(UserEditForm, 'user_instance', None)
+        if isinstance(self['login'].validators[-1], LoginExists):
+            self['login'].validators = self['login'].validators[:-1]
+        if obj:
+            self['login'].validators.append(LoginExists(obj.login))
+        else:
+            self['login'].validators.append(LoginExists())
+
+    login = StringField(label='Логин',
+                        validators=[LoginFormat,
+                                    Length(4, 16,
+                                           message='Логин должен быть от 6' +
+                                                   'до 16 символов в длину')])
+
+    password = PasswordField(label='Пароль',
+                             validators=[PasswordFormat,
+                                         EqualTo('confirmation',
+                                                 message='Пароли не ' +
+                                                         'совпадают'),
+                                         Length(6, 16,
+                                                message='Пароль должен ' +
+                                                        'быть от 6 до 16 ' +
+                                                        'символов в длину')])
+    confirmation = PasswordField(label='Подтвердите пароль')
+

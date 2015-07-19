@@ -27,25 +27,6 @@ def login():
     )
 
 
-@auth.route('/register', methods=['GET', 'POST'])
-@login_required
-def register():
-    form = RegisterForm()
-
-    if form.validate_on_submit():
-        userdata = form.data
-        userdata.pop('confirmation')
-        User.bl.create_user(userdata)
-        flash("Вы успешно зарегистрировались")
-        return redirect(url_for('auth.login'))
-
-    return render_template(
-        'login.html',
-        title='Registration',
-        form=form,
-    )
-
-
 @auth.route('/logout', methods=['GET'])
 @login_required
 def logout():
