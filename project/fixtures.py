@@ -2,7 +2,7 @@ import importlib
 import json
 import os
 from config import FIXTURES_DIR
-from project.database import db_session as session
+from project.database import db_session
 
 
 def import_class(what):
@@ -18,5 +18,5 @@ def load_fixtures(filepath):
         for entry in data:
             model_class = import_class(entry['model'])
             fixture_model = model_class(**entry['fields'])
-            session.add(fixture_model)
-        session.commit()
+            db_session.add(fixture_model)
+        db_session.commit()

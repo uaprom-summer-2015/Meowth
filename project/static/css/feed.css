@@ -10,20 +10,23 @@
     font-size: 20px;
     text-align: center;
     margin-top: 8px;
+    margin-right: 25px;
     font-family: sans-serif;
 }
 .vacancyDescr {
-    margin-left: 55px;
+    margin-left: 15%;
     font-family: sans-serif;
+    width: 80%;
 }
 
 .panel {
     margin: 2px;
+    float: left;
+    width: 100%;
 }
 
 .vacancyNodeCompressed, .vacancyNodeExpanded {
-    border: 1px solid black; /* Параметры границы */
-    padding: 10px; /* Поля вокруг текста */
+
 }
 
 .vacancyNodeCompressed {
@@ -48,6 +51,12 @@
     margin-left: 9%;
     display: inline-block;
 }
+
+.goToVacancyButton {
+    margin: 15px;
+    float: right;
+}
+
 
 .btn-circle {
   width: 30px;

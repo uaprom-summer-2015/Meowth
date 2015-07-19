@@ -12,19 +12,19 @@ from sqlalchemy.ext.orderinglist import ordering_list
 class Vacancy(Base):
     __tablename__ = 'vacancy'
     id = Column(Integer, primary_key=True)
-    title = Column(String(100))
-    short_description = Column(String(300))
-    text = Column(Text())
+    title = Column(String(100), nullable=False)
+    short_description = Column(String(300), nullable=False)
+    text = Column(Text(), nullable=False)
     category_id = Column(Integer, ForeignKey('category.id'))
     category = relationship('Category', backref=backref('vacancies'))
-    name_in_url = Column(String(50))
-    visits = Column(Integer)
+    name_in_url = Column(String(50), nullable=False)
+    visits = Column(Integer, nullable=False, default=0)
     salary = Column(String(50))
     description = Column(String(200))  # for search spider
     keywords = Column(String(1000))
     city_id = Column(Integer, ForeignKey('city.id'))
     city = relationship('City', backref=backref('vacancies'))
-    hide = Column(Boolean)
+    hide = Column(Boolean, nullable=False, default=False)
 
     bl = Resource("bl.vacancy")
 
@@ -42,7 +42,7 @@ class Vacancy(Base):
 class Category(Base):
     __tablename__ = 'category'
     id = Column(Integer, primary_key=True)
-    name = Column(String(50))
+    name = Column(String(50), nullable=False)
 
     bl = Resource('bl.category')
 
@@ -53,7 +53,6 @@ class Category(Base):
         return "[{}] {}".format(self.__class__.__name__, self.name)
 
     def save(self):
-        db_session.rollback()
         db_session.add(self)
         db_session.commit()
 
@@ -71,12 +70,12 @@ class User(Base):
     })
 
     id = Column(Integer, primary_key=True)
-    login = Column(String(30), unique=True)
-    password = Column(String(100))
+    login = Column(String(30), unique=True, nullable=False)
+    password = Column(String(100), nullable=False)
     name = Column(String(30))
     surname = Column(String(30))
-    email = Column(String(30))
-    role = Column(TypeEnum(ROLE), default=ROLE.staff)
+    email = Column(String(30), nullable=False)
+    role = Column(TypeEnum(ROLE), nullable=False, default=ROLE.staff)
 
     bl = Resource('bl.user')
 
@@ -97,7 +96,7 @@ class User(Base):
 class City(Base):
     __tablename__ = 'city'
     id = Column(Integer, primary_key=True)
-    name = Column(String(20))
+    name = Column(String(20), nullable=False)
     bl = Resource('bl.city')
 
     def __str__(self):
