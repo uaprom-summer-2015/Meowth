@@ -74,6 +74,8 @@ class EntryDetail(MethodView):
             # Update an old entry
             form = self.update_form()
             if form.validate_on_submit():
+                if hasattr(self.update_form, 'user_instance'):
+                    delattr(self.update_form, 'user_instance')
                 model = self.model.bl.get(entry_id)
                 model.bl.update(self._clean_data(form.data))
                 return redirect(url_for("admin."+self.success_url))
