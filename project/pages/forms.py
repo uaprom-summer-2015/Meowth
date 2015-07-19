@@ -1,8 +1,8 @@
 from flask_wtf import Form
-from wtforms import StringField, FileField, TextAreaField
+from wtforms import StringField, TextAreaField
 from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.validators import Length
-from project.models import PageBlock, Page
+from project.models import PageBlock
 
 
 class PageBlockForm(Form):
@@ -53,5 +53,9 @@ class PageForm(Form):
     )
     blocks = QuerySelectMultipleField(
         label='Blocks',
-        query_factory=PageBlock.query.filter(PageBlock.page_id == None).all
+        query_factory=(
+            lambda: PageBlock.query.filter(
+                PageBlock.page_id == None
+            ).all()
+        )
     )
