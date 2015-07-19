@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, abort
 from flask.views import MethodView
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
-from project.models import Vacancy, Category, City
+from project.pages.forms import PageBlockForm, PageForm
+from project.models import Vacancy, Category, City, PageBlock, Page
 
 admin_app = Blueprint('admin', __name__)
 
@@ -138,4 +139,58 @@ admin_app.add_url_rule(
     "/city/",
     defaults={'entry_id': None},
     view_func=city_view
+)
+
+
+# PageBlocks
+@admin_app.route("/pages/blocks/")
+def pageblocks_list():
+    return render_template(
+        "admin/pageblocks.html",
+        pageblocks=PageBlock.query.all(),
+    )
+
+pageblock_view = EntryDetail.as_view(
+    name='pageblock_detail',
+    form=PageBlockForm,
+    model=PageBlock,
+    success_url="pageblocks_list",
+)
+
+admin_app.add_url_rule(
+    "/pages/block/<int:entry_id>/",
+    view_func=pageblock_view,
+)
+
+admin_app.add_url_rule(
+    "/pages/block",
+    defaults={'entry_id': None},
+    view_func=pageblock_view,
+)
+
+
+# Pages
+@admin_app.route("/pages/")
+def pages_list():
+    return render_template(
+        "admin/pages.html",
+        pages=Page.query.all(),
+    )
+
+page_view = EntryDetail.as_view(
+    name='page_detail',
+    form=PageForm,
+    model=Page,
+    success_url="pages_list",
+)
+
+admin_app.add_url_rule(
+    "/page/<int:entry_id>/",
+    view_func=page_view,
+)
+
+admin_app.add_url_rule(
+    "/page",
+    defaults={'entry_id': None},
+    view_func=page_view,
 )
