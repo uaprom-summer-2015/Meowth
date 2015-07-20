@@ -67,6 +67,7 @@ class UserBL(BaseBL):
         superuser = model.bl.create({
              'login': login,
              'password': password,
+             'email': 'admin@admin.com'
         })
         superuser.role = model.ROLE.superuser
         superuser.save()
