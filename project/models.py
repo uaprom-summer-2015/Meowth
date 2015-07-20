@@ -6,6 +6,7 @@ from sqlalchemy import Column, Integer, String
 from project.bl.utils import Resource
 from project.database import Base, db_session, engine
 from project.lib.orm.types import TypeEnum
+from sqlalchemy.ext.orderinglist import ordering_list
 
 
 class Vacancy(Base):
@@ -105,6 +106,81 @@ class City(Base):
         return "[{}] {}".format(self.__class__.__name__, self.name)
 
     def save(self):
+        db_session.add(self)
+        db_session.commit()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class PageBlock(Base):
+    __tablename__ = 'pageblocks'
+
+    # noinspection PyTypeChecker
+    TYPE = IntEnum(
+        'Block_type',
+        {
+            'img_left': 0,
+            'img_right': 1,
+            'no_img': 2,
+        },
+    )
+
+    id = Column(Integer, primary_key=True)
+    block_type = Column(TypeEnum(TYPE), default=TYPE.img_left, nullable=False)
+    title = Column(String(128), nullable=True)  # if header needed
+    text = Column(String(1024))  # block contents
+    short_description = Column(String(256), nullable=True)  # used for homepage
+    # by http://stackoverflow.com/a/219664:
+    image = Column(String(2083), nullable=True)
+    position = Column(Integer, nullable=False)  # ordering blocks on pages
+    page_id = Column(Integer, ForeignKey('pages.id'))  # belongs to page
+
+    bl = Resource('bl.pageblock')
+
+    def __str__(self):
+        return '%s: %s' % (self.title, self.text or self.short_description)
+
+    def save(self):
+        # FIXME: temporary workaround to support current workflow:
+        # TODO: replace w/ better logic later
+        if not self.position:
+            self.position = 0
+        db_session.add(self)
+        db_session.commit()
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class Page(Base):
+    __tablename__ = 'pages'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(128))
+    url = Column(String(2083))  # by http://stackoverflow.com/a/219664
+    blocks = relationship(
+        "PageBlock",
+        backref="page",
+        order_by='PageBlock.position',
+        collection_class=ordering_list('position'),
+    )
+
+    bl = Resource('bl.page')
+
+    def __str__(self):
+        return '%s (%s)' % (self.title, self.url)
+
+    def save(self):
+        # TODO: move save operation to bl
+        # Readd blocks to follow the order:
+        # TODO: possible crutch:
+        _ = [block for block in self.blocks]
+        while (len(self.blocks)):
+            self.blocks.pop()
+        for block in _:
+            self.blocks.append(block)
+        del _
         db_session.add(self)
         db_session.commit()
 

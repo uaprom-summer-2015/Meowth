@@ -3,6 +3,7 @@ import logging
 import os
 from project.bl.auth import UserBL
 from project.bl.feed import CategoryBL, VacancyBL, CityBL
+from project.bl.pages import PageBL, PageBlockBL
 from project.bl.utils import registry
 
 
@@ -11,6 +12,8 @@ def init_resource_registry():
     registry['bl.vacancy'] = lambda vacancy: VacancyBL(vacancy)
     registry['bl.city'] = lambda city: CityBL(city)
     registry['bl.user'] = lambda user: UserBL(user)
+    registry['bl.pageblock'] = lambda pageblock: PageBlockBL(pageblock)
+    registry['bl.page'] = lambda page: PageBL(page)
 
 init_resource_registry()
 
