@@ -2,6 +2,46 @@ var React = require('react');
 var $ = require('jquery');
 var Select = require('react-select');
 
+function range(start, stop, step) {
+    if (typeof stop == 'undefined') {
+        // one param defined
+        stop = start;
+        start = 0;
+    }
+
+    if (typeof step == 'undefined') {
+        step = 1;
+    }
+
+    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
+        return [];
+    }
+
+    var result = [];
+    for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
+        result.push(i);
+    }
+
+    return result;
+};
+
+var Paginate = React.createClass({
+    handleClick: function(e) {
+        this.props.click(e, e.target.id);
+    },
+    render: function() {
+        var page = this.props.page;
+        var pageAmount = this.props.pagesAmount;
+        result = range(pageAmount).map(function(p, key) {
+            if (p == page) {
+                return <div className="page selected" key={key}><span id={key}>{p+1}</span></div>
+            } else {
+                return <div className="page" onClick={this.handleClick} key={key} id={key}><span id={key}>{p+1}</span></div>
+            }
+        }.bind(this));
+        return (<div className="paginator"> {result} </div>)
+    }
+});
 
 var ExpandButton = React.createClass({
     handleClick: function(e) {
@@ -96,6 +136,11 @@ var VacancyNode = React.createClass({
 });
 
 var VacancyList = React.createClass({
+    getInitialState: function () {
+        return {
+            page: 0
+        };
+    },
     getList: function() {
         var filtered_data = this.props.data;
         if (this.props.category != 0) {
@@ -110,13 +155,28 @@ var VacancyList = React.createClass({
         }
         return filtered_data;
     },
+    handlePageClick: function(e, val) {
+        this.setState({page: parseInt(val)});
+    },
+
     render: function() {
+        per_page = this.props.per_page
+        page = this.state.page
         filtered_data = this.getList()
+        amount = Math.ceil(filtered_data.length / per_page);
+        if (page>amount-1) {
+            page=amount-1;
+        }
+        offset = 2*page;
+        filtered_data = this.getList().slice(offset, offset+per_page)
         var vaclist = filtered_data.map(function(p) {
             return <VacancyNode key={p.id} data={p} />
         });
         return (
-            <div className="vacancyList"> {vaclist} </div>
+            <div className="vacancyList">
+            {vaclist}
+            <Paginate pagesAmount={amount} page={page} click={this.handlePageClick} ref="paginate"/>
+            </div>
         );
     }
 });
@@ -169,7 +229,7 @@ var VacancyBox = React.createClass({
         return {
             category: 0,
             city: 0,
-            data: {categories: [], cities:[], vacancies:[],}
+            data: {categories: [], cities:[], vacancies:[],},
         };
     },
     handleSpecSelect: function(childComponent, val) {
@@ -187,16 +247,19 @@ var VacancyBox = React.createClass({
             'list',
             function(result) {
                 this.setState({
-                    data: result
+                    data: result,
                 });
             }.bind(this));
     },
     render: function() {
+        results = this.state.data.vacancies;
+        offset = 2*this.state.page;
+        amount = Math.ceil(results.length / 2);
         return (
             <div className="vacancyBox">
             <SpecSelect onChange={this.handleSpecSelect} list={this.state.data.categories} ref="select" />
             <CitySelect onChange={this.handleCitySelect} list={this.state.data.cities} ref="select" />
-            <VacancyList data={this.state.data.vacancies} category={this.state.category} city={this.state.city} ref="list"/>
+            <VacancyList per_page={2} data={results} category={this.state.category} city={this.state.city} ref="list"/>
             </div>
         );
     }
