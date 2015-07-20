@@ -142,10 +142,10 @@ class PageBlock(Base):
         return '%s: %s' % (self.title, self.text or self.short_description)
 
     def save(self):
-        # FIXME: temporary workaround (if) to support current workflow:
+        # FIXME: temporary workaround to support current workflow:
         # TODO: replace w/ better logic later
         if not self.position:
-            self.position = 1
+            self.position = 0
         db_session.add(self)
         db_session.commit()
 
@@ -172,6 +172,15 @@ class Page(Base):
         return '%s (%s)' % (self.title, self.url)
 
     def save(self):
+        # TODO: move save operation to bl
+        # Readd blocks to follow the order:
+        # TODO: possible crutch:
+        _ = [block for block in self.blocks]
+        while (len(self.blocks)):
+            self.blocks.pop()
+        for block in _:
+            self.blocks.append(block)
+        del _
         db_session.add(self)
         db_session.commit()
 
