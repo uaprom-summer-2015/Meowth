@@ -2,14 +2,18 @@
 
 {% block content %}
     <ul class="list-group">
-        {% for category in categories %}
-            <a href="{{ url_for('admin.category_detail', entry_id=category.id) }}">
-                <li class="list-group-item">{{ category.name }}</li>
-            </a>
+        {% for category in entries %}
+            <li class="list-group-item">
+                <a href="{{ url_for('admin.category_detail', entry_id=category.id) }}">
+                    {{ category.name }}
+                </a>
+            </li>
         {% endfor %}
 
-        <a href="{{ url_for('admin.category_detail') }}">
-            <li class="list-group-item list-group-item-info">Добавить новую категорию</li>
-        </a>
+        <li class="list-group-item list-group-item-info">
+            <a href="{{ url_for('admin.category_detail') }}">
+                Добавить новую категорию
+            </a>
+        </li>
     </ul>
 {% endblock %}
