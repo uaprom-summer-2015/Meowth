@@ -26,11 +26,10 @@ class EntryDetail(MethodView):
         self.success_url = success_url
 
     def _clean_data(self, data):
-        # FIXME: This is Base view.
-        # WTF removing confirmation field (user registration)
-        # from form.data is doing here?
         _data = data
-        _data.pop('confirmation', None)
+        for (k, v) in _data:
+            if k not in self.model.__dict__:
+                _data.pop(k, None)
         return _data
 
     def get(self, entry_id):
@@ -58,7 +57,6 @@ class EntryDetail(MethodView):
             # Update an old entry
             form = self.update_form()
             if form.validate_on_submit():
-                # FIXME: WTF is this here?
                 if hasattr(self.update_form, 'user_instance'):
                     delattr(self.update_form, 'user_instance')
                 model = self.model.bl.get(entry_id)

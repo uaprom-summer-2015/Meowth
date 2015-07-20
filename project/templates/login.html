@@ -14,8 +14,9 @@
           {% endfor %}
       </p>
     {% endfor %}
-
-    <input type="submit" value="Зарегистрироваться"/>
-
+    <input type="submit" value={{ submit }}>
+    {% if title == 'Вход' %}
+        <a href="/auth/reset">Забыли пароль?</a>
+    {% endif %}
 </form>
 {% endblock %}

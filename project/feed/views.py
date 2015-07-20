@@ -9,7 +9,7 @@ feed = Blueprint('feed', __name__)
 
 @feed.route('/')
 def vacancies():
-    return render_template('feed/reactvacancies.html')
+    return render_template('feed/vacancies.html')
 
 
 @feed.route('/list')

@@ -6,8 +6,8 @@ var reactify = require('reactify');
 gulp.task('browserify', function(){
   var b = browserify();
   b.transform(reactify); // use the reactify transform
-  b.add('./main.js');
+  b.add('./feedfactory.js');
   return b.bundle()
-    .pipe(source('main.js'))
+    .pipe(source('feed.js'))
     .pipe(gulp.dest('./dist'));
 });

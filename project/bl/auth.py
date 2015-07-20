@@ -1,6 +1,7 @@
 from project.bl.utils import BaseBL
 from werkzeug.security import check_password_hash, generate_password_hash
-from project.lib.auth import generate_random_password
+from project.lib.auth import generate_random_string
+from sqlalchemy import func
 
 class UserBL(BaseBL):
 
@@ -14,7 +15,7 @@ class UserBL(BaseBL):
         if 'password' in data:
             model.bl.set_password(data['password'])
         else:
-            random_password = generate_random_password(8)
+            random_password = generate_random_string(8)
             model.bl.set_password(random_password)
             recipients = [data['email'], ]
             title = 'Вам была создана учетная запись на HR портале!'
@@ -31,12 +32,42 @@ class UserBL(BaseBL):
         model.save()
         return model
 
+    def forgot_password(self, email):
+        from project.models import Token
+        from .mail import send_mail
+        model = self.model
+        u = model.query.filter(func.lower(model.email) == func.lower(email)).first()
+        token = Token(token=generate_random_string(20), user=u)
+        token.save()
+        recipients = [u.email, ]
+        title = 'Cброс пароля на HR портале'
+        body = 'Ваша ссылка для сброса пароля: localhost:5000/auth/reset/{}'.format(token.token)
+        send_mail(title, body, recipients)
+
+    def reset_password(self, token):
+        from project.models import Token
+        from .mail import send_mail
+        model = self.model
+        token = Token.query.filter(Token.token == token).first()
+        if not token:
+            return False
+        u = token.user
+        random_password = generate_random_string(8)
+        u.bl.set_password(random_password)
+        recipients = [u.email, ]
+        title = 'Сброс пароля на HR портале'
+        body = 'Ваш пароль был успешно cброшен! \n Новый пароль: {}'.format(random_password)
+        send_mail(title, body, recipients)
+        token.delete()
+        return True
+
 
     def create_superuser(self, login, password):
         model = self.model
         superuser = model.bl.create({
              'login': login,
              'password': password,
+             'email': 'admin@admin.com'
         })
         superuser.role = model.ROLE.superuser
         superuser.save()
