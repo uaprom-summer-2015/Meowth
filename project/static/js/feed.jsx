@@ -263,6 +263,7 @@ var VacancyBox = React.createClass({
             </div>
         );
     }
+    // TODO: pagination
 });
 
 module.exports = VacancyBox;
