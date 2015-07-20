@@ -17,7 +17,7 @@ init_resource_registry()
 app = Flask(__name__, static_url_path='/static')
 app.config.from_object('config')
 
-from project.extensions import mail, celery, CsrfProtect
+from project.extensions import mail, celery, CsrfProtect  # NOQA
 
 from project.admin.views import admin_app
 from project.auth.views import auth as auth_app

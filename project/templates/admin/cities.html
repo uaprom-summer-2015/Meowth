@@ -2,14 +2,17 @@
 
 {% block content %}
     <ul class="list-group">
-        {% for city in cities %}
-            <a href="{{ url_for('admin.city_detail', entry_id=city.id) }}">
-                <li class="list-group-item">{{ city.name }}</li>
-            </a>
+        {% for city in entries %}
+            <li class="list-group-item">
+                <a href="{{ url_for('admin.city_detail', entry_id=city.id) }}">
+                   {{ city.name }}
+                </a>
+            </li>
         {% endfor %}
-
-        <a href="{{ url_for('admin.city_detail') }}">
-            <li class="list-group-item list-group-item-info">Добавить новый город</li>
-        </a>
+        <li class="list-group-item list-group-item-info">
+            <a href="{{ url_for('admin.city_detail') }}">
+                Добавить новый город
+            </a>
+        </li>
     </ul>
 {% endblock %}
