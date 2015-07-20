@@ -16,7 +16,7 @@ class VacancyForm(Form):
             ),
             Regexp(
                 '^[\.\d\w\sА-Яа-яІіЇїҐґ\-\+]+$',
-                message='Should contain only cyryllic \
+                message='Should contain only cyrillic \
                          and latin letters,- ,+, . and \
                          spaces'
             )
