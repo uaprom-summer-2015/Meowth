@@ -53,9 +53,9 @@ class PageForm(Form):
     )
     blocks = QuerySelectMultipleField(
         label='Blocks',
+        # FIXME: workaround for current admin architecture
+        # TODO: leave only free blocks and blocks that belong to this page
         query_factory=(
-            lambda: PageBlock.query.filter(
-                PageBlock.page_id == None
-            ).all()
+            lambda: PageBlock.query.all()
         )
     )
