@@ -27,8 +27,8 @@ class EntryDetail(MethodView):
 
     def _clean_data(self, data):
         # FIXME: This is Base view.
-        # WTF is removing confirmation field (user registration)
-        # from form.data here?
+        # WTF removing confirmation field (user registration)
+        # from form.data is doing here?
         _data = data
         _data.pop('confirmation', None)
         return _data

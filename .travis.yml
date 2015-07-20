@@ -7,3 +7,4 @@ install:
   - pip install flake8
 # command to run tests
 script: flake8 --exclude "*versions*" .
+script: python -m unittest
