@@ -20,7 +20,11 @@ def json_vacancies():
     list_vacancies = list(map(lambda v: v.as_dict(), vacancies))
     list_categories = list(map(lambda c: c.as_dict(), categories))
     list_cities = list(map(lambda v: v.as_dict(), cities))
-    return jsonify(vacancies=list_vacancies, categories=list_categories, cities=list_cities)
+    return jsonify(
+        vacancies=list_vacancies,
+        categories=list_categories,
+        cities=list_cities,
+    )
 
 
 @feed.route('/<name_in_url>', methods=['GET', 'POST'])

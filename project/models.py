@@ -73,7 +73,7 @@ class User(Base):
     password = Column(String(100), nullable=False)
     name = Column(String(30))
     surname = Column(String(30))
-    email = Column(String(30))
+    email = Column(String(30), nullable=False)
     role = Column(TypeEnum(ROLE), nullable=False, default=ROLE.staff)
 
     bl = Resource('bl.user')
@@ -115,4 +115,3 @@ class City(Base):
 def init_db():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
-

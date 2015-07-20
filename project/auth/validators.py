@@ -17,13 +17,16 @@ PasswordFormat = Regexp(regex='^(?=.*[0-9])[a-zA-Z][a-zA-Z0-9-_.]+$',
 
 
 class LoginExists(object):
-    def __init__(self, message=None):
+    def __init__(self, login=None, message=None):
         if not message:
             message = 'Пользователь с таким логином уже существует'
         self.message = message
+        self.old_login = login
 
     def __call__(self, form, field):
-        login = field.data
-        u = User.query.filter(User.login == login).first()
+        new_login = field.data
+        if self.old_login and self.old_login == new_login:
+            return None
+        u = User.query.filter(User.login == new_login).first()
         if u:
             raise ValidationError(self.message)

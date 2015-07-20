@@ -5,6 +5,7 @@ from project.models import User
 
 auth = Blueprint('auth', __name__)
 
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -22,25 +23,6 @@ def login():
     return render_template(
         'login.html',
         title='Sign in',
-        form=form,
-    )
-
-
-@auth.route('/register', methods=['GET', 'POST'])
-@login_required
-def register():
-    form = RegisterForm()
-
-    if form.validate_on_submit():
-        userdata = form.data
-        userdata.pop('confirmation')
-        User.bl.create_user(userdata)
-        flash("Вы успешно зарегистрировались")
-        return redirect(url_for('auth.login'))
-
-    return render_template(
-        'login.html',
-        title='Registration',
         form=form,
     )
 
