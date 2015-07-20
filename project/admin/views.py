@@ -156,11 +156,22 @@ add_admin_url_rule("/user/", user_view)
 
 
 # PageBlocks
-@admin_app.route("/pages/blocks/")
+@admin_app.route("/blocks/")
 def pageblocks_list():
     return render_template(
         "admin/pageblocks.html",
         pageblocks=PageBlock.query.all(),
+    )
+
+
+@admin_app.route("/page/<int:p_id>/blocks/")
+def pageblocks_for_page_list(p_id):
+    return render_template(
+        "admin/pageblocks.html",
+        pageblocks=PageBlock.query
+            .filter(PageBlock.page_id == p_id)
+            .order_by(PageBlock.position.asc())
+            .all(),
     )
 
 pageblock_view = EntryDetail.as_view(
@@ -171,12 +182,18 @@ pageblock_view = EntryDetail.as_view(
 )
 
 admin_app.add_url_rule(
-    "/pages/block/<int:entry_id>/",
+    "/block/<int:entry_id>/",
+    view_func=pageblock_view,
+)
+
+
+admin_app.add_url_rule(
+    "/block/<int:entry_id>/",
     view_func=pageblock_view,
 )
 
 admin_app.add_url_rule(
-    "/pages/block",
+    "/block",
     defaults={'entry_id': None},
     view_func=pageblock_view,
 )
