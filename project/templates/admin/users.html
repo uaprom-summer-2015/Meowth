@@ -2,14 +2,17 @@
 
 {% block content %}
     <ul class="list-group">
-        {% for user in users %}
-            <a href="{{ url_for('admin.user_detail', entry_id=user.id) }}">
-                <li class="list-group-item">{{ user.name }}</li>
-            </a>
+        {% for user in entries %}
+            <li class="list-group-item">
+                <a href="{{ url_for('admin.user_detail', entry_id=user.id) }}">
+                    {{ user.name }}
+                </a>
+            </li>
         {% endfor %}
-
-        <a href="{{ url_for('admin.user_detail') }}">
-            <li class="list-group-item list-group-item-info">Добавить нового пользователя</li>
-        </a>
+        <li class="list-group-item list-group-item-info">
+            <a href="{{ url_for('admin.user_detail') }}">
+               Добавить нового пользователя
+            </a>
+        </li>
     </ul>
 {% endblock %}

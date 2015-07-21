@@ -75,7 +75,7 @@ class User(Base):
     password = Column(String(100), nullable=False)
     name = Column(String(30))
     surname = Column(String(30))
-    email = Column(String(30), nullable=False)
+    email = Column(String(30), nullable=False, unique=True)
     role = Column(TypeEnum(ROLE), nullable=False, default=ROLE.staff)
 
     bl = Resource('bl.user')
@@ -162,10 +162,6 @@ class PageBlock(Base):
     def __str__(self):
         return '%s: %s' % (self.title, self.text or self.short_description)
 
-    def save(self):
-        db_session.add(self)
-        db_session.commit()
-
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
@@ -199,6 +195,22 @@ class Page(Base):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class Token(Base):
+    __tablename__ = 'tokens'
+    id = Column(Integer, primary_key=True)
+    user = relationship('User', backref=backref('token'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    token = Column(String, nullable=False)
+
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
+
+    def delete(self):
+        db_session.delete(self)
+        db_session.commit()
 
 
 def init_db():
