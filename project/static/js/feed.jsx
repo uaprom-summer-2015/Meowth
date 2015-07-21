@@ -98,9 +98,16 @@ var VacancyNodeExpanded = React.createClass({
         window.location.href = this.state.data.name_in_url;
     },
     render: function() {
+        city_id = this.state.data.city_id
+        citylist = this.props.citylist
+        city = citylist.filter(function(i, n) {
+            return n.id == city_id;
+        });
+        alert(city);
         return (
             <div className="panel panel-default">
             <ExpandButton expanded={this.props.expanded} ref="button" click={this.handleButtonClick} />
+            <p className="vacancyCity">{city}</p>
             <p className="vacancyTitle">{this.state.data.title}</p>
             <p className="vacancyDescr">{this.state.data.short_description}</p>
             <button type="button" onClick={this.handleToVacancyClick} className="btn btn-info goToVacancyButton">Перейти к вакансии</button>
@@ -130,7 +137,7 @@ var VacancyNode = React.createClass({
         if (!this.state.expanded) {
             return (<VacancyNodeCompressed expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
         } else {
-            return (<VacancyNodeExpanded expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
+            return (<VacancyNodeExpanded citylist={this.props.citylist} expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
         }
     }
 });
@@ -167,11 +174,11 @@ var VacancyList = React.createClass({
         if (page>amount-1) {
             page=amount-1;
         }
-        offset = 2*page;
+        offset = per_page*page;
         filtered_data = this.getList().slice(offset, offset+per_page)
         var vaclist = filtered_data.map(function(p) {
-            return <VacancyNode key={p.id} data={p} />
-        });
+            return <VacancyNode key={p.id} citylist={this.props.citylist} data={p} />
+        }.bind(this));
         return (
             <div className="vacancyList">
             {vaclist}
@@ -259,7 +266,7 @@ var VacancyBox = React.createClass({
             <div className="vacancyBox">
             <SpecSelect onChange={this.handleSpecSelect} list={this.state.data.categories} ref="select" />
             <CitySelect onChange={this.handleCitySelect} list={this.state.data.cities} ref="select" />
-            <VacancyList per_page={2} data={results} category={this.state.category} city={this.state.city} ref="list"/>
+            <VacancyList per_page={5} data={results} citylist={this.state.data.cities} category={this.state.category} city={this.state.city} ref="list"/>
             </div>
         );
     }

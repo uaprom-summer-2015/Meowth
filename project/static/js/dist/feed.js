@@ -99,9 +99,16 @@ var VacancyNodeExpanded = React.createClass({displayName: "VacancyNodeExpanded",
         window.location.href = this.state.data.name_in_url;
     },
     render: function() {
+        city_id = this.state.data.city_id
+        citylist = this.props.citylist
+        city = citylist.filter(function(i, n) {
+            return n.id == city_id;
+        });
+        alert(city);
         return (
             React.createElement("div", {className: "panel panel-default"}, 
             React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}), 
+            React.createElement("p", {className: "vacancyCity"}, city), 
             React.createElement("p", {className: "vacancyTitle"}, this.state.data.title), 
             React.createElement("p", {className: "vacancyDescr"}, this.state.data.short_description), 
             React.createElement("button", {type: "button", onClick: this.handleToVacancyClick, className: "btn btn-info goToVacancyButton"}, "Перейти к вакансии")
@@ -131,7 +138,7 @@ var VacancyNode = React.createClass({displayName: "VacancyNode",
         if (!this.state.expanded) {
             return (React.createElement(VacancyNodeCompressed, {expanded: this.state.expanded, ref: "node", className: "col-xs-6 col-sm-4", data: this.props.data, click: this.handleButtonClick}));
         } else {
-            return (React.createElement(VacancyNodeExpanded, {expanded: this.state.expanded, ref: "node", className: "col-xs-6 col-sm-4", data: this.props.data, click: this.handleButtonClick}));
+            return (React.createElement(VacancyNodeExpanded, {citylist: this.props.citylist, expanded: this.state.expanded, ref: "node", className: "col-xs-6 col-sm-4", data: this.props.data, click: this.handleButtonClick}));
         }
     }
 });
@@ -168,11 +175,11 @@ var VacancyList = React.createClass({displayName: "VacancyList",
         if (page>amount-1) {
             page=amount-1;
         }
-        offset = 2*page;
+        offset = per_page*page;
         filtered_data = this.getList().slice(offset, offset+per_page)
         var vaclist = filtered_data.map(function(p) {
-            return React.createElement(VacancyNode, {key: p.id, data: p})
-        });
+            return React.createElement(VacancyNode, {key: p.id, citylist: this.props.citylist, data: p})
+        }.bind(this));
         return (
             React.createElement("div", {className: "vacancyList"}, 
             vaclist, 
@@ -260,7 +267,7 @@ var VacancyBox = React.createClass({displayName: "VacancyBox",
             React.createElement("div", {className: "vacancyBox"}, 
             React.createElement(SpecSelect, {onChange: this.handleSpecSelect, list: this.state.data.categories, ref: "select"}), 
             React.createElement(CitySelect, {onChange: this.handleCitySelect, list: this.state.data.cities, ref: "select"}), 
-            React.createElement(VacancyList, {per_page: 2, data: results, category: this.state.category, city: this.state.city, ref: "list"})
+            React.createElement(VacancyList, {per_page: 5, data: results, citylist: this.state.data.cities, category: this.state.category, city: this.state.city, ref: "list"})
             )
         );
     }

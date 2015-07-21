@@ -4,7 +4,7 @@
         "fields": {
             "login": "cthulhu",
             "password": "pbkdf2:sha1:1000$jVFPJFdN$9ae3ead6fa039e7bbf032822cafe11da460b6654",
-            "email": "Blith1960@teleworm.us",
+            "email": "blith1960@teleworm.us",
             "name": "Cthulhu",
             "surname": "The Great"
         }

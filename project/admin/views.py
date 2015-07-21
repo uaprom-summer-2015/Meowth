@@ -7,6 +7,7 @@ from project.models import Vacancy, Category, City, User, PageBlock, Page
 
 SECTIONS = {}  # list_name: list_endpoint
 
+
 admin_app = Blueprint('admin', __name__)
 
 
@@ -61,6 +62,7 @@ category_list = EntryList.as_view(
     model=Category,
     template="admin/categories.html",
 )
+
 
 category_detail = EntryDetail.as_view(
     name='category_detail',
