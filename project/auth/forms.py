@@ -97,5 +97,3 @@ class UserEditForm(RegisterForm):
             'confirmation',
             message='Пароли не совпадают'
         )(self, self.password)
-
-

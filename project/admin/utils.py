@@ -26,10 +26,9 @@ class EntryDetail(MethodView):
         self.success_url = success_url
 
     def _clean_data(self, data):
-        _data = data
-        for (k, v) in _data:
-            if k not in self.model.__dict__:
-                _data.pop(k, None)
+
+        _data = {k: v for k, v in data.items() if k in self.model.__dict__}
+
         return _data
 
     def get(self, entry_id):

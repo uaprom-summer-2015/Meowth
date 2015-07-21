@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "admin/base.html" %}
 
 {% block content %}
     <div class="container-fluid">
     {% for name, url in sections %}
-        <div class="panel panel-body col-md-6">
+        <div class="panel panel-body">
           <div class="panel-body">
             <a href="{{ url }}">{{ name }}</a>
           </div>

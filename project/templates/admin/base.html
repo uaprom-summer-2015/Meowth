@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="/">
+                <img alt="HRUAPROM" src="{{ url_for('static', filename='img/prom-ua-logo.png') }}">
+              </a>
+            </div>
+
+                <ul class="nav navbar-nav">
+                  <li><a href="{{ url_for('admin.mainpage') }}">Админ-панель</a></li>
+                </ul>
+
+                <p class="navbar-text navbar-right">
+                    Привет, {{ g.user.login }}.
+                    <a href="{{ url_for('auth.logout') }}">Выйти?</a>
+                </p>
+
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

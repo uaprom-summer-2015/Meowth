@@ -6,6 +6,7 @@ from project.models import User
 
 auth = Blueprint('auth', __name__)
 
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -13,6 +14,7 @@ def login():
         user = User.bl.authenticate(**form.data)
         if user:
             session['user_id'] = user.id
+            g.user = user
             return redirect(url_for('admin.vacancy_list'))
         else:
             flash("Неправильный логин и/или пароль")
@@ -26,6 +28,7 @@ def login():
         submit='Войти',
         form=form,
     )
+
 
 @auth.route('/reset', methods=['GET', 'POST'])
 def reset():
@@ -41,6 +44,7 @@ def reset():
         form=form,
     )
 
+
 @auth.route('/reset/<token>', methods=['GET', 'POST'])
 def confirm_reset(token):
     success = User.bl.reset_password(token)
@@ -51,17 +55,9 @@ def confirm_reset(token):
     else:
         abort(404)
 
+
 @auth.route('/logout', methods=['GET'])
 @login_required
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('auth.login'))
-
-
-@auth.before_request
-def add_login_to_g():
-    if session['user_id']:
-        user = User.query.get(session['user_id'])
-        g.user = user
-    else:
-        g.user = None
