@@ -1,12 +1,16 @@
+from email.policy import EmailPolicy
 from flask import request
-from flask_mail import Message
+import flask_mail
 from project import app
 from project.tasks.mail import celery_send_mail
 
 
+flask_mail.message_policy = EmailPolicy(linesep='\r\n', refold_source='none')
+
+
 def get_message(title, body, recipients, attachment_name=None,
                 attachment_type=None, attachment=None):
-    msg = Message(title, recipients=recipients)
+    msg = flask_mail.Message(title, recipients=recipients)
     msg.body = body
     if attachment:
         msg.attach(attachment_name,
