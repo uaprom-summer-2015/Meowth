@@ -70,10 +70,18 @@ var VacancyNodeCompressed = React.createClass({
         this.props.click(e);
     },
     render: function() {
+        city_id = this.state.data.city_id
+        citylist = this.props.citylist
+        city = citylist.filter(function(n) {
+            return n.id == city_id;
+        }).map(function(n) {
+            return n.name;
+        });
         return (
-            <div className="panel panel-default">
+            <div className="panel panel-default vacancyNodeCompressed">
             <ExpandButton expanded={this.props.expanded} ref="button" click={this.handleButtonClick} />
-            <p className="vacancyTitle">{this.state.data.title}</p>
+            <p className="vacancyTitle"> <a href={this.state.data.name_in_url}>{this.state.data.title}</a></p>
+            <p className="vacancyCity">{city}</p> <p className="vacancySalary">{this.state.data.salary}</p>
             </div>
         );
     }
@@ -100,15 +108,16 @@ var VacancyNodeExpanded = React.createClass({
     render: function() {
         city_id = this.state.data.city_id
         citylist = this.props.citylist
-        city = citylist.filter(function(i, n) {
+        city = citylist.filter(function(n) {
             return n.id == city_id;
+        }).map(function(n) {
+            return n.name;
         });
-        alert(city);
         return (
-            <div className="panel panel-default">
+            <div className="panel panel-default vacancyNodeExpanded">
             <ExpandButton expanded={this.props.expanded} ref="button" click={this.handleButtonClick} />
-            <p className="vacancyCity">{city}</p>
-            <p className="vacancyTitle">{this.state.data.title}</p>
+            <p className="vacancyTitle"> <a href={this.state.data.name_in_url}>{this.state.data.title}</a></p>
+            <p className="vacancyCity">{city}</p> <p className="vacancySalary">{this.state.data.salary}</p>
             <p className="vacancyDescr">{this.state.data.short_description}</p>
             <button type="button" onClick={this.handleToVacancyClick} className="btn btn-info goToVacancyButton">Перейти к вакансии</button>
             </div>
@@ -135,7 +144,7 @@ var VacancyNode = React.createClass({
     },
     render: function() {
         if (!this.state.expanded) {
-            return (<VacancyNodeCompressed expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
+            return (<VacancyNodeCompressed citylist={this.props.citylist} expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
         } else {
             return (<VacancyNodeExpanded citylist={this.props.citylist} expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
         }

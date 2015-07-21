@@ -71,10 +71,18 @@ var VacancyNodeCompressed = React.createClass({displayName: "VacancyNodeCompress
         this.props.click(e);
     },
     render: function() {
+        city_id = this.state.data.city_id
+        citylist = this.props.citylist
+        city = citylist.filter(function(n) {
+            return n.id == city_id;
+        }).map(function(n) {
+            return n.name;
+        });
         return (
-            React.createElement("div", {className: "panel panel-default"}, 
+            React.createElement("div", {className: "panel panel-default vacancyNodeCompressed"}, 
             React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}), 
-            React.createElement("p", {className: "vacancyTitle"}, this.state.data.title)
+            React.createElement("p", {className: "vacancyTitle"}, " ", React.createElement("a", {href: this.state.data.name_in_url}, this.state.data.title)), 
+            React.createElement("p", {className: "vacancyCity"}, city), " ", React.createElement("p", {className: "vacancySalary"}, this.state.data.salary)
             )
         );
     }
@@ -101,15 +109,16 @@ var VacancyNodeExpanded = React.createClass({displayName: "VacancyNodeExpanded",
     render: function() {
         city_id = this.state.data.city_id
         citylist = this.props.citylist
-        city = citylist.filter(function(i, n) {
+        city = citylist.filter(function(n) {
             return n.id == city_id;
+        }).map(function(n) {
+            return n.name;
         });
-        alert(city);
         return (
-            React.createElement("div", {className: "panel panel-default"}, 
+            React.createElement("div", {className: "panel panel-default vacancyNodeExpanded"}, 
             React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}), 
-            React.createElement("p", {className: "vacancyCity"}, city), 
-            React.createElement("p", {className: "vacancyTitle"}, this.state.data.title), 
+            React.createElement("p", {className: "vacancyTitle"}, " ", React.createElement("a", {href: this.state.data.name_in_url}, this.state.data.title)), 
+            React.createElement("p", {className: "vacancyCity"}, city), " ", React.createElement("p", {className: "vacancySalary"}, this.state.data.salary), 
             React.createElement("p", {className: "vacancyDescr"}, this.state.data.short_description), 
             React.createElement("button", {type: "button", onClick: this.handleToVacancyClick, className: "btn btn-info goToVacancyButton"}, "Перейти к вакансии")
             )
@@ -136,7 +145,7 @@ var VacancyNode = React.createClass({displayName: "VacancyNode",
     },
     render: function() {
         if (!this.state.expanded) {
-            return (React.createElement(VacancyNodeCompressed, {expanded: this.state.expanded, ref: "node", className: "col-xs-6 col-sm-4", data: this.props.data, click: this.handleButtonClick}));
+            return (React.createElement(VacancyNodeCompressed, {citylist: this.props.citylist, expanded: this.state.expanded, ref: "node", className: "col-xs-6 col-sm-4", data: this.props.data, click: this.handleButtonClick}));
         } else {
             return (React.createElement(VacancyNodeExpanded, {citylist: this.props.citylist, expanded: this.state.expanded, ref: "node", className: "col-xs-6 col-sm-4", data: this.props.data, click: this.handleButtonClick}));
         }

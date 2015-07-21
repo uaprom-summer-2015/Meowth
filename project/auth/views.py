@@ -45,7 +45,8 @@ def reset():
 def confirm_reset(token):
     success = User.bl.reset_password(token)
     if success:
-        flash("Вы успешно сбросили пароль! Новый пароль отправлен по электронной почте")
+        flash("Вы успешно сбросили пароль! "
+              "Новый пароль отправлен по электронной почте")
         return redirect(url_for('auth.login'))
     else:
         abort(404)
@@ -55,6 +56,7 @@ def confirm_reset(token):
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('auth.login'))
+
 
 @auth.before_request
 def add_login_to_g():
