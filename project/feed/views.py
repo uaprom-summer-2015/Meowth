@@ -12,6 +12,22 @@ def vacancies():
     return render_template('feed/reactvacancies.html')
 
 
+@feed.route('/<name_in_url>/react', methods=['GET', 'POST'])
+def get_vacancy_react(name_in_url):
+    vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
+    vacancy.visits += 1
+    vacancy.save()
+
+    form = ApplyForm()
+    if form.validate_on_submit():
+        send_mail_from_form(form, vacancy)
+        flash('Ответ отправлен')
+
+    return render_template('feed/reactvacancy.html',
+                           vacancy=vacancy,
+                           form=form)
+
+
 @feed.route('/list')
 def json_vacancies():
     vacancies = Vacancy.query.all()

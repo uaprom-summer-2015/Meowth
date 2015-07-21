@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ vacancy.title }}{% endblock %}
+{% block meta %}
+
+    <style>
+        input {
+  font-size: 1.3em;
+  display: inline-block;
+  margin: auto;
+  border-radius: 0.6em;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 2px black;
+  padding: 0.3em 1em;
+  font-weight: 100;
+  font-family: Arial;
+  margin: 1em;
+}
+
+input:focus {
+  box-shadow: 0 0 8px rgba(0, 255, 50, 0.9)
+}
+
+input.invalid, input.invalid:focus {
+  box-shadow: 0 0 9px rgba(255, 25, 25, 0.9)
+}
+
+span.small {
+  font-size: 0.7em;
+}
+.warning {
+    color:red;
+}
+    </style>
+
+    {% if vacancy.description %}
+    <meta name="description" content="{{ vacancy.description }}"/>
+    {% endif %}
+    {% if vacancy.keywords %}
+    <meta name="keywords" content="{{ vacancy.keywords }}"/>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="vacancy">
+        <h1>{{ vacancy.title }}</h1>
+        {% if vacancy.salary %}
+        <p>{{ vacancy.salary }}</p>
+        {% endif %}
+        <p>{{ vacancy.city }}</p>
+        <p>{{ vacancy.text|safe }}</p>
+    </div>
+
+<br/>
+<br/>
+
+<script src="{{ url_for('static', filename='js/vacancy_form/form.js') }}"
+        type="text/jsx"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+
+<div class="attached-form" id="attached-form"></div>
+
+
+    {% for field in form if field.widget.input_type != 'hidden' %}
+          {% for error in field.errors %}
+          {{ error }}
+          {% endfor %}
+      </p>
+    {% endfor %}
+
+{% endblock %}
