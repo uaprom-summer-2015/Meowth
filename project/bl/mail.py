@@ -19,14 +19,13 @@ def get_message_from_form(form, vacancy):
     recipients = [app.config['MAIL_TO_SEND']]
     title = 'Ответ на вакансию: {}'.format(vacancy.title)
     body = 'Ответ на вакансию: {}\n' \
-    'Имя: {}\n' \
-    'Email: {}\n' \
-    'Телефон: {}'.format(
-        vacancy.title,
-        form.name.data,
-        form.email.data,
-        form.phone.data,
-    )
+           'Имя: {}\n' \
+           'Email: {}\n' \
+           'Телефон: {}'.format(vacancy.title,
+                                form.name.data,
+                                form.email.data,
+                                form.phone.data,
+                                )
     if form.comment.data:
         body += '\nКоментарий: {}'.format(form.comment.data)
 

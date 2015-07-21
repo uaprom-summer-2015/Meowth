@@ -29,18 +29,23 @@ class Exists(object):
         new_data = field.data
         if not hasattr(self, 'message'):
             if not self.reverse:
-                self.message = 'Пользователь с таким {} уже существует'.format(field.name)
+                self.message = 'Пользователь с таким {} уже существует'\
+                    .format(field.name)
             else:
-                self.message = 'Пользователь с таким {} не существует'.format(field.name)
+                self.message = 'Пользователь с таким {} не существует'\
+                    .format(field.name)
 
         if not self.reverse:
             if self.old_data == new_data:
                 return None
-            u = User.query.filter(getattr(User, field.name) == new_data).first()
+            u = User.query\
+                .filter(getattr(User, field.name) == new_data)\
+                .first()
             if u:
                 raise ValidationError(self.message)
         else:
-            u = User.query.filter(getattr(User, field.name) == new_data).first()
+            u = User.query\
+                .filter(getattr(User, field.name) == new_data)\
+                .first()
             if not u:
                 raise ValidationError(self.message)
-

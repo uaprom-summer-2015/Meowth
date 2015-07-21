@@ -122,4 +122,3 @@ class UserEditForm(RegisterForm):
         ]
     )
     confirmation = PasswordField(label='Подтвердите пароль')
-
