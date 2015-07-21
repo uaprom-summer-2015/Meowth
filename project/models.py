@@ -2,11 +2,12 @@ from enum import IntEnum
 
 from sqlalchemy import Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, VARCHAR as Varchar
 from project.bl.utils import Resource
 from project.database import Base, db_session, engine
 from project.lib.orm.types import TypeEnum
 from sqlalchemy.ext.orderinglist import ordering_list
+from sqlalchemy.ext.associationproxy import association_proxy
 
 
 class Vacancy(Base):
@@ -113,6 +114,24 @@ class City(Base):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
+class BlockPageAssociation(Base):
+    __tablename__ = 'block_page_association'
+    page_id = Column(
+        Integer,
+        ForeignKey('pages.id'),
+        primary_key=True
+    )
+    block_id = Column(
+        Integer,
+        ForeignKey('pageblocks.id'),
+        primary_key=True
+    )
+    position = Column(Integer)
+    block = relationship(
+        'PageBlock',
+    )
+
+
 class PageBlock(Base):
     __tablename__ = 'pageblocks'
 
@@ -127,14 +146,16 @@ class PageBlock(Base):
     )
 
     id = Column(Integer, primary_key=True)
-    block_type = Column(TypeEnum(TYPE), default=TYPE.img_left, nullable=False)
-    title = Column(String(128), nullable=True)  # if header needed
-    text = Column(String(1024))  # block contents
-    short_description = Column(String(256), nullable=True)  # used for homepage
+    block_type = Column(
+        TypeEnum(TYPE),
+        default=TYPE.img_left,
+        nullable=False
+    )
+    title = Column(Varchar(128), nullable=True)  # if header needed
+    text = Column(Varchar(1024))  # block contents
+    short_description = Column(Varchar(256), nullable=True)  # used for home
     # by http://stackoverflow.com/a/219664:
-    image = Column(String(2083), nullable=True)
-    position = Column(Integer, nullable=False)  # ordering blocks on pages
-    page_id = Column(Integer, ForeignKey('pages.id'))  # belongs to page
+    image = Column(Varchar(2083), nullable=True)
 
     bl = Resource('bl.pageblock')
 
@@ -142,10 +163,6 @@ class PageBlock(Base):
         return '%s: %s' % (self.title, self.text or self.short_description)
 
     def save(self):
-        # FIXME: temporary workaround to support current workflow:
-        # TODO: replace w/ better logic later
-        if not self.position:
-            self.position = 0
         db_session.add(self)
         db_session.commit()
 
@@ -157,13 +174,17 @@ class Page(Base):
     __tablename__ = 'pages'
 
     id = Column(Integer, primary_key=True)
-    title = Column(String(128))
-    url = Column(String(2083))  # by http://stackoverflow.com/a/219664
-    blocks = relationship(
-        "PageBlock",
-        backref="page",
-        order_by='PageBlock.position',
+    title = Column(Varchar(128))
+    url = Column(Varchar(2083))  # by http://stackoverflow.com/a/219664
+    _blocks = relationship(
+        "BlockPageAssociation",
+        order_by='BlockPageAssociation.position',
         collection_class=ordering_list('position'),
+    )
+    blocks = association_proxy(
+        '_blocks',
+        'block',
+        creator=lambda _pb: BlockPageAssociation(block=_pb)
     )
 
     bl = Resource('bl.page')
@@ -175,12 +196,12 @@ class Page(Base):
         # TODO: move save operation to bl
         # Readd blocks to follow the order:
         # TODO: possible crutch:
-        _ = [block for block in self.blocks]
+        """_ = [block for block in self.blocks]
         while (len(self.blocks)):
             self.blocks.pop()
         for block in _:
             self.blocks.append(block)
-        del _
+        del _"""
         db_session.add(self)
         db_session.commit()
 
