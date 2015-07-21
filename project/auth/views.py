@@ -1,5 +1,5 @@
-from flask import render_template, Blueprint, flash, \
-    session, redirect, url_for, abort, g
+from flask import render_template, Blueprint, flash, session, redirect, \
+    url_for, abort, g
 from .forms import LoginForm, ResetForm
 from .decorators import login_required
 from project.models import User
@@ -61,3 +61,12 @@ def confirm_reset(token):
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('auth.login'))
+
+
+@auth.before_request
+def add_login_to_g():
+    if session['user_id']:
+        user = User.query.get(session['user_id'])
+        g.user = user
+    else:
+        g.user = None

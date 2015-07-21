@@ -20,10 +20,8 @@ class UserBL(BaseBL):
             model.bl.set_password(random_password)
             recipients = [data['email'], ]
             title = 'Вам была создана учетная запись на HR портале!'
-            body = 'login: {}\npassword:{}'.format(
-                data['login'],
-                random_password
-            )
+            body = 'login: {}\npassword:{}'\
+                .format(data['login'], random_password)
             send_mail(title, body, recipients)
         model.save()
         return model
@@ -73,7 +71,7 @@ class UserBL(BaseBL):
         superuser = model.bl.create({
             'login': login,
             'password': password,
-            'email': 'admin@admin.com'
+            'email': 'admin@admin.com',
         })
         superuser.role = model.ROLE.superuser
         superuser.save()
