@@ -125,7 +125,6 @@ register_section(
     list_endpoint="user_list",
 )
 
-
 @admin_app.route("/")
 def mainpage():
     sections = {}

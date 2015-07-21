@@ -19,7 +19,8 @@ class UserBL(BaseBL):
             model.bl.set_password(random_password)
             recipients = [data['email'], ]
             title = 'Вам была создана учетная запись на HR портале!'
-            body = 'login: {}\npassword:{}'.format(data['login'], random_password)
+            body = 'login: {}\npassword:{}'\
+                .format(data['login'], random_password)
             send_mail(title, body, recipients)
         model.save()
         return model
@@ -36,12 +37,14 @@ class UserBL(BaseBL):
         from project.models import Token
         from .mail import send_mail
         model = self.model
-        u = model.query.filter(func.lower(model.email) == func.lower(email)).first()
+        u = model.query.filter(func.lower(model.email) == func.lower(email))\
+            .first()
         token = Token(token=generate_random_string(20), user=u)
         token.save()
         recipients = [u.email, ]
         title = 'Cброс пароля на HR портале'
-        body = 'Ваша ссылка для сброса пароля: localhost:5000/auth/reset/{}'.format(token.token)
+        body = 'Ваша ссылка для сброса пароля: localhost:5000/auth/reset/{}'\
+            .format(token.token)
         send_mail(title, body, recipients)
 
     def reset_password(self, token):
@@ -56,7 +59,8 @@ class UserBL(BaseBL):
         u.bl.set_password(random_password)
         recipients = [u.email, ]
         title = 'Сброс пароля на HR портале'
-        body = 'Ваш пароль был успешно cброшен! \n Новый пароль: {}'.format(random_password)
+        body = 'Ваш пароль был успешно cброшен! \n Новый пароль: {}'\
+            .format(random_password)
         send_mail(title, body, recipients)
         token.delete()
         return True
@@ -67,7 +71,7 @@ class UserBL(BaseBL):
         superuser = model.bl.create({
              'login': login,
              'password': password,
-             'email': 'admin@admin.com'
+             'email': 'admin@admin.com',
         })
         superuser.role = model.ROLE.superuser
         superuser.save()

@@ -76,44 +76,12 @@ class RegisterForm(Form):
 
 class UserEditForm(RegisterForm):
     def __init__(self, *args, **kwargs):
-        super(UserEditForm, self).__init__(*args, **kwargs)
-        if 'obj' in kwargs:
-            setattr(UserEditForm, 'user_instance', kwargs['obj'])
-        obj = getattr(UserEditForm, 'user_instance', None)
-
-        if isinstance(self['login'].validators[-1], Exists):
-            self['login'].validators = self['login'].validators[:-1]
-        if isinstance(self['email'].validators[-1], Exists):
-            self['email'].validators = self['email'].validators[:-1]
-
-        if obj:
-            self['login'].validators.append(Exists(obj.login))
-            self['email'].validators.append(Exists(obj.email))
-        else:
-            self['login'].validators.append(Exists())
-            self['email'].validators.append(Exists())
-
-    # TODO: same with email
-    login = StringField(
-        label='Логин',
-        validators=[
-            LoginFormat,
-            Length(
-                4,
-                16,
-                message='Логин должен быть от 6 до 16 символов в длину'
-            ),
-        ]
-    )
+        super().__init__(*args, **kwargs)
 
     password = PasswordField(
         label='Пароль',
         validators=[
             PasswordFormat,
-            EqualTo(
-                'confirmation',
-                message='Пароли не совпадают'
-            ),
             Length(
                 6,
                 16,
@@ -122,4 +90,12 @@ class UserEditForm(RegisterForm):
         ]
     )
     confirmation = PasswordField(label='Подтвердите пароль')
+
+    def validate(self):
+        super(UserEditForm, self).validate()
+        EqualTo(
+            'confirmation',
+            message='Пароли не совпадают'
+        )(self, self.password)
+
 
