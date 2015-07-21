@@ -143,9 +143,9 @@ def pageblocks_for_page_list(p_id):
     return render_template(
         "admin/pageblocks.html",
         pageblocks=PageBlock.query
-            .filter(PageBlock.page_id == p_id)
-            .order_by(PageBlock.position.asc())
-            .all(),
+        .filter(PageBlock.page_id == p_id)
+        .order_by(PageBlock.position.asc())
+        .all(),
     )
 
 pageblock_view = EntryDetail.as_view(
