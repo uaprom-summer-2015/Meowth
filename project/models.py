@@ -131,6 +131,15 @@ class BlockPageAssociation(Base):
         'PageBlock',
     )
 
+    def delete(self):
+        """ Deletes the object immideately """
+        db_session.delete(self)
+        db_session.commit()
+
+    def soft_delete(self):
+        """ schedules object deletion """
+        db_session.delete(self)
+
 
 class PageBlock(Base):
     __tablename__ = 'pageblocks'
@@ -165,6 +174,15 @@ class PageBlock(Base):
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+    def delete(self):
+        """ Deletes the object immideately """
+        db_session.delete(self)
+        db_session.commit()
+
+    def soft_delete(self):
+        """ schedules object deletion """
+        db_session.delete(self)
+
 
 class Page(Base):
     __tablename__ = 'pages'
@@ -195,6 +213,15 @@ class Page(Base):
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    def delete(self):
+        """ Deletes the object immideately """
+        db_session.delete(self)
+        db_session.commit()
+
+    def soft_delete(self):
+        """ schedules object deletion """
+        db_session.delete(self)
 
 
 class Token(Base):
