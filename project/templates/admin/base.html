@@ -13,7 +13,10 @@
                   <li><a href="{{ url_for('admin.mainpage') }}">Админ-панель</a></li>
                 </ul>
 
-                <p class="navbar-text navbar-right">Привет, CANNOT ACCESS USER OBJECT FROM TEMPLATE</p>
+                <p class="navbar-text navbar-right">
+                    Привет, {{ g.user.login }}.
+                    <a href="{{ url_for('auth.logout') }}">Выйти?</a>
+                </p>
 
         </div>
     </nav>

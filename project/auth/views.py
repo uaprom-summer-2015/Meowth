@@ -61,12 +61,3 @@ def confirm_reset(token):
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('auth.login'))
-
-
-@auth.before_request
-def add_login_to_g():
-    if session['user_id']:
-        user = User.query.get(session['user_id'])
-        g.user = user
-    else:
-        g.user = None
