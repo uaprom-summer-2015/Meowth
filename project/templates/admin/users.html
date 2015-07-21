@@ -2,10 +2,10 @@
 
 {% block content %}
     <ul class="list-group">
-        {% for user in entry %}
+        {% for user in entries %}
             <li class="list-group-item">
                 <a href="{{ url_for('admin.user_detail', entry_id=user.id) }}">
-                    class="list-group-item">{{ user.name }}
+                    {{ user.name }}
                 </a>
             </li>
         {% endfor %}
