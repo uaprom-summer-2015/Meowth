@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     {% block meta %}{% endblock%}
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
-    <link rel="stylesheet" href="/static/css/feed.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+
+    {% block header %}{% endblock %}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul class=flashes>
