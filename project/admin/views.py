@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template, url_for, session, g, redirect
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm, UserEditForm
@@ -8,6 +8,23 @@ SECTIONS = {}  # list_name: list_endpoint
 
 
 admin_app = Blueprint('admin', __name__)
+
+
+@admin_app.before_request
+def add_login_to_g():
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+        g.user = user
+    else:
+        g.user = None
+
+
+@admin_app.before_request
+def check_user_logged_in():
+    if 'user_id' in session:
+        return
+
+    return redirect(url_for("auth.login"))
 
 
 def register_section(*, section_name, list_endpoint,
