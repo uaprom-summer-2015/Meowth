@@ -1,6 +1,7 @@
 from flask.ext.testing import TestCase
 from project import app as flask_app
 
+
 class ProjectTestCase(TestCase):
     """
     Base class for all tests in project
@@ -10,4 +11,3 @@ class ProjectTestCase(TestCase):
         app = flask_app
         app.config['TESTING'] = True
         return app
-
