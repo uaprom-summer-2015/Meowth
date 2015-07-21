@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from project.lib.auth import generate_random_string
 from sqlalchemy import func
 
+
 class UserBL(BaseBL):
 
     def set_password(self, password):
@@ -37,7 +38,8 @@ class UserBL(BaseBL):
         from project.models import Token
         from .mail import send_mail
         model = self.model
-        u = model.query.filter(func.lower(model.email) == func.lower(email))\
+        u = model.query\
+            .filter(func.lower(model.email) == func.lower(email))\
             .first()
         token = Token(token=generate_random_string(20), user=u)
         token.save()
@@ -50,7 +52,6 @@ class UserBL(BaseBL):
     def reset_password(self, token):
         from project.models import Token
         from .mail import send_mail
-        model = self.model
         token = Token.query.filter(Token.token == token).first()
         if not token:
             return False
@@ -65,13 +66,12 @@ class UserBL(BaseBL):
         token.delete()
         return True
 
-
     def create_superuser(self, login, password):
         model = self.model
         superuser = model.bl.create({
-             'login': login,
-             'password': password,
-             'email': 'admin@admin.com',
+            'login': login,
+            'password': password,
+            'email': 'admin@admin.com',
         })
         superuser.role = model.ROLE.superuser
         superuser.save()
@@ -82,4 +82,3 @@ class UserBL(BaseBL):
         u = model.query.filter(model.login == login).first()
         if u and check_password_hash(u.password, password):
             return u
-

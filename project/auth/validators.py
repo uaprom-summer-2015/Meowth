@@ -34,10 +34,9 @@ class Exists(object):
             else:
                 self.message = 'Пользователь с таким {} не существует'\
                     .format(field.name)
+
         u = True \
             if list(User.query.filter(getattr(User, field.name) == field.data)) \
             else False
         if self.reverse ^ u:
                 raise ValidationError(self.message)
-
-

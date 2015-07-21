@@ -6,6 +6,7 @@ from project.models import Vacancy, Category, City, User
 
 SECTIONS = {}  # list_name: list_endpoint
 
+
 admin_app = Blueprint('admin', __name__)
 
 
@@ -60,6 +61,7 @@ category_list = EntryList.as_view(
     model=Category,
     template="admin/categories.html",
 )
+
 
 category_detail = EntryDetail.as_view(
     name='category_detail',
@@ -124,6 +126,7 @@ register_section(
     detail_view=user_detail,
     list_endpoint="user_list",
 )
+
 
 @admin_app.route("/")
 def mainpage():
