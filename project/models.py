@@ -194,14 +194,6 @@ class Page(Base):
 
     def save(self):
         # TODO: move save operation to bl
-        # Readd blocks to follow the order:
-        # TODO: possible crutch:
-        """_ = [block for block in self.blocks]
-        while (len(self.blocks)):
-            self.blocks.pop()
-        for block in _:
-            self.blocks.append(block)
-        del _"""
         db_session.add(self)
         db_session.commit()
 
