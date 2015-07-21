@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 from flask import url_for
 from project.admin.utils import EntryList
-from project.admin.views import SECTIONS
+from project.admin.views import SECTIONS, mainpage
 from project.tests.utils import ProjectTestCase
 
 
@@ -25,13 +25,12 @@ class EntryListTests(ProjectTestCase):
             model=self.model,
             template=self.template,
         )
+        self.view()
 
     def test_view_uses_correct_template(self):
-        self.view()
         self.assert_template_used(self.template)
 
     def test_view_uses_all_model_objects(self):
-        self.view()
         self.model.query.all.assert_called_once_with()
 
 
@@ -43,7 +42,9 @@ class MainPageTest(ProjectTestCase):
     render_templates = False
 
     def setUp(self):
-        self.response = self.client.get("/admin/")
+        self.view = mainpage
+        self.view()
+        # self.response = self.client.get("/admin/")
 
     def test_view_uses_correct_template(self):
         self.assertTemplateUsed("admin/main.html")
