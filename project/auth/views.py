@@ -15,12 +15,12 @@ def login():
         if user:
             session['user_id'] = user.id
             g.user = user
-            return redirect(url_for('admin.vacancy_list'))
+            return redirect(url_for('admin.mainpage'))
         else:
             flash("Неправильный логин и/или пароль")
 
     if session.get('user_id'):
-        return redirect(url_for('admin.vacancy_list'))
+        return redirect(url_for('admin.mainpage'))
 
     return render_template(
         'login.html',

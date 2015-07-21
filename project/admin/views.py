@@ -130,7 +130,6 @@ user_list = EntryList.as_view(
 user_detail = EntryDetail.as_view(
     name='user_detail',
     create_form=RegisterForm,
-    update_form=UserEditForm,
     model=User,
     success_url="user_list",
 )

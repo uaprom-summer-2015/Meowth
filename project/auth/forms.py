@@ -81,6 +81,10 @@ class UserEditForm(RegisterForm):
     password = PasswordField(
         label='Пароль',
         validators=[
+            EqualTo(
+                'confirmation',
+                message='Пароли не совпадают'
+            ),
             PasswordFormat,
             Length(
                 6,
@@ -90,10 +94,3 @@ class UserEditForm(RegisterForm):
         ]
     )
     confirmation = PasswordField(label='Подтвердите пароль')
-
-    def validate(self):
-        super(UserEditForm, self).validate()
-        EqualTo(
-            'confirmation',
-            message='Пароли не совпадают'
-        )(self, self.password)

@@ -26,14 +26,6 @@ class UserBL(BaseBL):
         model.save()
         return model
 
-    def update(self, data):
-        model = self.model
-        for key, value in data.items():
-            setattr(model, key, value)
-        model.bl.set_password(data['password'])
-        model.save()
-        return model
-
     def forgot_password(self, email):
         from project.models import Token
         from .mail import send_mail
