@@ -19,28 +19,25 @@ PasswordFormat = Regexp(regex='^(?=.*[0-9])[a-zA-Z][a-zA-Z0-9-_.]+$',
 
 
 class Exists(object):
-    def __init__(self, data=None, message=None, reverse=False):
+    def __init__(self, message=None, reverse=False):
         if message:
             self.message = message
-        self.old_data = data
         self.reverse = reverse
 
-    def __call__(self, form, field):
-        new_data = field.data
+    def __call__(self, _, field):
+        if field.object_data == field.data:
+            return
         if not hasattr(self, 'message'):
             if not self.reverse:
-                self.message = 'Пользователь с таким {} уже существует'.format(field.name)
+                self.message = 'Пользователь с таким {} уже существует'\
+                    .format(field.name)
             else:
-                self.message = 'Пользователь с таким {} не существует'.format(field.name)
+                self.message = 'Пользователь с таким {} не существует'\
+                    .format(field.name)
+        u = True \
+            if list(User.query.filter(getattr(User, field.name) == field.data)) \
+            else False
+        if self.reverse ^ u:
+                raise ValidationError(self.message)
 
-        if not self.reverse:
-            if self.old_data == new_data:
-                return None
-            u = User.query.filter(getattr(User, field.name) == new_data).first()
-            if u:
-                raise ValidationError(self.message)
-        else:
-            u = User.query.filter(getattr(User, field.name) == new_data).first()
-            if not u:
-                raise ValidationError(self.message)
 
