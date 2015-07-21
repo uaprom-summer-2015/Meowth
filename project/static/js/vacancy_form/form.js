@@ -17,6 +17,9 @@ var ApplyForm = React.createClass({
             phone: e.target.value
         })
     },
+    handleChangeFile: function(e) {
+        this.validateSize(e.target.files[0].size)
+    },
     validateName: function() {
         return this.state.name != ''
     },
@@ -29,35 +32,46 @@ var ApplyForm = React.createClass({
     valid: function(bool) {
         return bool ? 'valid' : 'invalid'
     },
+    validateSize: function(size) {
+        if (size > 15 * 1024 * 1024) {
+            alert('To big file for uploading (15Mb - max)');
+        }
+    },
     render: function() {
         return (
-            <form>
+            <div>
                 <label>Имя:<br/>
-                    <input value={this.state.name}
+                    <input name='name' id='name'
+                           value={this.state.name}
                            onChange={this.handleChangeName}
                            type='text'
                            className={this.valid(this.validateName())} />
                 </label><br/>
                 <label>Email:<br/>
-                    <input value={this.state.email}
+                    <input name='email' id='email'
+                           value={this.state.email}
                            onChange={this.handleChangeEmail}
                            type='text'
                            className={this.valid(this.validateEmail())}/>
                 </label><br/>
                 <label>Телефон:<br/>
-                    <input value={this.state.phone}
+                    <input name='phone' id='phone'
+                           value={this.state.phone}
                            onChange={this.handleChangePhone}
                            type='text'
                            className={this.valid(this.validatePhone())} />
                 </label><br/>
                 <label>Коментарий:<br/>
-                    <input type='text'/>
+                    <input name='comment' id='comment'
+                           type='text'/>
                 </label><br/>
                 <label>Резюме:<br/>
-                    <input type='file' />
+                    <input name='files[]' id='attachment'
+                           type='file'
+                           onChange={this.handleChangeFile} multiple />
                 </label><br/>
                 <input type='submit' />
-            </form>
+            </div>
         )
     }
 })

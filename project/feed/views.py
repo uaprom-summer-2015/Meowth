@@ -7,12 +7,12 @@ from project.bl.mail import send_mail_from_form
 feed = Blueprint('feed', __name__)
 
 
-@feed.route('/')
+@feed.route('//')
 def vacancies():
     return render_template('feed/reactvacancies.html')
 
 
-@feed.route('/<name_in_url>/react', methods=['GET', 'POST'])
+@feed.route('/<name_in_url>/react/', methods=['GET', 'POST'])
 def get_vacancy_react(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
     vacancy.visits += 1
@@ -39,7 +39,7 @@ def json_vacancies():
     return jsonify(vacancies=list_vacancies, categories=list_categories, cities=list_cities)
 
 
-@feed.route('/<name_in_url>', methods=['GET', 'POST'])
+@feed.route('/<name_in_url>/', methods=['GET', 'POST'])
 def get_vacancy(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
     vacancy.visits += 1

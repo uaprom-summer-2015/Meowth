@@ -3,37 +3,6 @@
 {% block title %}{{ vacancy.title }}{% endblock %}
 {% block meta %}
 
-    <style>
-        input {
-  font-size: 1.3em;
-  display: inline-block;
-  margin: auto;
-  border-radius: 0.6em;
-  border: none;
-  outline: none;
-  box-shadow: 0 0 2px black;
-  padding: 0.3em 1em;
-  font-weight: 100;
-  font-family: Arial;
-  margin: 1em;
-}
-
-input:focus {
-  box-shadow: 0 0 8px rgba(0, 255, 50, 0.9)
-}
-
-input.invalid, input.invalid:focus {
-  box-shadow: 0 0 9px rgba(255, 25, 25, 0.9)
-}
-
-span.small {
-  font-size: 0.7em;
-}
-.warning {
-    color:red;
-}
-    </style>
-
     {% if vacancy.description %}
     <meta name="description" content="{{ vacancy.description }}"/>
     {% endif %}
@@ -58,15 +27,12 @@ span.small {
         type="text/jsx"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-<div class="attached-form" id="attached-form"></div>
 
-
-    {% for field in form if field.widget.input_type != 'hidden' %}
-          {% for error in field.errors %}
-          {{ error }}
-          {% endfor %}
-      </p>
-    {% endfor %}
+<form enctype="multipart/form-data" action="" method="post" name="apply">
+    {{ form.hidden_tag() }}
+    <div id="attached-form"></div>
+</form>
 
 {% endblock %}
