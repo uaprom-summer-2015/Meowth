@@ -57,8 +57,6 @@ def get_msg_for_reply(form, vacancy):
     recipients = [form.email.data]
     subject = 'Резюме'
     body = 'Здравствуйте, {}!\n' \
-    'Мы получили Ваше резюме на вакансию {}'.format(
-        form.name.data,
-        vacancy.title
-    )
+           'Мы получили Ваше резюме на вакансию {}'.format(form.name.data,
+                                                           vacancy.title)
     return get_message(subject, body, recipients)

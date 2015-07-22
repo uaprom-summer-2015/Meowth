@@ -23,7 +23,7 @@ def get_vacancy_react(name_in_url):
     if form.validate_on_submit():
         send_mail_from_form(form, vacancy)
         flash('Ответ отправлен')
-    security_token=generate_csrf()
+    security_token = generate_csrf()
     return render_template(
         'feed/reactvacancy.html',
         vacancy=vacancy,
