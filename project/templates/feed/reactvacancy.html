@@ -23,16 +23,14 @@
 <br/>
 <br/>
 
-<script src="{{ url_for('static', filename='js/vacancy_form/form.js') }}"
+<script src="{{ url_for('static', filename='js/vacancy_form/form.jsx') }}"
         type="text/jsx"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
-
-<form enctype="multipart/form-data" action="" method="post" name="apply">
-    {{ form.hidden_tag() }}
-    <div id="attached-form"></div>
-</form>
+<div class="col-sm-offset-2 col-sm-4">
+    <div id="attached-form" data-security-token="{{ security_token }}"></div>
+</div>
 
 {% endblock %}

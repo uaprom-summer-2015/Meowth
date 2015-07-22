@@ -42,9 +42,9 @@ def get_message_from_form(form, vacancy):
 
 def send_mail_from_form(form, vacancy):
     msg = get_message_from_form(form, vacancy)
-    #msg4reply = get_msg_for_reply(form, vacancy)
+    msg4reply = get_msg_for_reply(form, vacancy)
     celery_send_mail.delay(msg)
-    #celery_send_mail.delay(msg4reply)
+    celery_send_mail.delay(msg4reply)
 
 
 def send_mail(title, body, recipients, attachment_name=None,

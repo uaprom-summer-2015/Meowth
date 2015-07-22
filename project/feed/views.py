@@ -1,4 +1,5 @@
 from flask import render_template, Blueprint, flash, jsonify
+from flask_wtf.csrf import generate_csrf
 from project.models import Vacancy, Category, City
 from project.feed.forms import ApplyForm
 from project.bl.mail import send_mail_from_form
@@ -22,10 +23,13 @@ def get_vacancy_react(name_in_url):
     if form.validate_on_submit():
         send_mail_from_form(form, vacancy)
         flash('Ответ отправлен')
-
-    return render_template('feed/reactvacancy.html',
-                           vacancy=vacancy,
-                           form=form)
+    security_token=generate_csrf()
+    return render_template(
+        'feed/reactvacancy.html',
+        vacancy=vacancy,
+        form=form,
+        security_token=security_token,
+    )
 
 
 @feed.route('/list')
