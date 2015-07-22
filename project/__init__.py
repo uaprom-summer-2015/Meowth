@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import logging
 import os
 from project.bl.auth import UserBL
@@ -35,6 +35,11 @@ app.register_blueprint(feed, url_prefix='/vacancies')
 @app.errorhandler(413)
 def request_entity_too_large(error):
     return 'File Too Large', 413
+
+
+@app.errorhandler(403)
+def handle_forbidden(error):
+    return render_template('403.html'), 403
 
 
 if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
