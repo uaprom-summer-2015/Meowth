@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "admin/base.html" %}
 
 {% block content %}
     <ul class="list-group">
-        {% for pageblock in pageblocks %}
-            <a href="{{ url_for('admin.pageblock_detail', entry_id=pageblock.id) }}">
-                <li class="list-group-item">{{ pageblock.text }}</li>
+        {% for entry in entries %}
+            <a href="{{ url_for('admin.pageblock_detail', entry_id=entry.id) }}">
+              <li class="list-group-item">{{ entry.title }} ({{ entry.text }})</li>
             </a>
         {% endfor %}
 

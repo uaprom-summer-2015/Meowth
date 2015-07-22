@@ -138,23 +138,11 @@ register_section(
 
 
 # PageBlocks
-@admin_app.route("/blocks/")
-def pageblocks_list():
-    return render_template(
-        "admin/pageblocks.html",
-        pageblocks=PageBlock.query.all(),
-    )
-
-
-@admin_app.route("/page/<int:p_id>/blocks/")
-def pageblocks_for_page_list(p_id):
-    return render_template(
-        "admin/pageblocks.html",
-        pageblocks=PageBlock.query
-        .filter(PageBlock.page_id == p_id)
-        .order_by(PageBlock.position.asc())
-        .all(),
-    )
+pageblock_list = EntryList.as_view(
+    name='pageblock_list',
+    model=PageBlock,
+    template="admin/pageblocks.html",
+)
 
 pageblock_view = EntryDetail.as_view(
     name='pageblock_detail',
@@ -163,48 +151,37 @@ pageblock_view = EntryDetail.as_view(
     success_url="pageblocks_list",
 )
 
-admin_app.add_url_rule(
-    "/block/<int:entry_id>/",
-    view_func=pageblock_view,
-)
-
-
-admin_app.add_url_rule(
-    "/block/<int:entry_id>/",
-    view_func=pageblock_view,
-)
-
-admin_app.add_url_rule(
-    "/block",
-    defaults={'entry_id': None},
-    view_func=pageblock_view,
+register_section(
+    section_name="Блоки страниц",
+    list_route="/blocks/",
+    detail_route="/block/",
+    list_view=pageblock_list,
+    detail_view=pageblock_view,
+    list_endpoint="pageblock_list",
 )
 
 
 # Pages
-@admin_app.route("/pages/")
-def pages_list():
-    return render_template(
-        "admin/pages.html",
-        pages=Page.query.all(),
-    )
+page_list = EntryList.as_view(
+    name="page_list",
+    model=Page,
+    template="admin/pages.html",
+)
 
 page_view = PageDetail.as_view(
     name='page_detail',
     create_form=PageForm,
     model=Page,
-    success_url="pages_list",
+    success_url="page_list",
 )
 
-admin_app.add_url_rule(
-    "/page/<int:entry_id>/",
-    view_func=page_view,
-)
-
-admin_app.add_url_rule(
-    "/page",
-    defaults={'entry_id': None},
-    view_func=page_view,
+register_section(
+    section_name="Страницьі",
+    list_route="/pages/",
+    detail_route="/page/",
+    list_view=page_list,
+    detail_view=page_view,
+    list_endpoint="page_list",
 )
 
 
