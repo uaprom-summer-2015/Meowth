@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import StringField, TextAreaField, SelectField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from wtforms.validators import Length
+from wtforms.validators import Length  # , DataRequired
 from project.models import PageBlock
 
 
@@ -57,9 +57,6 @@ class PageForm(Form):
                 message='Must not exceed 128 symbols',
             ),
         ],
-    )
-    url = StringField(
-        label='Url',
     )
     block_1 = QuerySelectField(
         label='First block',
