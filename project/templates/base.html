@@ -9,8 +9,32 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+    {% block header %}
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                  <a class="navbar-brand" href="/">
+                    <img alt="HRUAPROM" src="{{ url_for('static', filename='img/prom-ua-logo.png') }}">
+                  </a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{{ url_for("feed.vacancies") }}">Вакансии</a>
+                    </li>
+                    <li>
+                        <a href="">Проекты</a>
+                    </li>
+                    <li>
+                        <a href="">О компании</a>
+                    </li>
+                    <li>
+                        <a href="">Контакты</a>
+                    </li>
+                </ul>
 
-    {% block header %}{% endblock %}
+            </div>
+        </nav>
+    {% endblock %}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul class=flashes>
@@ -20,7 +44,6 @@
         </ul>
         {% endif %}
     {% endwith %}
-
     {% block content %}{% endblock %}
 </body>
 </html>
