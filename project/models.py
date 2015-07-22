@@ -183,6 +183,11 @@ class PageBlock(Base):
         """ schedules object deletion """
         db_session.delete(self)
 
+    def save(self):
+        # TODO: move save operation to bl
+        db_session.add(self)
+        db_session.commit()
+
 
 class Page(Base):
     __tablename__ = 'pages'
