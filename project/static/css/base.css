@@ -1,0 +1,22 @@
+.container-footer {
+    height: 100%;
+    display: table;
+    width: 100%;
+}
+
+.footer-el {
+    display: table-cell;
+    width: 33%;
+    vertical-align: middle;
+}
+
+.footer-left {
+    text-align: left;
+}
+
+.footer-center {
+    text-align: center;
+}
+.footer-right {
+    text-align: right;
+}
