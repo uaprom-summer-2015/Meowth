@@ -5,6 +5,7 @@
     {% block meta %}{% endblock%}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
+    <link rel="stylesheet" href="http://getbootstrap.com/examples/sticky-footer-navbar/sticky-footer-navbar.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css">
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -44,6 +45,22 @@
         </ul>
         {% endif %}
     {% endwith %}
-    {% block content %}{% endblock %}
+
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+        <footer class="footer">
+            <div class="container">
+                <div class="text-center text-muted">
+                    <span class="pull-left">Копировано правильно</span>
+                    <span class="">Мы очень социабельны</span>
+                    <span class="pull-right">Телефоны модные</span>
+                </div>
+            </div>
+        </footer>
+    {% endblock %}
 </body>
 </html>
