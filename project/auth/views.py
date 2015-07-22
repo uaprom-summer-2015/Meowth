@@ -1,11 +1,18 @@
 from flask import render_template, Blueprint, flash, session, redirect, \
     url_for, abort, g
-from .forms import LoginForm, ResetForm
+from .forms import LoginForm, ResetForm, PasswordEditForm
 from .decorators import login_required
 from project.models import User
 
 auth = Blueprint('auth', __name__)
 
+@auth.before_app_request
+def add_login_to_g():
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+        g.user = user
+    else:
+        g.user = None
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,6 +61,22 @@ def confirm_reset(token):
         return redirect(url_for('auth.login'))
     else:
         abort(404)
+
+@auth.route('/password_change', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = PasswordEditForm()
+    if form.validate_on_submit():
+        User.bl.set_password(form.data['new_password'])
+        flash('Ваш пароль успешно изменён')
+        return redirect(url_for('admin.mainpage'))
+    return render_template(
+        'login.html',
+        title='Смена пароля',
+        submit='Сменить',
+        form=form,
+    )
+
 
 
 @auth.route('/logout', methods=['GET'])

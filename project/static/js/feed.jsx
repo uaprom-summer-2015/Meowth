@@ -1,6 +1,21 @@
-var React = require('react');
+var React = require('react'),
+    navigate = require('react-mini-router').navigate,
+    Select = require('react-select');
+
 var $ = require('jquery');
-var Select = require('react-select');
+
+$.QueryString = (function(a) {
+        if (a == "") return {};
+        var b = {};
+        for (var i = 0; i < a.length; ++i)
+        {
+            var p=a[i].split('=');
+            if (p.length != 2) continue;
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+        }
+        return b;
+    })(window.location.search.substr(1).split('&'))
+
 
 function range(start, stop, step) {
     if (typeof stop == 'undefined') {
@@ -24,6 +39,18 @@ function range(start, stop, step) {
 
     return result;
 };
+
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) {
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
+}
 
 var Paginate = React.createClass({
     handleClick: function(e) {
@@ -153,8 +180,13 @@ var VacancyNode = React.createClass({
 
 var VacancyList = React.createClass({
     getInitialState: function () {
+        qs = $.QueryString;
+        var page = '1';
+        if ('page' in qs) {
+            page = $.QueryString['page'];
+        }
         return {
-            page: 0
+            page: parseInt(page)-1
         };
     },
     getList: function() {
@@ -173,6 +205,7 @@ var VacancyList = React.createClass({
     },
     handlePageClick: function(e, val) {
         this.setState({page: parseInt(val)});
+        navigate('?city={0}&category={1}&page={2}'.format(this.props.parent.state.city, this.props.parent.state.category, parseInt(val)+1), true);
     },
 
     render: function() {
@@ -182,6 +215,9 @@ var VacancyList = React.createClass({
         amount = Math.ceil(filtered_data.length / per_page);
         if (page>amount-1) {
             page=amount-1;
+        }
+        if (page<0) {
+            page=0;
         }
         offset = per_page*page;
         filtered_data = this.getList().slice(offset, offset+per_page)
@@ -211,8 +247,18 @@ var SpecSelect = React.createClass({
         this.props.list.map(function(p) {
             options.push({ value: p.id, label: p.name })
         });
+
+        initial_value = options.filter(function(n) {
+            return n.value == this.props.value;
+        }.bind(this)).map(function(n) {
+            return n.label;
+        })[0];
+
+        if (this.props.value == 0) {
+            initial_value = '';
+        }
         return (
-            <Select onChange={this.handleChange} clearable={false} options={options} placeholder="Категория" className="categoryDropdown">
+            <Select onChange={this.handleChange} clearable={false} value={initial_value} options={options} placeholder="Категория" className="categoryDropdown">
             </Select>
         );
     }
@@ -232,8 +278,19 @@ var CitySelect = React.createClass({
         this.props.list.map(function(p) {
             options.push({ value: p.id, label: p.name })
         });
+
+        initial_value = options.filter(function(n) {
+            return n.value == this.props.value;
+        }.bind(this)).map(function(n) {
+            return n.label;
+        })[0];
+
+        if (this.props.value == 0) {
+            initial_value = '';
+        }
+
         return (
-            <Select onChange={this.handleChange} clearable={false} options={options} placeholder="Город" className="cityDropdown">
+            <Select onChange={this.handleChange} clearable={false} value={initial_value} options={options} placeholder="Город" className="cityDropdown">
             </Select>
         );
     }
@@ -252,20 +309,34 @@ var VacancyBox = React.createClass({
         this.setState({
             category: parseInt(val)
         });
+        navigate('?city={0}&category={1}&page={2}'.format(this.state.city, val, this.refs.list.state.page), true);
     },
     handleCitySelect: function(childComponent, val) {
         this.setState({
             city: parseInt(val)
         });
+        navigate('?city={0}&category={1}&page={2}'.format(val, this.state.category, this.refs.list.state.page), true);
     },
     componentDidMount: function() {
+        qs = $.QueryString;
+        var city_id = '0';
+        var category_id = '0';
+        if ('city' in qs) {
+            city_id = $.QueryString['city'];
+        }
+        if ('category' in qs) {
+            category_id = $.QueryString['category'];
+        }
         $.get(
             'list',
             function(result) {
                 this.setState({
                     data: result,
+                    city: parseInt(city_id),
+                    category: parseInt(category_id),
                 });
             }.bind(this));
+
     },
     render: function() {
         results = this.state.data.vacancies;
@@ -273,9 +344,9 @@ var VacancyBox = React.createClass({
         amount = Math.ceil(results.length / 2);
         return (
             <div className="vacancyBox">
-            <SpecSelect onChange={this.handleSpecSelect} list={this.state.data.categories} ref="select" />
-            <CitySelect onChange={this.handleCitySelect} list={this.state.data.cities} ref="select" />
-            <VacancyList per_page={5} data={results} citylist={this.state.data.cities} category={this.state.category} city={this.state.city} ref="list"/>
+            <SpecSelect onChange={this.handleSpecSelect} value={this.state.category} list={this.state.data.categories} ref="select" />
+            <CitySelect onChange={this.handleCitySelect}  value={this.state.city} list={this.state.data.cities} ref="select" />
+            <VacancyList per_page={5} data={results} parent={this} citylist={this.state.data.cities} category={this.state.category} city={this.state.city} ref="list"/>
             </div>
         );
     }

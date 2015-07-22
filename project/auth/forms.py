@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, EqualTo, Email, Length
-from .validators import LoginFormat, PasswordFormat, Exists
+from .validators import LoginFormat, PasswordFormat, Exists, PasswordCorrect
 
 
 class ResetForm(Form):
@@ -14,7 +14,6 @@ class ResetForm(Form):
             lambda x: x.lower() if x else None,
         ],
     )
-
 
 class LoginForm(Form):
     login = StringField(
@@ -74,12 +73,16 @@ class RegisterForm(Form):
     )
 
 
-class UserEditForm(RegisterForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+class PasswordEditForm(Form):
+    old_password = PasswordField(
+        label='Старый пароль',
+        validators=[
+            PasswordCorrect(),
+        ]
+    )
 
-    password = PasswordField(
-        label='Пароль',
+    new_password = PasswordField(
+        label='Новый пароль',
         validators=[
             EqualTo(
                 'confirmation',
