@@ -6,6 +6,7 @@ from project.models import User
 
 auth = Blueprint('auth', __name__)
 
+
 @auth.before_app_request
 def add_login_to_g():
     if 'user_id' in session:
@@ -13,6 +14,7 @@ def add_login_to_g():
         g.user = user
     else:
         g.user = None
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -62,6 +64,7 @@ def confirm_reset(token):
     else:
         abort(404)
 
+
 @auth.route('/password_change', methods=['GET', 'POST'])
 @login_required
 def change_password():
@@ -76,7 +79,6 @@ def change_password():
         submit='Сменить',
         form=form,
     )
-
 
 
 @auth.route('/logout', methods=['GET'])

@@ -15,6 +15,7 @@ class ResetForm(Form):
         ],
     )
 
+
 class LoginForm(Form):
     login = StringField(
         'Логин',

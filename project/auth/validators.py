@@ -19,6 +19,7 @@ PasswordFormat = Regexp(regex='^(?=.*[0-9])[a-zA-Z][a-zA-Z0-9-_.]+$',
                                 ' цифр и символов (_.-), начинаться с буквы,'
                                 '  содержать хоть одну цифру')
 
+
 class PasswordCorrect(object):
     def __init__(self, message=None):
         self.message = message or 'Неверный пароль'
@@ -26,6 +27,7 @@ class PasswordCorrect(object):
     def __call__(self, _, field):
         if not check_password_hash(g.user.password, field.data):
             raise ValidationError(self.message)
+
 
 class Exists(object):
     def __init__(self, message=None, reverse=False):
