@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, url_for, session, redirect
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
 from project.pages.forms import PageBlockForm, PageForm
-from project.pages.views import PageDetail
+from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm
 from project.models import Vacancy, Category, City, User, PageBlock, Page
