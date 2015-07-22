@@ -18,7 +18,7 @@ class Vacancy(Base):
     text = Column(Text(), nullable=False)
     category_id = Column(Integer, ForeignKey('category.id'))
     category = relationship('Category', backref=backref('vacancies'))
-    name_in_url = Column(String(50), nullable=False)
+    name_in_url = Column(String(50), nullable=False, unique=True)
     visits = Column(Integer, nullable=False, default=0)
     salary = Column(String(50))
     description = Column(String(200))  # for search spider
@@ -43,7 +43,7 @@ class Vacancy(Base):
 class Category(Base):
     __tablename__ = 'category'
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), nullable=False)
+    name = Column(String(50), nullable=False, unique=True)
 
     bl = Resource('bl.category')
 
@@ -97,7 +97,7 @@ class User(Base):
 class City(Base):
     __tablename__ = 'city'
     id = Column(Integer, primary_key=True)
-    name = Column(String(20), nullable=False)
+    name = Column(String(20), nullable=False, unique=True)
     bl = Resource('bl.city')
 
     def __str__(self):
