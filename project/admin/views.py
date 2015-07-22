@@ -1,22 +1,13 @@
-from flask import Blueprint, render_template, url_for, session, g, redirect
+from flask import Blueprint, render_template, url_for, session, redirect
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
 from project.admin.utils import EntryDetail, EntryList
-from project.auth.forms import RegisterForm, UserEditForm
+from project.auth.forms import RegisterForm
 from project.models import Vacancy, Category, City, User
 
 SECTIONS = {}  # list_name: list_endpoint
 
 
 admin_app = Blueprint('admin', __name__)
-
-
-@admin_app.before_request
-def add_login_to_g():
-    if 'user_id' in session:
-        user = User.query.get(session['user_id'])
-        g.user = user
-    else:
-        g.user = None
 
 
 @admin_app.before_request
@@ -130,7 +121,6 @@ user_list = EntryList.as_view(
 user_detail = EntryDetail.as_view(
     name='user_detail',
     create_form=RegisterForm,
-    update_form=UserEditForm,
     model=User,
     success_url="user_list",
 )

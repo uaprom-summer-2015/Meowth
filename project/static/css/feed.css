@@ -2,7 +2,7 @@
     width: 30px;
     height: 30px;
     margin-left: 9px;
-    margin-top: 7.5px;
+    margin-top: 6%;
     float: left;
 }
 .vacancyTitle {
@@ -11,26 +11,48 @@
     text-align: center;
     margin-top: 8px;
     margin-right: 25px;
-    font-family: sans-serif;
+    font-family: sans-serif !important;
 }
+
+
+.vacancyTitle > a {
+    color: #000000;
+    font-family: sans-serif
+}
+
+.vacancyTitle > a:hover {
+    color: #123456;
+
+    text-decoration: none;
+}
+
 .vacancyDescr {
     margin-left: 15%;
     font-family: sans-serif;
+    margin-right: 11%;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.vacancyCity {
+    margin-left: 4%;
+    font-family: sans-serif;
+    display: inline;
     width: 80%;
+    font-size: 20px;
+}
+
+.vacancySalary {
+    float: right;
+    display: inline;
+    margin-right: 11%;
+    font-size: 20px !important;
 }
 
 .panel {
     margin: 2px;
     float: left;
     width: 100%;
-}
-
-.vacancyNodeCompressed, .vacancyNodeExpanded {
-
-}
-
-.vacancyNodeCompressed {
-    height: 70px;
 }
 
 .vacancyBox {
@@ -112,13 +134,13 @@
 }
 
 .btn-circle {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   text-align: center;
   padding: 6px 0;
-  font-size: 12px;
+  font-size: 13.125px;
   line-height: 1.428571429;
-  border-radius: 15px;
+  border-radius: 17.5px;
 }
 
 .btn-circle.btn-lg {
