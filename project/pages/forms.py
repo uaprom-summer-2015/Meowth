@@ -1,11 +1,21 @@
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField
+from wtforms import StringField, TextAreaField, SelectField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import Length
 from project.models import PageBlock
 
 
 class PageBlockForm(Form):
+    block_type = SelectField(
+        label='Select layout',
+        choices=[
+            (PageBlock.TYPE.img_left.value, 'Layout with image left'),
+            (PageBlock.TYPE.img_right.value, 'Layout with image right'),
+            (PageBlock.TYPE.no_img.value, 'Layout with no image'),
+        ],
+        coerce=lambda x: PageBlock.TYPE(int(x)),
+        default=PageBlock.TYPE.img_left,
+    )
     title = StringField(
         label='Title',
         validators=[
