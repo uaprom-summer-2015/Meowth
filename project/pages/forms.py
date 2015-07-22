@@ -1,6 +1,6 @@
 from flask_wtf import Form
 from wtforms import StringField, TextAreaField
-from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import Length
 from project.models import PageBlock
 
@@ -51,11 +51,33 @@ class PageForm(Form):
     url = StringField(
         label='Url',
     )
-    blocks = QuerySelectMultipleField(
-        label='Blocks',
-        # FIXME: workaround for current admin architecture
-        # TODO: leave only free blocks and blocks that belong to this page
-        query_factory=(
-            lambda: PageBlock.query.all()
-        )
+    block_1 = QuerySelectField(
+        label='First block',
+        query_factory=lambda: PageBlock.query.all(),
+        allow_blank=True,
+        blank_text='None',
+    )
+    block_2 = QuerySelectField(
+        label='Second block',
+        query_factory=lambda: PageBlock.query.all(),
+        allow_blank=True,
+        blank_text='None',
+    )
+    block_3 = QuerySelectField(
+        label='Third block',
+        query_factory=lambda: PageBlock.query.all(),
+        allow_blank=True,
+        blank_text='None',
+    )
+    block_4 = QuerySelectField(
+        label='Fourth block',
+        query_factory=lambda: PageBlock.query.all(),
+        allow_blank=True,
+        blank_text='None',
+    )
+    block_5 = QuerySelectField(
+        label='Fifth block',
+        query_factory=lambda: PageBlock.query.all(),
+        allow_blank=True,
+        blank_text='None',
     )

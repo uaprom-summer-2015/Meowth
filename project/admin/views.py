@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, url_for
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
 from project.pages.forms import PageBlockForm, PageForm
+from project.pages.views import PageDetail
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm, UserEditForm
 from project.models import Vacancy, Category, City, User, PageBlock, Page
@@ -181,7 +182,7 @@ def pages_list():
         pages=Page.query.all(),
     )
 
-page_view = EntryDetail.as_view(
+page_view = PageDetail.as_view(
     name='page_detail',
     create_form=PageForm,
     model=Page,
