@@ -7,8 +7,8 @@ class PageDetail(EntryDetail):
 
     def get(self, entry_id):
         if entry_id is None:
-            # Add a new entry
-            entry_form = self.create_form()
+            # Forbidden
+            abort(403)
         else:
             # Update an old entry
             entry = self.model.bl.get(entry_id)
@@ -41,11 +41,8 @@ class PageDetail(EntryDetail):
             return _data
 
         if entry_id is None:
-            # Add a new entry
-            form = self.create_form()
-            if form.validate_on_submit():
-                self.model.bl.create(prepare_data(form.data))
-                return redirect(url_for("admin."+self.success_url))
+            # Forbidden
+            abort(403)
         else:
             # Update an old entry
             instance = self.model.bl.get(entry_id)
