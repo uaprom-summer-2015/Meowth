@@ -1,12 +1,16 @@
+from email.policy import EmailPolicy
 from flask import request
-from flask_mail import Message
+import flask_mail
 from project import app
 from project.tasks.mail import celery_send_mail
 
 
+flask_mail.message_policy = EmailPolicy(linesep='\r\n', refold_source='none')
+
+
 def get_message(title, body, recipients, attachment_name=None,
                 attachment_type=None, attachment=None):
-    msg = Message(title, recipients=recipients)
+    msg = flask_mail.Message(title, recipients=recipients)
     msg.body = body
     if attachment:
         msg.attach(attachment_name,
@@ -37,7 +41,9 @@ def get_message_from_form(form, vacancy):
 
 def send_mail_from_form(form, vacancy):
     msg = get_message_from_form(form, vacancy)
+    msg4reply = get_msg_for_reply(form, vacancy)
     celery_send_mail.delay(msg)
+    celery_send_mail.delay(msg4reply)
 
 
 def send_mail(title, body, recipients, attachment_name=None,
@@ -45,3 +51,14 @@ def send_mail(title, body, recipients, attachment_name=None,
     msg = get_message(title, body, recipients, attachment_name,
                       attachment_type, attachment)
     celery_send_mail.delay(msg)
+
+
+def get_msg_for_reply(form, vacancy):
+    recipients = [form.email.data]
+    subject = 'Резюме'
+    body = 'Здравствуйте, {}!\n' \
+    'Мы получили Ваше резюме на вакансию {}'.format(
+        form.name.data,
+        vacancy.title
+    )
+    return get_message(subject, body, recipients)
