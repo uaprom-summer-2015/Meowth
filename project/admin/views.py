@@ -1,15 +1,23 @@
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template, url_for, session, redirect
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.views import PageDetail
 from project.admin.utils import EntryDetail, EntryList
-from project.auth.forms import RegisterForm, UserEditForm
+from project.auth.forms import RegisterForm
 from project.models import Vacancy, Category, City, User, PageBlock, Page
 
 SECTIONS = {}  # list_name: list_endpoint
 
 
 admin_app = Blueprint('admin', __name__)
+
+
+@admin_app.before_request
+def check_user_logged_in():
+    if 'user_id' in session:
+        return
+
+    return redirect(url_for("auth.login"))
 
 
 def register_section(*, section_name, list_endpoint,
@@ -115,7 +123,6 @@ user_list = EntryList.as_view(
 user_detail = EntryDetail.as_view(
     name='user_detail',
     create_form=RegisterForm,
-    update_form=UserEditForm,
     model=User,
     success_url="user_list",
 )

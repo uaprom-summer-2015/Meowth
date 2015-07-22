@@ -1,10 +1,19 @@
 from flask import render_template, Blueprint, flash, session, redirect, \
     url_for, abort, g
-from .forms import LoginForm, ResetForm
+from .forms import LoginForm, ResetForm, PasswordEditForm
 from .decorators import login_required
 from project.models import User
 
 auth = Blueprint('auth', __name__)
+
+
+@auth.before_app_request
+def add_login_to_g():
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+        g.user = user
+    else:
+        g.user = None
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -15,12 +24,12 @@ def login():
         if user:
             session['user_id'] = user.id
             g.user = user
-            return redirect(url_for('admin.vacancy_list'))
+            return redirect(url_for('admin.mainpage'))
         else:
             flash("Неправильный логин и/или пароль")
 
     if session.get('user_id'):
-        return redirect(url_for('admin.vacancy_list'))
+        return redirect(url_for('admin.mainpage'))
 
     return render_template(
         'login.html',
@@ -56,17 +65,24 @@ def confirm_reset(token):
         abort(404)
 
 
+@auth.route('/password_change', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = PasswordEditForm()
+    if form.validate_on_submit():
+        User.bl.set_password(form.data['new_password'])
+        flash('Ваш пароль успешно изменён')
+        return redirect(url_for('admin.mainpage'))
+    return render_template(
+        'login.html',
+        title='Смена пароля',
+        submit='Сменить',
+        form=form,
+    )
+
+
 @auth.route('/logout', methods=['GET'])
 @login_required
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('auth.login'))
-
-
-@auth.before_request
-def add_login_to_g():
-    if session['user_id']:
-        user = User.query.get(session['user_id'])
-        g.user = user
-    else:
-        g.user = None

@@ -1,5 +1,5 @@
 from project.admin.utils import EntryDetail
-from flask import url_for, abort
+from flask import Blueprint, render_template, url_for, abort
 from werkzeug.utils import redirect
 
 
@@ -55,3 +55,26 @@ class PageDetail(EntryDetail):
                 return redirect(url_for("admin."+self.success_url))
 
         return self.render_response(entry_form=form)
+
+
+pages_app = Blueprint('pages', __name__)
+
+
+@pages_app.route('/')
+def mainpage():
+    return render_template('pages/mainpage.html')
+
+
+@pages_app.route('/projects/')
+def projects():
+    return render_template('pages/projects.html')
+
+
+@pages_app.route('/about/')
+def about():
+    return render_template('pages/about.html')
+
+
+@pages_app.route('/contacts/')
+def contacts():
+    return render_template('pages/contacts.html')

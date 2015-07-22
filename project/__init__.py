@@ -25,6 +25,8 @@ from project.extensions import mail, celery, CsrfProtect  # NOQA
 from project.admin.views import admin_app
 from project.auth.views import auth as auth_app
 from project.feed.views import feed
+from project.pages.views import pages_app
+app.register_blueprint(pages_app)
 app.register_blueprint(admin_app, url_prefix='/admin')
 app.register_blueprint(auth_app, url_prefix='/auth')
 app.register_blueprint(feed, url_prefix='/vacancies')
