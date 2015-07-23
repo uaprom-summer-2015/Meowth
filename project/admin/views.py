@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, url_for, session, redirect
-from project.admin.forms import VacancyForm, CategoryForm, CityForm
+from project.admin.forms import VacancyForm, CategoryForm, CityForm, \
+    PageChunkForm
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm
-from project.models import Vacancy, Category, City, User, PageBlock, Page
+from project.models import Vacancy, Category, City, User, PageBlock, Page, \
+    PageChunk
 
 SECTIONS = {}  # list_name: list_endpoint
 
@@ -176,12 +178,36 @@ page_view = PageDetail.as_view(
 )
 
 register_section(
-    section_name="Страницьі",
+    section_name="Страницы",
     list_route="/pages/",
     detail_route="/page/",
     list_view=page_list,
     detail_view=page_view,
     list_endpoint="page_list",
+)
+
+# Page chunks
+pagechunk_list = EntryList.as_view(
+    name="pagechunk_list",
+    model=PageChunk,
+    template="admin/pagechunks.html",
+)
+
+pagechunk_detail = EntryDetail.as_view(
+    name='pagechunk_detail',
+    create_form=PageChunkForm,
+    model=PageChunk,
+    template="admin/pagechunk.html",
+    success_url="pagechunk_list",
+)
+
+register_section(
+    section_name="Элементы страниц",
+    list_route="/pagechunks/",
+    detail_route="/pagechunk/",
+    list_view=pagechunk_list,
+    detail_view=pagechunk_detail,
+    list_endpoint="pagechunk_list",
 )
 
 
@@ -200,3 +226,4 @@ def mainpage():
 @admin_app.errorhandler(403)
 def handle_forbidden(error):
     return render_template('admin/403.html'), 403
+

@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+    <ul class="list-group">
+        {% for entry in entries %}
+            <li class="list-group-item">
+                <a href="{{ url_for('admin.pagechunk_detail', entry_id=entry.id) }}">
+                  {{ entry.name }}
+                </a>
+            </li>
+        {% endfor %}
+        <li class="list-group-item list-group-item-info">
+            <a href="{{ url_for('admin.pagechunk_detail') }}">
+                Добавить новый элемент страницы
+            </a>
+        </li>
+    </ul>
+{% endblock %}

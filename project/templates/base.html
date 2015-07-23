@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="http://getbootstrap.com/examples/sticky-footer-navbar/sticky-footer-navbar.css">
+{#    <link rel="stylesheet" href="">#}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %}HRUAPROM</title>
 </head>
 <body>
     {% block header %}
@@ -53,15 +53,11 @@
     </div>
 
     {% block footer %}
-        <footer class="footer">
+        <footer class="footer ">
                 <div class="container container-footer">
-                    <span class="footer-el footer-left">Копировано правильно</span>
-                    <span class="footer-el footer-center">Мы очень социабельны</span>
-                    <span class="footer-el footer-right">
-                        Телефоны модныеfdsfs
-                        <br>
-                        fdsfs<br>
-                    </span>
+                    <span class="footer-el footer-left"> {{ pagechunks.copyright|safe }} </span>
+                    <span class="footer-el footer-center"> {{ pagechunks.social_networks|safe }} </span>
+                    <span class="footer-el footer-right"> {{ pagechunks.contacts|safe }} </span>
                 </div>
         </footer>
     {% endblock %}

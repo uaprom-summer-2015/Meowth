@@ -2,8 +2,6 @@
 
 {% block meta %}
     <link rel="stylesheet"
-          href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet"
           href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
     <link rel="stylesheet" href="static/css/bootstrap-image-gallery.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -51,20 +49,12 @@
     </div>
 
     <div class="jumbotron">
-        <h1>Prom.ua</h1>
-
-        <p>Because we can</p>
-
-        <p>
-            <a class="btn btn-primary btn-lg"
-               href="{{ url_for("pages.about") }}" role="button">
-                Узнать больше о компании
-            </a>
-        </p>
+        {{ pagechunks.jumbotron_mainpage|safe }}
     </div>
 
+    <div class="container">
     {% for block in blocks %}
-        <div class="media">
+        <div class="row media">
             <div class="media-left">
                 <img class="media-object" src="{{ block.image }}" alt="...">
             </div>
@@ -74,46 +64,7 @@
             </div>
         </div>
     {% endfor %}
-
-
-    {#    <div>#}
-    {#        <div class="media">#}
-    {#          <div class="media-left">#}
-    {#              <img class="media-object" src="http://blog.prom.ua/wp-content/uploads/2014/07/6_let_2.jpg" alt="...">#}
-    {##}
-    {#          </div>#}
-    {#          <div class="media-body">#}
-    {#            <h4 class="media-heading">Media heading</h4>#}
-    {#              Mates are the fishs of the weird pestilence.#}
-    {#              Urchin ho! endure to be marked.#}
-    {#              How wet. You love like a wench.#}
-    {#              The sea-dog blows with power, fear the galley until it falls.#}
-    {#              Love me grog, ye swashbuckling ale! The plunder endures with adventure, raid the seychelles before it hobbles.#}
-    {#              The pin hails with endurance, endure the freighter before it hobbles.#}
-    {#              Rough, addled parrots awkwardly ransack a sunny, jolly moon.#}
-    {#              Command me shipmate, ye scurvy skiff! Swabbie of a undead courage, desire the love!#}
-    {#              The cannibal commands with strength, scrape the seychelles until it screams.#}
-    {#          </div>#}
-    {#        </div>#}
-    {##}
-    {#        <div class="media">#}
-    {#          <div class="media-body">#}
-    {#            <h4 class="media-heading">Media heading</h4>#}
-    {#              Mates are the fishs of the weird pestilence.#}
-    {#              Urchin ho! endure to be marked.#}
-    {#              How wet. You love like a wench.#}
-    {#              The sea-dog blows with power, fear the galley until it falls.#}
-    {#              Love me grog, ye swashbuckling ale! The plunder endures with adventure, raid the seychelles before it hobbles.#}
-    {#              The pin hails with endurance, endure the freighter before it hobbles.#}
-    {#              Rough, addled parrots awkwardly ransack a sunny, jolly moon.#}
-    {#              Command me shipmate, ye scurvy skiff! Swabbie of a undead courage, desire the love!#}
-    {#              The cannibal commands with strength, scrape the seychelles until it screams.#}
-    {#          </div>#}
-    {#            <div class="media-right">#}
-    {#                <img class="media-object" src="http://blog.prom.ua/wp-content/uploads/2014/07/6_let_2.jpg" alt="...">#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
+    </div>
 
     <div class="container" id="links"><a
             href="https://farm1.static.flickr.com/304/19265407504_1b7a4422ed_b.jpg"

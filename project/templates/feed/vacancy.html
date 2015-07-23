@@ -11,11 +11,16 @@
 {% endblock %}
 {% block content %}
     <div class="vacancy">
-        <h1>{{ vacancy.title }}</h1>
+        <h1 class="text-center">{{ vacancy.title }}</h1>
+        <h3 class="text-center">
+
+
         {% if vacancy.salary %}
-        <p>{{ vacancy.salary }}</p>
+        <span class="text-left">{{ vacancy.salary }}</span>
         {% endif %}
-        <p>{{ vacancy.city }}</p>
+        <span class="text-right">{{ vacancy.city }}</span>
+        </h3>
+
         <p>{{ vacancy.text|safe }}</p>
     </div>
 
@@ -27,14 +32,14 @@
     {% for field in form if field.widget.input_type != 'hidden' %}
       <p>
           <b>{{ field.label }}:</b>
-          {{ field }}
+          {{ field(class="form-control") }}
           {% for error in field.errors %}
           {{ error }}
           {% endfor %}
       </p>
     {% endfor %}
 
-    <input type="submit" value="Ответить"/>
+    <input class="btn btn-default" type="submit" value="Ответить"/>
 
 </form>
 {% endblock %}

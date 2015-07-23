@@ -1,7 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Вакансии{% endblock %}
+{% block title %}Вакансии - {% endblock %}
 {% block content %}
-        <div id="vacancies"></div>
+    <div class="row">
+            <div class=" col-md-6 col-md-offset-3" id="vacancies"></div>
+    </div>
+    <div class="row">
+
+        <div class="jumbotron">
+
+            {{ pagechunks.didnt_find_vacancy }}
+        </div>
+    </div>
 <script src="{{ url_for('static', filename='js/dist/feed.js') }}"
         type="text/javascript"></script>
 
