@@ -161,10 +161,9 @@ class PageBlock(Base):
         nullable=False
     )
     title = Column(Varchar(128), nullable=True)  # if header needed
-    text = Column(Varchar(1024))  # block contents
+    text = Column(Text)  # block contents
     short_description = Column(Varchar(256), nullable=True)  # used for home
-    # by http://stackoverflow.com/a/219664:
-    image = Column(Varchar(2083), nullable=True)
+    image = Column(Text, nullable=True)
 
     bl = Resource('bl.pageblock')
 
@@ -194,7 +193,7 @@ class Page(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(Varchar(128))
-    url = Column(Varchar(2083))  # by http://stackoverflow.com/a/219664
+    url = Column(Text)
     _blocks = relationship(
         "BlockPageAssociation",
         order_by='BlockPageAssociation.position',
