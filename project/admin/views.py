@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, url_for, session, redirect
 from project.admin.forms import VacancyForm, CategoryForm, CityForm
+from project.pages.forms import PageBlockForm, PageForm
+from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm
-from project.models import Vacancy, Category, City, User
+from project.models import Vacancy, Category, City, User, PageBlock, Page
 
 SECTIONS = {}  # list_name: list_endpoint
 
@@ -132,6 +134,54 @@ register_section(
     list_view=user_list,
     detail_view=user_detail,
     list_endpoint="user_list",
+)
+
+
+# PageBlocks
+pageblock_list = EntryList.as_view(
+    name='pageblock_list',
+    model=PageBlock,
+    template="admin/pageblocks.html",
+)
+
+pageblock_view = EntryDetail.as_view(
+    name='pageblock_detail',
+    create_form=PageBlockForm,
+    model=PageBlock,
+    success_url="pageblocks_list",
+)
+
+register_section(
+    section_name="Блоки страниц",
+    list_route="/blocks/",
+    detail_route="/block/",
+    list_view=pageblock_list,
+    detail_view=pageblock_view,
+    list_endpoint="pageblock_list",
+)
+
+
+# Pages
+page_list = EntryList.as_view(
+    name="page_list",
+    model=Page,
+    template="admin/pages.html",
+)
+
+page_view = PageDetail.as_view(
+    name='page_detail',
+    create_form=PageForm,
+    model=Page,
+    success_url="page_list",
+)
+
+register_section(
+    section_name="Страницьі",
+    list_route="/pages/",
+    detail_route="/page/",
+    list_view=page_list,
+    detail_view=page_view,
+    list_endpoint="page_list",
 )
 
 
