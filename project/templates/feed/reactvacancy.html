@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ vacancy.title }}{% endblock %}
+{% block meta %}
+
+    {% if vacancy.description %}
+    <meta name="description" content="{{ vacancy.description }}"/>
+    {% endif %}
+    {% if vacancy.keywords %}
+    <meta name="keywords" content="{{ vacancy.keywords }}"/>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="vacancy">
+        <h1>{{ vacancy.title }}</h1>
+        {% if vacancy.salary %}
+        <p>{{ vacancy.salary }}</p>
+        {% endif %}
+        <p>{{ vacancy.city }}</p>
+        <p>{{ vacancy.text|safe }}</p>
+    </div>
+
+<br/>
+<br/>
+
+<script src="{{ url_for('static', filename='js/vacancy_form/form.jsx') }}"
+        type="text/jsx"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+<div class="col-sm-offset-2 col-sm-4">
+    <div id="attached-form" data-security-token="{{ security_token }}"></div>
+</div>
+
+{% endblock %}
