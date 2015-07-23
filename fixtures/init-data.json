@@ -201,6 +201,26 @@
     },
 
     {
+        "model": "project.models.PageBlock",
+        "fields": {
+            "title": "iOS Development",
+            "short_description": "Our experienced iOS engineers will help you to shape your vision of a future iPhone or iPad app.",
+            "text": "To succeed in the App Store today you must deliver absolutely the best experience to end users! Apps should be perfectly designed, intuitive, responsive, and fulfill user needs. We are ready to work as your adviser and consultant to guide you through the whole process of mobile app development, starting from ideation, UI/UX, design, engineering and right up to publication in the market. Our experienced iOS engineers will help you to shape your vision of a future iPhone or iPad app. Usually, the iOS platform is the #1 priority for many mobile app development projects. We have been furnishing our clients with robust, technically proficient and aesthetically attractive iOS apps for iPhone and iPad since 2009. We successfully implemented projects on the following fronts: Lifestyle, Education, Health & Fitness, Photo & Video, Finance, Social Networking, Travel, Entertainment and more.",
+            "image": "http://stanfy.com/wp-content/themes/Stanfy/img/ios-image.png"
+        }
+    },
+
+    {
+        "model": "project.models.PageBlock",
+        "fields": {
+            "title": "Android Development",
+            "short_description": "Our team can develop an Android app for your mobile product from scratch or help your iOS app easily migrate to the Android platform.",
+            "text": "We started Android application development in 2009 after the platform expanded globally. When working with us you don’t have to worry about Android platform fragmentation and different screen resolutions - your app will be carefully tested and will work seamlessly on the most popular Android devices. Our team can develop an Android app for your mobile product from scratch or help your iOS app easily migrate to the Android platform. When porting to Android, we use native components and Android design. We started Android application development in 2009 and since that time have developed and launched a bunch of successful apps. Our team gained experience in the implementation of complex projects in different categories, including Lifestyle, Education, Health & Fitness, Media & Video, Photography, Finance, Social, Shopping, Travel & Local, Entertainment and others. We have also worked with high-tech tasks: audio processing, geolocation, video processing and animation. Each project gave us precious experience.",
+            "image": "http://crackberry.com/sites/crackberry.com/files/styles/large/public/topic_images/2013/ANDROID.png"
+        }
+    },
+
+    {
        "model": "project.models.BlockPageAssociation",
        "fields": {
             "page_id": 1,
@@ -224,6 +244,42 @@
             "page_id": 1,
             "block_id": 3,
             "position": 2
+       }
+    },
+
+    {
+       "model": "project.models.BlockPageAssociation",
+       "fields": {
+            "page_id": 2,
+            "block_id": 5,
+            "position": 0
+       }
+    },
+
+    {
+       "model": "project.models.BlockPageAssociation",
+       "fields": {
+            "page_id": 2,
+            "block_id": 4,
+            "position": 1
+       }
+    },
+
+    {
+       "model": "project.models.BlockPageAssociation",
+       "fields": {
+            "page_id": 4,
+            "block_id": 5,
+            "position": 0
+       }
+    },
+
+    {
+       "model": "project.models.BlockPageAssociation",
+       "fields": {
+            "page_id": 4,
+            "block_id": 4,
+            "position": 1
        }
     }
 ]
