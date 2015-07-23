@@ -117,3 +117,6 @@ Session.vim
 # Frontend stuff:
 node_modules/
 bower_components/
+
+# frontend dist:
+project/static/dist/
