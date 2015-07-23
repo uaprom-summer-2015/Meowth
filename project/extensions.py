@@ -1,4 +1,3 @@
-import logging
 from flask_mail import Mail
 from flask_wtf.csrf import CsrfProtect
 from project.celery import make_celery
