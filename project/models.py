@@ -141,6 +141,15 @@ class BlockPageAssociation(Base):
         db_session.delete(self)
 
 
+class PageChunk(Base):
+    __table__ = 'pagechunks'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text, unique=True)
+    text = Column(Text)
+
+    bl = Resource('bl.pagechunk')
+
+
 class PageBlock(Base):
     __tablename__ = 'pageblocks'
 
