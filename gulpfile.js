@@ -1,5 +1,17 @@
 var gulp = require('gulp');
+var config = require('./gulp.conf.json')
 
-gulp.task('default', function() {
-  // place code for your default task here
+var del = require('del')
+
+gulp.task('build', ['build:scripts'])
+
+gulp.task('build:scripts', function() {
+  // TODO: provide code
+});
+
+gulp.task('clean', function(cb) {
+  glob = config.dist + '/*';
+  return del([glob, '!.gitignore'], function(err, paths) {
+    console.log('Deleted files/folders:\n', paths.join('\n'));
+  });
 });
