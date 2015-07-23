@@ -8,7 +8,7 @@ from project.bl.mail import send_mail_from_form
 feed = Blueprint('feed', __name__)
 
 
-@feed.route('//')
+@feed.route('/')
 def vacancies():
     return render_template('feed/vacancies.html')
 
