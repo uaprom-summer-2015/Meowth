@@ -168,5 +168,62 @@
             "title": "Главная",
             "url": "/"
         }
+    },
+
+    {
+        "model": "project.models.PageBlock",
+        "fields": {
+            "title": "Chuze",
+            "short_description": "Chuze changes the way you shop for groceries. It helps you save time, money and improve your shopping experience.",
+            "text": "Chuze changes the way you shop for groceries. It helps you save time, money and improve your shopping experience.",
+            "image": "http://stanfy.com/wp-content/uploads/2015/07/chuze1_6-e1437642749950.png"
+        }
+    },
+
+    {
+        "model": "project.models.PageBlock",
+        "fields": {
+            "title": "Waterbalance for Apple Watch",
+            "short_description": "An Apple Watch app that allows you to track your daily water intake even more easily. Eventually it helps you to turn drinking water into a healthy habit.",
+            "text": "An Apple Watch app that allows you to track your daily water intake even more easily. Eventually it helps you to turn drinking water into a healthy habit.",
+            "image": "http://stanfy.com/wp-content/uploads/2015/03/waterbalance-app-screen.png"
+        }
+    },
+
+    {
+        "model": "project.models.PageBlock",
+        "fields": {
+            "title": "Keypr",
+            "short_description": "Keypr is a new word in the hotel industry. This embedded software brings an understanding of what it means to be a quality hotel service.",
+            "text": "Keypr is a new word in the hotel industry. This embedded software brings an understanding of what it means to be a quality hotel service. Keypr enables guests to check in/out of the room, order room service, find the nearest restaurants, order a taxi and even check their guest info in the hotel – all this in only a few clicks. You don’t need to make calls or wait in queue – all you need is on the Keypr Android tablet in your room!",
+            "image": "http://stanfy.com/wp-content/uploads/2014/10/keypr.jpg"
+        }
+    },
+
+    {
+       "model": "project.models.BlockPageAssociation",
+       "fields": {
+            "page_id": 1,
+            "block_id": 1,
+            "position": 0
+       }
+    },
+
+    {
+       "model": "project.models.BlockPageAssociation",
+       "fields": {
+            "page_id": 1,
+            "block_id": 2,
+            "position": 1
+       }
+    },
+
+    {
+       "model": "project.models.BlockPageAssociation",
+       "fields": {
+            "page_id": 1,
+            "block_id": 3,
+            "position": 2
+       }
     }
 ]
