@@ -142,12 +142,16 @@ class BlockPageAssociation(Base):
 
 
 class PageChunk(Base):
-    __table__ = 'pagechunks'
+    __tablename__ = 'pagechunks'
     id = Column(Integer, primary_key=True)
     name = Column(Text, unique=True)
     text = Column(Text)
 
     bl = Resource('bl.pagechunk')
+
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
 
 
 class PageBlock(Base):
