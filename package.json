@@ -27,14 +27,18 @@
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-rename": "^1.2.2",
+    "gulp-stylus": "^2.0.5",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "reactify": "^1.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
-
-
+  "stylus": {
+    "includes": [
+      "./bower_components/bootstrap-stylus"
+    ]
+  },
   "browserify": {
     "transform": [
       "debowerify",
@@ -45,7 +49,6 @@
       ".jsx"
     ]
   },
-
   "assets": {
     "scripts": {
       "entries": [
@@ -56,12 +59,13 @@
         "./project/static/src/js/**/*.jsx"
       ],
       "paths": [
-        "./node_modules", 
+        "./node_modules",
         "./project/static/src/js"
       ]
-    }
+    },
+    "styles": [
+      "./project/static/src/css/main.styl"
+    ]
   },
-
   "dist": "./project/static/dist"
-
 }
