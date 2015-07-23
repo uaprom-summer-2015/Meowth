@@ -36,12 +36,6 @@ class PageBlockForm(Form):
     )
     text = TextAreaField(
         label='Text',
-        validators=[
-            Length(
-                max=1024,
-                message='Must not exceed 1024 symbols',
-            ),
-        ],
     )
     image = StringField(
         label='Image (url for now)',
