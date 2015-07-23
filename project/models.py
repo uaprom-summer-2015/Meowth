@@ -199,6 +199,7 @@ class Page(Base):
         "BlockPageAssociation",
         order_by='BlockPageAssociation.position',
         collection_class=ordering_list('position'),
+        cascade='save-update, merge, delete, delete-orphan',
     )
     blocks = association_proxy(
         '_blocks',
