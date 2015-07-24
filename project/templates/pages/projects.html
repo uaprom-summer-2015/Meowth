@@ -6,11 +6,11 @@
     {% for block in blocks %}
         <div class="media">
             <div class="media-left">
-                <img class="media-object" src="{{ block.image }}" alt="...">
+                <img class="media-object img-responsive" src="{{ block.image }}" alt="...">
             </div>
             <div class="media-body">
                 <h4 class="media-heading">{{ block.title }}</h4>
-                {{ block.text }}
+                {{ block.text|safe }}
             </div>
         </div>
     {% endfor %}
