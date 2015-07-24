@@ -12,5 +12,8 @@ class TypeEnum(TypeDecorator):
     def process_bind_param(self, enum, dialect):
         return enum.value
 
+    def process_literal_param(self, value, dialect):
+        return self._enum(value)
+
     def process_result_value(self, value, dialect):
         return self._enum(value)

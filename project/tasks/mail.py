@@ -1,5 +1,4 @@
-from project import celery
-from project import mail
+from project.extensions import celery, mail
 
 
 @celery.task()

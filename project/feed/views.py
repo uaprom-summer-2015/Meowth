@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, flash, jsonify
+from flask import render_template, flash, jsonify
 from flask_wtf.csrf import generate_csrf
 from project.blueprints import feed_app
 from project.models import Vacancy, Category, City
@@ -32,12 +32,9 @@ def get_vacancy_react(name_in_url):
 
 @feed_app.route('/list')
 def json_vacancies():
-    vacancies = Vacancy.query.all()
-    categories = Category.query.all()
-    cities = City.query.all()
-    list_vacancies = list(map(lambda v: v.as_dict(), vacancies))
-    list_categories = list(map(lambda c: c.as_dict(), categories))
-    list_cities = list(map(lambda v: v.as_dict(), cities))
+    list_vacancies = [v.as_dict() for v in Vacancy.query.all()]
+    list_categories = [c.as_dict() for c in Category.query.all()]
+    list_cities = [v.as_dict() for v in City.query.all()]
     return jsonify(
         vacancies=list_vacancies,
         categories=list_categories,
