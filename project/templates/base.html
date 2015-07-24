@@ -3,12 +3,8 @@
 <head>
     <meta charset="UTF-8">
     {% block meta %}{% endblock%}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/feed.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-{#    <link rel="stylesheet" href="">#}
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css">
-    <title>{% block title %}{% endblock %}HRUAPROM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/bundle.css') }}">
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
     {% block header %}

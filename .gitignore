@@ -106,4 +106,17 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
+# vim files:
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
 
+# Frontend stuff:
+node_modules/
+bower_components/
+
+# frontend dist:
+project/static/dist/
