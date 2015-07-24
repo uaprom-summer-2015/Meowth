@@ -19,5 +19,8 @@
     "test",
     "tests"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "bootstrap-stylus": "~4.0.5"
+  }
 }
