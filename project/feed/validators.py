@@ -7,6 +7,7 @@ def allowed_extension(message=None):
     if message is None:
         message = 'Нельзя отправлять такой тип файла'
 
+    # noinspection PyUnusedLocal
     def _allowed_extension(form, file):
         if not allowed_file(request.files[file.name].filename):
             raise ValidationError(message)

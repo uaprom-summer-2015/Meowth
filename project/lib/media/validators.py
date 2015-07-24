@@ -1,4 +1,4 @@
-from project import app
+from flask import current_app as app
 
 
 def allowed_file(filename):

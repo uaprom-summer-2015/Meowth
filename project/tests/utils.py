@@ -10,4 +10,5 @@ class ProjectTestCase(TestCase):
     def create_app(self):
         app = flask_app
         app.config['TESTING'] = True
+        app.config.from_object('config.TestingConfig')
         return app
