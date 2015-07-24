@@ -1,6 +1,6 @@
 from importlib import import_module
 from flask import Flask
-from project.extensions import mail, celery, csrf
+from project.extensions import mail, celery, csrf, db
 from project.blueprints import all_blueprints
 from project.database import db
 

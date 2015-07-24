@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, url_for, session, redirect
+from flask import render_template, url_for, session, redirect
+
 from project.admin.forms import VacancyForm, CategoryForm, CityForm, \
     PageChunkForm
 from project.blueprints import admin_app
@@ -23,11 +24,10 @@ def check_user_logged_in():
 def register_section(*, section_name, list_endpoint,
                      list_route, detail_route,
                      list_view, detail_view):
-
     admin_app.add_url_rule(list_route, view_func=list_view)
 
     admin_app.add_url_rule(
-        detail_route+"<int:entry_id>/",
+        detail_route + "<int:entry_id>/",
         view_func=detail_view,
     )
 
@@ -71,7 +71,6 @@ category_list = EntryList.as_view(
     model=Category,
     template="admin/categories.html",
 )
-
 
 category_detail = EntryDetail.as_view(
     name='category_detail',
@@ -213,7 +212,7 @@ register_section(
 def mainpage():
     sections = {}
     for name, endpoint in SECTIONS.items():
-        sections[name] = url_for("admin."+endpoint)
+        sections[name] = url_for("admin." + endpoint)
 
     return render_template(
         "admin/main.html",
@@ -221,6 +220,7 @@ def mainpage():
     )
 
 
+# noinspection PyUnusedLocal
 @admin_app.errorhandler(403)
 def handle_forbidden(error):
     return render_template('admin/403.html'), 403
