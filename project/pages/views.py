@@ -1,23 +1,31 @@
-from flask import Blueprint, render_template
+import logging
+from flask import render_template
+from project.blueprints import pages_app
+from project.models import Page
 
-pages_app = Blueprint('pages', __name__)
 
+# All pages are hardcoded for now
 
-@pages_app.route('/')
+@pages_app.route("/")
 def mainpage():
-    return render_template('pages/mainpage.html')
+    page = Page.bl.get(4)
+    return render_template('pages/mainpage.html', blocks=page.blocks)
 
 
 @pages_app.route('/projects/')
 def projects():
-    return render_template('pages/projects.html')
+    page = Page.bl.get(1)
+    return render_template('pages/projects.html', blocks=page.blocks)
 
 
 @pages_app.route('/about/')
 def about():
-    return render_template('pages/about.html')
+    page = Page.bl.get(2)
+    return render_template('pages/about.html', blocks=page.blocks)
 
 
 @pages_app.route('/contacts/')
 def contacts():
-    return render_template('pages/contacts.html')
+    page = Page.bl.get(3)
+    logging.info(page)
+    return render_template('pages/contacts.html', blocks=page.blocks)

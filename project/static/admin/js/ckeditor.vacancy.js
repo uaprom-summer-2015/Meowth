@@ -1,3 +1,3 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-    CKEDITOR.replace( 'text' );
+    CKEDITOR.replace('text');
 });

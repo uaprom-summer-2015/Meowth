@@ -1,19 +1,17 @@
-from flask import render_template, Blueprint, flash, jsonify
+from flask import render_template, flash, jsonify
 from flask_wtf.csrf import generate_csrf
+from project.blueprints import feed_app
 from project.models import Vacancy, Category, City
 from project.feed.forms import ApplyForm
 from project.bl.mail import send_mail_from_form
 
 
-feed = Blueprint('feed', __name__)
-
-
-@feed.route('//')
+@feed_app.route('/')
 def vacancies():
     return render_template('feed/vacancies.html')
 
 
-@feed.route('/<name_in_url>/react/', methods=['GET', 'POST'])
+@feed_app.route('/<name_in_url>/react/', methods=['GET', 'POST'])
 def get_vacancy_react(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
     vacancy.visits += 1
@@ -32,14 +30,11 @@ def get_vacancy_react(name_in_url):
     )
 
 
-@feed.route('/list')
+@feed_app.route('/list')
 def json_vacancies():
-    vacancies = Vacancy.query.all()
-    categories = Category.query.all()
-    cities = City.query.all()
-    list_vacancies = list(map(lambda v: v.as_dict(), vacancies))
-    list_categories = list(map(lambda c: c.as_dict(), categories))
-    list_cities = list(map(lambda v: v.as_dict(), cities))
+    list_vacancies = [v.as_dict() for v in Vacancy.query.all()]
+    list_categories = [c.as_dict() for c in Category.query.all()]
+    list_cities = [v.as_dict() for v in City.query.all()]
     return jsonify(
         vacancies=list_vacancies,
         categories=list_categories,
@@ -47,7 +42,7 @@ def json_vacancies():
     )
 
 
-@feed.route('/<name_in_url>/', methods=['GET', 'POST'])
+@feed_app.route('/<name_in_url>/', methods=['GET', 'POST'])
 def get_vacancy(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
     vacancy.visits += 1

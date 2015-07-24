@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 from werkzeug.security import check_password_hash
-from project import UserBL
+from project.bl import UserBL
 from project.tests.utils import ProjectTestCase
 
 

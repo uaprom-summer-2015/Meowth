@@ -1,0 +1,26 @@
+[
+  {
+    "model": "project.models.Category",
+    "fields": {
+      "name": "Python"
+    }
+  },
+  {
+    "model": "project.models.Category",
+    "fields": {
+      "name": "Android"
+    }
+  },
+  {
+    "model": "project.models.Category",
+    "fields": {
+      "name": ".Net"
+    }
+  },
+  {
+    "model": "project.models.Category",
+    "fields": {
+      "name": "Marketing"
+    }
+  }
+]

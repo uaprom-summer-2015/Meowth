@@ -7,23 +7,21 @@ class PageDetail(EntryDetail):
 
     def get(self, entry_id):
         if entry_id is None:
-            # Forbidden
             abort(403)
-        else:
-            # Update an old entry
-            entry = self.model.bl.get(entry_id)
 
-            if entry is None:
-                abort(404)
-            entry_form = self.update_form(obj=entry)
+        entry = self.model.bl.get(entry_id)
 
-            keys = [k for k in entry_form.data if k.startswith('block_')]
-            keys.sort()
-            upd = dict(zip(keys, entry.blocks))
-            _data = entry_form.data.copy()
-            _data.update(upd)
-            entry_form.process(**_data)
-            del _data
+        if entry is None:
+            abort(404)
+        entry_form = self.update_form(obj=entry)
+
+        keys = [k for k in entry_form.data if k.startswith('block_')]
+        keys.sort()
+        upd = dict(zip(keys, entry.blocks))
+        _data = entry_form.data.copy()
+        _data.update(upd)
+        entry_form.process(**_data)
+        del _data
 
         return self.render_response(entry_form=entry_form)
 
@@ -31,8 +29,7 @@ class PageDetail(EntryDetail):
         def prepare_data(data):
             """ Convert data to normal form """
             _data = data.copy()
-            keys = [k for k in _data if k.startswith('block_')]
-            keys.sort()
+            keys = sorted((k for k in data if k.startswith('block_')))
             _data['blocks'] = []
             for k in keys:
                 if _data[k] and _data[k] not in _data['blocks']:
@@ -41,14 +38,12 @@ class PageDetail(EntryDetail):
             return _data
 
         if entry_id is None:
-            # Forbidden
             abort(403)
-        else:
-            # Update an old entry
-            instance = self.model.bl.get(entry_id)
-            form = self.update_form(obj=instance)
-            if form.validate_on_submit():
-                instance.bl.update(prepare_data(form.data))
-                return redirect(url_for("admin."+self.success_url))
+
+        instance = self.model.bl.get(entry_id)
+        form = self.update_form(obj=instance)
+        if form.validate_on_submit():
+            instance.bl.update(prepare_data(form.data))
+            return redirect(url_for("admin."+self.success_url))
 
         return self.render_response(entry_form=form)

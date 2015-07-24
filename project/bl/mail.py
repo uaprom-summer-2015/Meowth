@@ -1,7 +1,6 @@
 from email.policy import EmailPolicy
-from flask import request
+from flask import request, current_app
 import flask_mail
-from project import app
 from project.tasks.mail import celery_send_mail
 
 
@@ -20,7 +19,7 @@ def get_message(title, body, recipients, attachment_name=None,
 
 
 def get_message_from_form(form, vacancy):
-    recipients = [app.config['MAIL_TO_SEND']]
+    recipients = [current_app.config['MAIL_TO_SEND']]
     title = 'Ответ на вакансию: {}'.format(vacancy.title)
     body = 'Ответ на вакансию: {}\n' \
            'Имя: {}\n' \
@@ -39,6 +38,7 @@ def get_message_from_form(form, vacancy):
                        attachment.content_type, attachment)
 
 
+# noinspection PyUnresolvedReferences
 def send_mail_from_form(form, vacancy):
     msg = get_message_from_form(form, vacancy)
     msg4reply = get_msg_for_reply(form, vacancy)
@@ -46,6 +46,7 @@ def send_mail_from_form(form, vacancy):
     celery_send_mail.delay(msg4reply)
 
 
+# noinspection PyUnresolvedReferences
 def send_mail(title, body, recipients, attachment_name=None,
               attachment_type=None, attachment=None):
     msg = get_message(title, body, recipients, attachment_name,

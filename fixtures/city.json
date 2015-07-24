@@ -1,0 +1,20 @@
+[
+  {
+    "model": "project.models.City",
+    "fields": {
+      "name": "Kyiv"
+    }
+  },
+  {
+    "model": "project.models.City",
+    "fields": {
+      "name": "Cherkasy"
+    }
+  },
+  {
+    "model": "project.models.City",
+    "fields": {
+      "name": "Lviv"
+    }
+  }
+]

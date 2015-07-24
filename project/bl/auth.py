@@ -41,7 +41,8 @@ class UserBL(BaseBL):
             .format(token.token)
         send_mail(title, body, recipients)
 
-    def reset_password(self, token):
+    @staticmethod
+    def reset_password(token):
         from project.models import Token
         from .mail import send_mail
         token = Token.query.filter(Token.token == token).first()

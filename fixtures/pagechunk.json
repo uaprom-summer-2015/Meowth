@@ -1,0 +1,49 @@
+[
+  {
+     "model": "project.models.PageChunk",
+     "fields": {
+          "id": 1,
+          "name": "contacts",
+          "text": "email: hello@prom.ua <br /> phone: +380123456789"
+     }
+  },
+  {
+     "model": "project.models.PageChunk",
+     "fields": {
+          "id": 2,
+          "name": "social_networks",
+          "text": "Мы в соцсетях:<br /><a href=\"http://vk.com/promua\"><img alt=\"\" src=\"http://vk.com/images/vk16.png\" style=\"height:16px; width:16px\" />promua</a>, <img alt=\"\" src=\"http://disc.sci.gsfc.nasa.gov/++resource++sb_images/facebook.jpg\" style=\"height:20px; width:20px\" /><a href=\"https://www.facebook.com/prom.ua\">prom.ua</a>\""       }
+  },
+  {
+     "model": "project.models.PageChunk",
+     "fields": {
+          "id": 3,
+          "name": "copyright",
+          "text": "Все права защищены <br /> УАПРОМ"
+     }
+  },
+  {
+     "model": "project.models.PageChunk",
+     "fields": {
+          "id": 4,
+          "name": "jumbotron_mainpage",
+          "text": "<div class=\"jumbotron\"><h1>Prom.ua</h1><p>Because we can</p><p><a role=\"button\" href=\"/about/\" class=\"btn btn-primary btn-lg\">Узнать больше о компании</a></p></div>"
+     }
+  },
+  {
+     "model": "project.models.PageChunk",
+     "fields": {
+          "id": 5,
+          "name": "map_url",
+          "text": "https://www.google.com/maps/d/embed?mid=z4aO4bU77YJA.kVrQrDBHXbnY"
+     }
+  },
+  {
+     "model": "project.models.PageChunk",
+     "fields": {
+          "id": 6,
+          "name": "didnt_find_vacancy",
+          "text": "Не нашли вакансию? Отправь сюда резюме: hr@prom.ua"
+     }
+  }
+]

@@ -1,8 +1,9 @@
+from flask.ext.celery import Celery
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_wtf.csrf import CsrfProtect
-from project.celery import make_celery
-from project import app
 
-celery = make_celery(app)
-mail = Mail(app)
-CsrfProtect(app)
+celery = Celery()
+mail = Mail()
+csrf = CsrfProtect()
+db = SQLAlchemy()

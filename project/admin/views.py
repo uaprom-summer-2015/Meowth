@@ -1,15 +1,16 @@
-from flask import Blueprint, render_template, url_for, session, redirect
-from project.admin.forms import VacancyForm, CategoryForm, CityForm
+from flask import render_template, url_for, session, redirect
+
+from project.admin.forms import VacancyForm, CategoryForm, CityForm, \
+    PageChunkForm
+from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm
-from project.models import Vacancy, Category, City, User, PageBlock, Page
+from project.models import Vacancy, Category, City, User, PageBlock, Page, \
+    PageChunk
 
 SECTIONS = {}  # list_name: list_endpoint
-
-
-admin_app = Blueprint('admin', __name__)
 
 
 @admin_app.before_request
@@ -23,11 +24,10 @@ def check_user_logged_in():
 def register_section(*, section_name, list_endpoint,
                      list_route, detail_route,
                      list_view, detail_view):
-
     admin_app.add_url_rule(list_route, view_func=list_view)
 
     admin_app.add_url_rule(
-        detail_route+"<int:entry_id>/",
+        detail_route + "<int:entry_id>/",
         view_func=detail_view,
     )
 
@@ -71,7 +71,6 @@ category_list = EntryList.as_view(
     model=Category,
     template="admin/categories.html",
 )
-
 
 category_detail = EntryDetail.as_view(
     name='category_detail',
@@ -176,7 +175,7 @@ page_view = PageDetail.as_view(
 )
 
 register_section(
-    section_name="Страницьі",
+    section_name="Страницы",
     list_route="/pages/",
     detail_route="/page/",
     list_view=page_list,
@@ -184,12 +183,36 @@ register_section(
     list_endpoint="page_list",
 )
 
+# Page chunks
+pagechunk_list = EntryList.as_view(
+    name="pagechunk_list",
+    model=PageChunk,
+    template="admin/pagechunks.html",
+)
+
+pagechunk_detail = EntryDetail.as_view(
+    name='pagechunk_detail',
+    create_form=PageChunkForm,
+    model=PageChunk,
+    template="admin/pagechunk.html",
+    success_url="pagechunk_list",
+)
+
+register_section(
+    section_name="Элементы страниц",
+    list_route="/pagechunks/",
+    detail_route="/pagechunk/",
+    list_view=pagechunk_list,
+    detail_view=pagechunk_detail,
+    list_endpoint="pagechunk_list",
+)
+
 
 @admin_app.route("/")
 def mainpage():
     sections = {}
     for name, endpoint in SECTIONS.items():
-        sections[name] = url_for("admin."+endpoint)
+        sections[name] = url_for("admin." + endpoint)
 
     return render_template(
         "admin/main.html",
@@ -197,6 +220,7 @@ def mainpage():
     )
 
 
+# noinspection PyUnusedLocal
 @admin_app.errorhandler(403)
 def handle_forbidden(error):
     return render_template('admin/403.html'), 403

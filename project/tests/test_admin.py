@@ -11,7 +11,8 @@ expected_sections = dict([
     ('Категории', '/admin/categories/'),
     ('Города', '/admin/cities/'),
     ('Блоки страниц', '/admin/blocks/'),
-    ('Страницьі', '/admin/pages/'),
+    ('Страницы', '/admin/pages/'),
+    ('Элементы страниц', '/admin/pagechunks/'),
 ])
 
 

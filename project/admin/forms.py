@@ -70,3 +70,8 @@ class CategoryForm(Form):
 
 class CityForm(Form):
     name = StringField('Название города', validators=[DataRequired()])
+
+
+class PageChunkForm(Form):
+    name = StringField('Название элемента', validators=[DataRequired()])
+    text = TextAreaField('Текст элемента', validators=[DataRequired()])
