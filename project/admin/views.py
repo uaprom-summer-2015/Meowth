@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, url_for, session, redirect
 from project.admin.forms import VacancyForm, CategoryForm, CityForm, \
     PageChunkForm
+from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList
@@ -9,9 +10,6 @@ from project.models import Vacancy, Category, City, User, PageBlock, Page, \
     PageChunk
 
 SECTIONS = {}  # list_name: list_endpoint
-
-
-admin_app = Blueprint('admin', __name__)
 
 
 @admin_app.before_request

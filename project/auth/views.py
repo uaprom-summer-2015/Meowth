@@ -1,13 +1,12 @@
-from flask import render_template, Blueprint, flash, session, redirect, \
+from flask import render_template, flash, session, redirect, \
     url_for, abort, g
 from .forms import LoginForm, ResetForm, PasswordEditForm
 from .decorators import login_required
 from project.models import User
+from project.blueprints import auth_app
 
-auth = Blueprint('auth', __name__)
 
-
-@auth.before_app_request
+@auth_app.before_app_request
 def add_login_to_g():
     if 'user_id' in session:
         user = User.query.get(session['user_id'])
@@ -16,7 +15,7 @@ def add_login_to_g():
         g.user = None
 
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth_app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -39,7 +38,7 @@ def login():
     )
 
 
-@auth.route('/reset', methods=['GET', 'POST'])
+@auth_app.route('/reset', methods=['GET', 'POST'])
 def reset():
     form = ResetForm()
     if form.validate_on_submit():
@@ -54,7 +53,7 @@ def reset():
     )
 
 
-@auth.route('/reset/<token>', methods=['GET', 'POST'])
+@auth_app.route('/reset/<token>', methods=['GET', 'POST'])
 def confirm_reset(token):
     success = User.bl.reset_password(token)
     if success:
@@ -65,7 +64,7 @@ def confirm_reset(token):
         abort(404)
 
 
-@auth.route('/password_change', methods=['GET', 'POST'])
+@auth_app.route('/password_change', methods=['GET', 'POST'])
 @login_required
 def change_password():
     form = PasswordEditForm()
@@ -81,7 +80,7 @@ def change_password():
     )
 
 
-@auth.route('/logout', methods=['GET'])
+@auth_app.route('/logout', methods=['GET'])
 @login_required
 def logout():
     session.pop('user_id', None)
