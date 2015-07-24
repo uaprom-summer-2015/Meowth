@@ -1,31 +1,28 @@
 from enum import IntEnum
 
-from sqlalchemy import Text, ForeignKey, Boolean
-from sqlalchemy.orm import relationship, backref
-from sqlalchemy import Column, Integer, String, VARCHAR as Varchar
 from project.bl.utils import Resource
-from project.database import Base, db_session, engine
+from project.extensions import db
 from project.lib.orm.types import TypeEnum
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.ext.associationproxy import association_proxy
 
 
-class Vacancy(Base):
+class Vacancy(db.Model):
     __tablename__ = 'vacancy'
-    id = Column(Integer, primary_key=True)
-    title = Column(String(100), nullable=False)
-    short_description = Column(String(300), nullable=False)
-    text = Column(Text(), nullable=False)
-    category_id = Column(Integer, ForeignKey('category.id'))
-    category = relationship('Category', backref=backref('vacancies'))
-    name_in_url = Column(String(50), nullable=False, unique=True)
-    visits = Column(Integer, nullable=False, default=0)
-    salary = Column(String(50))
-    description = Column(String(200))  # for search spider
-    keywords = Column(String(1000))
-    city_id = Column(Integer, ForeignKey('city.id'))
-    city = relationship('City', backref=backref('vacancies'))
-    hide = Column(Boolean, nullable=False, default=False)
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    short_description = db.Column(db.String(300), nullable=False)
+    text = db.Column(db.Text(), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category = db.relationship('Category', backref=db.backref('vacancies'))
+    name_in_url = db.Column(db.String(50), nullable=False, unique=True)
+    visits = db.Column(db.Integer, nullable=False, default=0)
+    salary = db.Column(db.String(50))
+    description = db.Column(db.String(200))  # for search spider
+    keywords = db.Column(db.String(1000))
+    city_id = db.Column(db.Integer, db.ForeignKey('city.id'))
+    city = db.relationship('City', backref=db.backref('vacancies'))
+    hide = db.Column(db.Boolean, nullable=False, default=False)
 
     bl = Resource("bl.vacancy")
 
@@ -33,17 +30,17 @@ class Vacancy(Base):
         return "[{}] {}".format(self.__class__.__name__, self.title)
 
     def save(self):
-        db_session.add(self)
-        db_session.commit()
+        db.session.add(self)
+        db.session.commit()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class Category(Base):
+class Category(db.Model):
     __tablename__ = 'category'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50), nullable=False, unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
 
     bl = Resource('bl.category')
 
@@ -54,14 +51,14 @@ class Category(Base):
         return "[{}] {}".format(self.__class__.__name__, self.name)
 
     def save(self):
-        db_session.add(self)
-        db_session.commit()
+        db.session.add(self)
+        db.session.commit()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class User(Base):
+class User(db.Model):
     __tablename__ = 'users'
 
     #  noinspection PyTypeChecker
@@ -70,13 +67,13 @@ class User(Base):
         'superuser': 1,
     })
 
-    id = Column(Integer, primary_key=True)
-    login = Column(String(30), unique=True, nullable=False)
-    password = Column(String(100), nullable=False)
-    name = Column(String(30))
-    surname = Column(String(30))
-    email = Column(String(30), nullable=False, unique=True)
-    role = Column(TypeEnum(ROLE), nullable=False, default=ROLE.staff)
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String(30), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(30))
+    surname = db.Column(db.String(30))
+    email = db.Column(db.String(30), nullable=False, unique=True)
+    role = db.Column(TypeEnum(ROLE), nullable=False, default=ROLE.staff)
 
     bl = Resource('bl.user')
 
@@ -87,17 +84,17 @@ class User(Base):
         return '{} {}'.format(self.name, self.surname)
 
     def save(self):
-        db_session.add(self)
-        db_session.commit()
+        db.session.add(self)
+        db.session.commit()
 
     def is_superuser(self):
         return self.role == self.ROLE.superuser
 
 
-class City(Base):
+class City(db.Model):
     __tablename__ = 'city'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(20), nullable=False, unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), nullable=False, unique=True)
     bl = Resource('bl.city')
 
     def __str__(self):
@@ -107,54 +104,54 @@ class City(Base):
         return "[{}] {}".format(self.__class__.__name__, self.name)
 
     def save(self):
-        db_session.add(self)
-        db_session.commit()
+        db.session.add(self)
+        db.session.commit()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-class BlockPageAssociation(Base):
+class BlockPageAssociation(db.Model):
     __tablename__ = 'block_page_association'
-    page_id = Column(
-        Integer,
-        ForeignKey('pages.id'),
+    page_id = db.Column(
+        db.Integer,
+        db.ForeignKey('pages.id'),
         primary_key=True
     )
-    block_id = Column(
-        Integer,
-        ForeignKey('pageblocks.id'),
+    block_id = db.Column(
+        db.Integer,
+        db.ForeignKey('pageblocks.id'),
         primary_key=True
     )
-    position = Column(Integer)
-    block = relationship(
+    position = db.Column(db.Integer)
+    block = db.relationship(
         'PageBlock',
     )
 
     def delete(self):
         """ Deletes the object immideately """
-        db_session.delete(self)
-        db_session.commit()
+        db.session.delete(self)
+        db.session.commit()
 
     def soft_delete(self):
         """ schedules object deletion """
-        db_session.delete(self)
+        db.session.delete(self)
 
 
-class PageChunk(Base):
+class PageChunk(db.Model):
     __tablename__ = 'pagechunks'
-    id = Column(Integer, primary_key=True)
-    name = Column(Text, unique=True)
-    text = Column(Text)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text, unique=True)
+    text = db.Column(db.Text)
 
     bl = Resource('bl.pagechunk')
 
     def save(self):
-        db_session.add(self)
-        db_session.commit()
+        db.session.add(self)
+        db.session.commit()
 
 
-class PageBlock(Base):
+class PageBlock(db.Model):
     __tablename__ = 'pageblocks'
 
     # noinspection PyTypeChecker
@@ -167,16 +164,22 @@ class PageBlock(Base):
         },
     )
 
-    id = Column(Integer, primary_key=True)
-    block_type = Column(
+    id = db.Column(db.Integer, primary_key=True)
+    block_type = db.Column(
         TypeEnum(TYPE),
         default=TYPE.img_left,
         nullable=False
     )
-    title = Column(Varchar(128), nullable=True)  # if header needed
-    text = Column(Text)  # block contents
-    short_description = Column(Varchar(256), nullable=True)  # used for home
-    image = Column(Text, nullable=True)
+
+    # header
+    title = db.Column(db.VARCHAR(128), nullable=True)
+
+    text = db.Column(db.Text)
+
+    # used for mainpage
+    short_description = db.Column(db.VARCHAR(256), nullable=True)
+
+    image = db.Column(db.Text, nullable=True)
 
     bl = Resource('bl.pageblock')
 
@@ -188,26 +191,26 @@ class PageBlock(Base):
 
     def delete(self):
         """ Deletes the object immideately """
-        db_session.delete(self)
-        db_session.commit()
+        db.session.delete(self)
+        db.session.commit()
 
     def soft_delete(self):
         """ schedules object deletion """
-        db_session.delete(self)
+        db.session.delete(self)
 
     def save(self):
         # TODO: move save operation to bl
-        db_session.add(self)
-        db_session.commit()
+        db.session.add(self)
+        db.session.commit()
 
 
-class Page(Base):
+class Page(db.Model):
     __tablename__ = 'pages'
 
-    id = Column(Integer, primary_key=True)
-    title = Column(Varchar(128))
-    url = Column(Text)
-    _blocks = relationship(
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.VARCHAR(128))
+    url = db.Column(db.Text)
+    _blocks = db.relationship(
         "BlockPageAssociation",
         order_by='BlockPageAssociation.position',
         collection_class=ordering_list('position'),
@@ -226,38 +229,39 @@ class Page(Base):
 
     def save(self):
         # TODO: move save operation to bl
-        db_session.add(self)
-        db_session.commit()
+        db.session.add(self)
+        db.session.commit()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def delete(self):
         """ Deletes the object immideately """
-        db_session.delete(self)
-        db_session.commit()
+        db.session.delete(self)
+        db.session.commit()
 
     def soft_delete(self):
         """ schedules object deletion """
-        db_session.delete(self)
+        db.session.delete(self)
 
 
-class Token(Base):
+class Token(db.Model):
     __tablename__ = 'tokens'
-    id = Column(Integer, primary_key=True)
-    user = relationship('User', backref=backref('token'))
-    user_id = Column(Integer, ForeignKey('users.id'))
-    token = Column(String, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    # user_id = db.column(db.Integer, db.ForeignKey('users.id'))
+    # user = db.relationship('User', backref=db.backref('token'))
+    user = db.column(db.Integer, db.ForeignKey('users.id'))
+    token = db.Column(db.String, nullable=False)
 
     def save(self):
-        db_session.add(self)
-        db_session.commit()
+        db.session.add(self)
+        db.session.commit()
 
     def delete(self):
-        db_session.delete(self)
-        db_session.commit()
+        db.session.delete(self)
+        db.session.commit()
 
 
 def init_db():
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
+    db.drop_all()
+    db.create_all()
