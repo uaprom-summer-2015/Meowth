@@ -32,7 +32,8 @@
     "gulp-util": "^3.0.6",
     "reactify": "^1.1.1",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "browserify": "~11.0.0"
   },
   "stylus": {
     "includes": [
