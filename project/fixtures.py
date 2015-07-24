@@ -1,8 +1,7 @@
 import importlib
 import json
-import os
-from config import FIXTURES_DIR
 from project.extensions import db
+from pathlib import Path
 
 
 def import_class(what):
@@ -11,12 +10,13 @@ def import_class(what):
     return getattr(module, classname)
 
 
-def load_fixtures(filepath):
-    filepath = os.path.join(FIXTURES_DIR, filepath)
-    with open(filepath) as data_file:
-        data = json.load(data_file)
-        for entry in data:
-            model_class = import_class(entry['model'])
-            fixture_model = model_class(**entry['fields'])
-            db.session.add(fixture_model)
-        db.session.commit()
+def load_fixtures(fixtures_dir):
+    fixtures = Path(fixtures_dir).glob("*.json")
+    for fixture_file_path in fixtures:
+        with fixture_file_path.open() as data_file:
+            data = json.load(data_file)
+            for entry in data:
+                model_class = import_class(entry['model'])
+                fixture_model = model_class(**entry['fields'])
+                db.session.add(fixture_model)
+            db.session.commit()

@@ -44,7 +44,7 @@ def init_db():
         fail='Cannot populate fixtures',
         after='Done',
     ):
-        load_fixtures('init-data.json')
+        load_fixtures(app.config['FIXTURES_DIR'])
 
 
 @manager.command

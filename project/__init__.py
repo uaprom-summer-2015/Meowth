@@ -1,13 +1,11 @@
 import logging
 import os
-from config import DevelopmentConfig
 from project.application import create_app
 from project.bl import init_resource_registry
 from project.models import PageChunk
 
 init_resource_registry()
-
-app = create_app(DevelopmentConfig)
+app = create_app()
 
 
 @app.context_processor

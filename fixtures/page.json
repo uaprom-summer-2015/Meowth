@@ -1,0 +1,30 @@
+[
+  {
+    "model": "project.models.Page",
+    "fields": {
+      "title": "Проекты",
+      "url": "/projects"
+    }
+  },
+  {
+    "model": "project.models.Page",
+    "fields": {
+      "title": "О компании",
+      "url": "/company"
+    }
+  },
+  {
+    "model": "project.models.Page",
+    "fields": {
+      "title": "Контакты",
+      "url": "/contacts"
+    }
+  },
+  {
+    "model": "project.models.Page",
+    "fields": {
+      "title": "Главная",
+      "url": "/"
+    }
+  }
+]
