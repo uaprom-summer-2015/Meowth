@@ -12,7 +12,7 @@ var uglify = require('gulp-uglify');
 
 
 
-gulp.task('build', ['build:scripts', 'build:styles'])
+gulp.task('build', ['build:scripts', 'build:styles']);
 
 
 gulp.task('build:scripts', function() {
@@ -28,8 +28,9 @@ gulp.task('build:scripts', function() {
 
 
 gulp.task('build:styles', function() {
-  gulp.src(pkginfo.assets.styles).pipe(stylus({
+  gulp.src(pkginfo.assets.styles.entries).pipe(stylus({
     compress: true,
+    'include css': true,
     include: pkginfo.stylus.includes
   }))
   .pipe(rename('bundle.css'))
@@ -39,7 +40,7 @@ gulp.task('build:styles', function() {
 
 gulp.task('watch', ['build'], function() {
   gulp.watch(pkginfo.assets.scripts.watches, ['build:scripts']);
-  gulp.watch(pkginfo.assets.styles, ['build:styles']);
+  gulp.watch(pkginfo.assets.styles.watches, ['build:styles']);
 });
 
 

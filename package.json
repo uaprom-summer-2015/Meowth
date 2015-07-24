@@ -37,7 +37,8 @@
   },
   "stylus": {
     "includes": [
-      "./bower_components/bootstrap-stylus"
+      "./bower_components/bootstrap-stylus",
+      "./bower_components"
     ]
   },
   "browserify": {
@@ -64,9 +65,14 @@
         "./project/static/src/js"
       ]
     },
-    "styles": [
-      "./project/static/src/css/main.styl"
-    ]
+    "styles": {
+      "entries": [
+        "./project/static/src/css/main.styl"
+      ],
+      "watches": [
+        "./project/static/src/css/**/*.styl"
+      ]
+    }
   },
   "dist": "./project/static/dist"
 }
