@@ -2,17 +2,19 @@
 
 {% block content %}
 
-    {% for block in blocks %}
-        <div class="media">
-            <div class="media-left">
-                <img class="media-object" src="{{ block.image }}" alt="...">
+    <div class="container">
+        {% for block in blocks %}
+            <div class="media">
+                <div class="media-left">
+                    <img class="media-object img-responsive" src="{{ block.image }}" alt="...">
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ block.title }}</h4>
+                    {{ block.text|safe }}
+                </div>
             </div>
-            <div class="media-body">
-                <h4 class="media-heading">{{ block.title }}</h4>
-                {{ block.text }}
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 
     <div class="center-block row">
         <iframe src="{{ pagechunks.map_url }}" class="center-block" width="640" height="480"></iframe>

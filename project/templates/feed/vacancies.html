@@ -8,7 +8,7 @@
 
         <div class="jumbotron">
 
-            {{ pagechunks.didnt_find_vacancy }}
+            {{ pagechunks.didnt_find_vacancy|safe }}
         </div>
     </div>
 <script src="{{ url_for('static', filename='js/dist/feed.js') }}"
