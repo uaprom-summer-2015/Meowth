@@ -8,7 +8,9 @@ from project.blueprints import all_blueprints
 def create_app():
 
     app = Flask(__name__, static_url_path='/static')
-    app.config.from_object(environ.get('APP_SETTINGS', 'config.DevelopmentConfig'))
+    app.config.from_object(
+        environ.get('APP_SETTINGS', 'config.DevelopmentConfig')
+    )
     with app.app_context():
         for module in app.config.get('DB_MODELS_IMPORT', list()):
             import_module(module)
