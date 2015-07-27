@@ -5,6 +5,7 @@ from project.models import init_db as init
 from project.fixtures import load_fixtures
 import logging
 from contextlib import contextmanager
+from subprocess import call
 
 logger = logging.getLogger()
 
@@ -51,6 +52,22 @@ def init_db():
 def run():
     """ Run application """
     app.run(debug=True)
+
+
+@manager.command
+def collectstatic():
+    """
+        run external gulp build script
+        NOTE: gulp must be in your PATH variable
+    """
+    with wrap_logging(
+        before='Collecting static...',
+        fail='Error while collecting static',
+        after='Done',
+    ):
+        call(["npm", "install"])
+        call(["bower", "install"])
+        call(["gulp", "build"])
 
 
 if __name__ == "__main__":
