@@ -6,6 +6,7 @@ from project.fixtures import load_fixtures
 import logging
 from contextlib import contextmanager
 from subprocess import call
+import os
 
 logger = logging.getLogger()
 
@@ -20,6 +21,19 @@ def wrap_logging(before, fail, after):
         logger.error(e)
     else:
         logger.info(after)
+
+
+def shexec(cmd, alt):
+    try:
+        call(cmd)
+    except OSError as e:
+        if e.errno == os.errno.ENOENT:
+            try:
+                call(alt)
+            except OSError as ex:
+                raise ex
+        else:
+            raise e
 
 
 manager = Manager(app)
@@ -56,18 +70,26 @@ def run():
 
 @manager.command
 def collectstatic():
-    """
-        run external gulp build script
-        NOTE: gulp must be in your PATH variable
-    """
     with wrap_logging(
         before='Collecting static...',
         fail='Error while collecting static',
         after='Done',
     ):
-        call(["npm", "install"])
-        call(["bower", "install"])
-        call(["gulp", "build"])
+        try:
+            call(["npm", "install"])
+        except OSError as e:
+            if e.errno == os.errno.ENOENT:
+                raise "No npm in your path. Aborting"
+            else:
+                raise "Something bad happened"
+        shexec(
+            ["bower", "install"],
+            ["./node_modules/bower/bin/bower", "install"],
+        )
+        shexec(
+            ["gulp", "build"],
+            ["./node_modules/gulp/bin/gulp.js", "build"],
+        )
 
 
 if __name__ == "__main__":
