@@ -19,4 +19,4 @@ def load_fixtures(fixtures_dir):
                 model_class = import_class(entry['model'])
                 fixture_model = model_class(**entry['fields'])
                 db.session.add(fixture_model)
-            db.session.commit()
+    db.session.commit()
