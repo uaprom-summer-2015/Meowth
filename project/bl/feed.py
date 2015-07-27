@@ -6,7 +6,11 @@ class CategoryBL(BaseBL):
 
 
 class VacancyBL(BaseBL):
-    pass
+
+    def get_visible(self):
+        vacancies = self.model.query.filter(self.model.hide == False).all()
+        return vacancies
+
 
 
 class CityBL(BaseBL):

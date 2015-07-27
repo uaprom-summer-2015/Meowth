@@ -11,7 +11,6 @@ app = create_app()
 @app.context_processor
 def inject_pagechunks():
     chunks = {chunk.name: chunk.text for chunk in PageChunk.query.all()}
-    logging.info(chunks)
     return {"pagechunks": chunks}
 
 

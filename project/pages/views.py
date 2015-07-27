@@ -1,4 +1,3 @@
-import logging
 from flask import render_template
 from project.blueprints import pages_app
 from project.models import Page
@@ -27,5 +26,4 @@ def about():
 @pages_app.route('/contacts/')
 def contacts():
     page = Page.bl.get(3)
-    logging.info(page)
     return render_template('pages/contacts.html', blocks=page.blocks)

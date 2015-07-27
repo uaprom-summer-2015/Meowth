@@ -41,3 +41,4 @@ wheel==0.24.0
 WTForms==2.0.2
 WTForms-Components==0.9.7
 Flask-Celery-Helper
+gunicorn
