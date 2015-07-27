@@ -8,7 +8,9 @@ class CategoryBL(BaseBL):
 class VacancyBL(BaseBL):
 
     def get_visible(self):
-        vacancies = self.model.query.filter(not self.model.hide).all()
+        vacancies = self.model.query\
+            .filter(self.model.hide == False)\
+            .all()  # NOQA
         return vacancies
 
 
