@@ -6,8 +6,7 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Hardcoded:
-    MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
-    MAIL_TO_SEND = MAIL_DEFAULT_SENDER
+    MAIL_TO_SEND = 'hrportal@yandex.ru'
 
 
 class Config:
@@ -34,6 +33,7 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = 'hrportal@yandex.ru'
     MAIL_PASSWORD = 'useaverystrongpasswordLuke'
+    MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
 
     # Celery
     CELERY_BROKER_URL = 'redis://localhost:6379/0'
