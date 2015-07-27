@@ -1,22 +1,33 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-    <ul class="list-group">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Позиция</th>
+            <th>Видимость</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for entry in entries %}
-            <li class="list-group-item">
-                <a href="{{ url_for('admin.vacancy_detail', entry_id=entry.id) }}">
-                    {{ entry.title }}
-                </a>
-                {% if entry.hide %}(не видимая)
-                {% else %}(видимая)
-                {% endif %}
-            </li>
+            <tr>
+                <td>
+                    <a href="{{ url_for('admin.vacancy_detail', entry_id=entry.id) }}">
+                        {{ entry.title }}
+                    </a>
+                </td>
+                <td>
+                    {% if entry.hide %}
+                        Невидимая
+                    {% else %}
+                        Видимая
+                    {% endif %}
+                </td>
+            </tr>
         {% endfor %}
+        </tbody>
+    </table>
 
-            <li class="list-group-item list-group-item-info">
-                <a href="{{ url_for('admin.vacancy_detail') }}">
-                    Добавить новую вакансию
-                </a>
-            </li>
-    </ul>
+    <a href="{{ url_for('admin.vacancy_detail') }}"
+       class="btn btn-primary btn-lg">Добавить новую вакансию</a>
 {% endblock %}
