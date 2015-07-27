@@ -33,7 +33,7 @@ def get_vacancy_react(name_in_url):
 
 @feed_app.route('/list')
 def json_vacancies():
-    list_vacancies = [v.as_dict() for v in VacancyBL.get_visible()]
+    list_vacancies = [v.as_dict() for v in Vacancy.bl.get_visible()]
     list_categories = [c.as_dict() for c in Category.query.all()]
     list_cities = [v.as_dict() for v in City.query.all()]
     return jsonify(
