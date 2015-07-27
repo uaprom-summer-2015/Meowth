@@ -73,7 +73,7 @@ def do_npm():
     with wrap_logging(
         before='Installing node modules',
         fail='Cannot install node modules',
-        after='Done',
+        after='Node modules installed successfully',
     ):
         shexec(["npm", "install"])
 
@@ -83,7 +83,7 @@ def do_bower():
     with wrap_logging(
         before='Installing bower components',
         fail='Cannot install bower components',
-        after='Done',
+        after='Bower components installed successfully',
     ):
         shexec(
             cmd=["bower", "install"],
@@ -96,7 +96,7 @@ def do_gulp():
     with wrap_logging(
         before='Executing gulp scripts',
         fail='Error while executing gulp scripts',
-        after='Done',
+        after='Gulp scripts executed successfully',
     ):
         shexec(
             cmd=["gulp", "build"],
