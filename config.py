@@ -89,7 +89,7 @@ class Config:
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql://root:qwerty@localhost/hrportal'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', None)
 
 
 class DevelopmentConfig(Config):
