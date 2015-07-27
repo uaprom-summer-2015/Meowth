@@ -248,7 +248,10 @@ class Page(db.Model):
 class Token(db.Model):
     __tablename__ = 'tokens'
     id = db.Column(db.Integer, primary_key=True)
-    user = db.column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship(
+        'User',
+    )
     token = db.Column(db.String, nullable=False)
 
     def save(self):
