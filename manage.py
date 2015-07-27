@@ -23,11 +23,11 @@ def wrap_logging(before, fail, after):
         logger.info(after)
 
 
-def shexec(cmd, alt):
+def shexec(cmd, alt=None):
     try:
         call(cmd)
     except OSError as e:
-        if e.errno == os.errno.ENOENT:
+        if e.errno == os.errno.ENOENT and alt:
             try:
                 call(alt)
             except OSError as ex:
@@ -69,27 +69,51 @@ def run():
 
 
 @manager.command
+def do_npm():
+    with wrap_logging(
+        before='Installing node modules',
+        fail='Cannot install node modules',
+        after='Done',
+    ):
+        shexec(["npm", "install"])
+
+
+@manager.command
+def do_bower():
+    with wrap_logging(
+        before='Installing bower components',
+        fail='Cannot install bower components',
+        after='Done',
+    ):
+        shexec(
+            cmd=["bower", "install"],
+            alt=["./node_modules/bower/bin/bower", "install"],
+        )
+
+
+@manager.command
+def do_gulp():
+    with wrap_logging(
+        before='Executing gulp scripts',
+        fail='Error while executing gulp scripts',
+        after='Done',
+    ):
+        shexec(
+            cmd=["gulp", "build"],
+            alt=["./node_modules/gulp/bin/gulp.js", "build"],
+        )
+
+
+@manager.command
 def collectstatic():
     with wrap_logging(
         before='Collecting static...',
         fail='Error while collecting static',
         after='Done',
     ):
-        try:
-            call(["npm", "install"])
-        except OSError as e:
-            if e.errno == os.errno.ENOENT:
-                raise "No npm in your path. Aborting"
-            else:
-                raise "Something bad happened"
-        shexec(
-            ["bower", "install"],
-            ["./node_modules/bower/bin/bower", "install"],
-        )
-        shexec(
-            ["gulp", "build"],
-            ["./node_modules/gulp/bin/gulp.js", "build"],
-        )
+        do_npm()
+        do_bower()
+        do_gulp()
 
 
 if __name__ == "__main__":
