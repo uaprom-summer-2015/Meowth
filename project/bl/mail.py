@@ -1,5 +1,5 @@
 from email.policy import EmailPolicy
-from flask import request, current_app
+from flask import request
 import flask_mail
 from config import Hardcoded
 from project.tasks.mail import celery_send_mail
