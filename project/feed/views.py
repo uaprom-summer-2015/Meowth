@@ -4,7 +4,6 @@ from project.blueprints import feed_app
 from project.models import Vacancy, Category, City
 from project.feed.forms import ApplyForm
 from project.bl.mail import send_mail_from_form
-from project.bl.feed import VacancyBL
 
 
 @feed_app.route('/')
