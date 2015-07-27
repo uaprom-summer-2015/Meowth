@@ -254,9 +254,9 @@ var SpecSelect = React.createClass({
             return n.label;
         })[0];
 
-        if (this.props.value == 0) {
-            initial_value = '';
-        }
+        //if (this.props.value == 0) {
+        //    initial_value = '';
+        //}
         return (
             <Select onChange={this.handleChange} clearable={false} value={initial_value} options={options} placeholder="Категория" className="categoryDropdown">
             </Select>
@@ -285,9 +285,9 @@ var CitySelect = React.createClass({
             return n.label;
         })[0];
 
-        if (this.props.value == 0) {
-            initial_value = '';
-        }
+        //if (this.props.value == 0) {
+        //    initial_value = '';
+        //}
 
         return (
             <Select onChange={this.handleChange} clearable={false} value={initial_value} options={options} placeholder="Город" className="cityDropdown">
