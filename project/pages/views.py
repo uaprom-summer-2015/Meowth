@@ -27,5 +27,4 @@ def about():
 @pages_app.route('/contacts/')
 def contacts():
     page = Page.bl.get(3)
-    logging.info(page)
     return render_template('pages/contacts.html', blocks=page.blocks)
