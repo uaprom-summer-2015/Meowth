@@ -1,4 +1,3 @@
-import logging
 from flask import render_template
 from project.blueprints import pages_app
 from project.models import Page
