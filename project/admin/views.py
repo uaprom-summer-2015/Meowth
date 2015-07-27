@@ -147,7 +147,7 @@ pageblock_view = EntryDetail.as_view(
     name='pageblock_detail',
     create_form=PageBlockForm,
     model=PageBlock,
-    success_url="pageblocks_list",
+    success_url="pageblock_list",
 )
 
 register_section(
