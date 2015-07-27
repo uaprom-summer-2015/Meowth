@@ -7,6 +7,9 @@
                 <a href="{{ url_for('admin.vacancy_detail', entry_id=entry.id) }}">
                     {{ entry.title }}
                 </a>
+                {% if entry.hide %}(не видимая)
+                {% else %}(видимая)
+                {% endif %}
             </li>
         {% endfor %}
 
