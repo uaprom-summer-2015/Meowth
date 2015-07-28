@@ -1,17 +1,14 @@
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from werkzeug.security import check_password_hash
 from project.bl import UserBL
 from project.tests.utils import ProjectTestCase
 from project.extensions import mail
 from project.models import User, Vacancy
+from project.tasks.mail import celery_send_mail
 import re
 
 
 class TestUserBL(ProjectTestCase):
-
-    # Crutch for executing celery tasks
-    from project.tasks.mail import celery_send_mail
-    celery_send_mail.delay = celery_send_mail
 
     def test_set_password(self):
         """Check password setter correctness"""
@@ -22,6 +19,10 @@ class TestUserBL(ProjectTestCase):
         self.assertIsNotNone(instance.password)
         self.assertTrue(check_password_hash(instance.password, raw_pass))
 
+    @patch(
+        target='project.tasks.mail.celery_send_mail.delay',
+        new=celery_send_mail,
+    )
     def test_reset_password(self):
         with mail.record_messages() as outbox:
             orig_password = 'nightmaremoon'
@@ -116,6 +117,10 @@ class TestUserBL(ProjectTestCase):
             msg='Surnames do not match',
         )
 
+    @patch(
+        target='project.tasks.mail.celery_send_mail.delay',
+        new=celery_send_mail,
+    )
     def test_create_without_password(self):
         with mail.record_messages() as outbox:
             email = 'celestia@canterlot.com'
