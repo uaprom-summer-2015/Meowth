@@ -2,6 +2,7 @@
 
 {% block title %}{{ vacancy.title }}{% endblock %}
 {% block meta %}
+    <meta name="csrf_token" id="csrf_token" content="{{ csrf_token() }}" />
 
     {% if vacancy.description %}
     <meta name="description" content="{{ vacancy.description }}"/>
@@ -23,14 +24,14 @@
 <br/>
 <br/>
 
-<script src="{{ url_for('static', filename='js/vacancy_form/form.jsx') }}"
+<script src="{{ url_for('static', filename='js/vacancy_form/form_with_ajax.jsx') }}"
         type="text/jsx"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
 
 <div class="col-sm-offset-2 col-sm-4">
-    <div id="attached-form" data-security-token="{{ security_token }}"></div>
+    <div id="attached-form"></div>
 </div>
 
 {% endblock %}

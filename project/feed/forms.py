@@ -12,7 +12,8 @@ class ApplyForm(Form):
                         validators=[Email('Неверный e-mail адрес'),
                                     DataRequired('Обязательное поле')])
     phone = PhoneNumberField(label='Телефон',
-                             country_code='UA')
+                             country_code='UA',
+                             validators=[DataRequired('Обязательное поле')])
     comment = TextAreaField(label='Коментарий')
     attachment = FileField(label='Резюме (макс. 15 Мб)',
                            validators=[allowed_extension()])

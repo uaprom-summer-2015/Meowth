@@ -1,4 +1,4 @@
-from flask import render_template, flash, jsonify
+from flask import render_template, flash, jsonify, request
 from flask_wtf.csrf import generate_csrf
 from project.blueprints import feed_app
 from project.models import Vacancy, Category, City
@@ -17,16 +17,9 @@ def get_vacancy_react(name_in_url):
     vacancy.visits += 1
     vacancy.save()
 
-    form = ApplyForm()
-    if form.validate_on_submit():
-        send_mail_from_form(form, vacancy)
-        flash('Ответ отправлен')
-    security_token = generate_csrf()
     return render_template(
         'feed/reactvacancy.html',
         vacancy=vacancy,
-        form=form,
-        security_token=security_token,
     )
 
 
@@ -42,7 +35,7 @@ def json_vacancies():
     )
 
 
-@feed_app.route('/<name_in_url>/', methods=['GET', 'POST'])
+@feed_app.route('/<name_in_url>/', methods=['GET', 'POST', 'PUT'])
 def get_vacancy(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
     vacancy.visits += 1
@@ -56,3 +49,13 @@ def get_vacancy(name_in_url):
     return render_template('feed/vacancy.html',
                            vacancy=vacancy,
                            form=form)
+
+@feed_app.route('/<name_in_url>/react/form', methods=['POST'])
+def apply_form(name_in_url):
+    form = ApplyForm()
+    if form.validate_on_submit():
+        send_mail_from_form(form, Vacancy.query.filter(
+            Vacancy.name_in_url == name_in_url).one())
+        return jsonify (success=True)
+    else:
+        return jsonify (success=False, **form.errors)
