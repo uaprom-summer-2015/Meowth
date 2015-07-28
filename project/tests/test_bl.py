@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash
 from project.bl import UserBL
 from project.tests.utils import ProjectTestCase
 from project.extensions import mail
-from project.models import User
+from project.models import User, Vacancy
 
 
 class TestUserBL(ProjectTestCase):
@@ -75,3 +75,27 @@ class TestUserBL(ProjectTestCase):
                 usr,
                 msg="User was not authenticated with new password"
             )
+
+
+class TestVacancyBL(ProjectTestCase):
+
+    def test_get_visible(self):
+        visible_list = Vacancy.bl.get_visible()
+        vacancy_list = Vacancy.query.all()
+
+        for vacancy in visible_list:
+            self.assertTrue(
+                vacancy in vacancy_list,
+                msg='Vacancy returned by get_visible is not in all vacancies',
+            )
+            self.assertFalse(
+                vacancy.hide,
+                msg='Vacancy returned by get_visible is hidden',
+            )
+        for vacancy in vacancy_list:
+            if vacancy not in visible_list:
+                self.assertTrue(
+                    vacancy.hide,
+                    msg='There is a visible vacancy which is not returned'
+                        'with get_visible',
+                )
