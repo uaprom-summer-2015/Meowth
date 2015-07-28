@@ -4,6 +4,7 @@ from project.bl import UserBL
 from project.tests.utils import ProjectTestCase
 from project.extensions import mail
 from project.models import User, Vacancy
+import re
 
 
 class TestUserBL(ProjectTestCase):
@@ -49,7 +50,11 @@ class TestUserBL(ProjectTestCase):
                 [email],
                 msg="Incorrect recipients",
             )
-            token = outbox[0].body[-20:]
+            match = re.search(
+                r'/auth/reset/(?P<token>\w{20})',
+                outbox[0].body,
+            )
+            token = match.groupdict()['token'] if match else None
             is_success = User.bl.reset_password(token)
             self.assertTrue(
                 is_success,
@@ -70,7 +75,11 @@ class TestUserBL(ProjectTestCase):
                 msg="User authenticated w/ old password",
             )
             del usr
-            new_password = outbox[1].body[-8:]
+            match = re.search(
+                r'Новый пароль: (?P<new_password>\w{8})',
+                outbox[1].body,
+            )
+            new_password = match.groupdict()['new_password'] if match else None
             usr = User.bl.authenticate(login, new_password)
             self.assertIsNotNone(
                 usr,
@@ -107,7 +116,7 @@ class TestUserBL(ProjectTestCase):
             msg='Surnames do not match',
         )
 
-    def test_screate_without_password(self):
+    def test_create_without_password(self):
         with mail.record_messages() as outbox:
             email = 'celestia@canterlot.com'
             login = 'celestia'
@@ -134,12 +143,18 @@ class TestUserBL(ProjectTestCase):
                 [email],
                 msg='Incorrect recipients',
             )
-            password = outbox[0].body[-8:]
-            self.assertTrue(
-                'login: %s' % login in outbox[0].body,
-                msg='missing login %s in mesage body' % login,
+            match = re.search(
+                r'login: (?P<_login>\w+)\npassword:(?P<_password>\w{8})',
+                outbox[0].body,
             )
-            usr = User.bl.authenticate(login, password)
+            _login = match.groupdict()['_login'] if match else None
+            _password = match.groupdict()['_password'] if match else None
+            self.assertEqual(
+                _login,
+                login,
+                msg='Logins do not match!',
+            )
+            usr = User.bl.authenticate(login, _password)
             self.assertIsNotNone(
                 usr,
                 msg="Cannot authenticate created user",
