@@ -1,5 +1,4 @@
-from flask import render_template, flash, jsonify, request
-from flask_wtf.csrf import generate_csrf
+from flask import render_template, flash, jsonify
 from project.blueprints import feed_app
 from project.models import Vacancy, Category, City
 from project.feed.forms import ApplyForm
@@ -50,12 +49,13 @@ def get_vacancy(name_in_url):
                            vacancy=vacancy,
                            form=form)
 
+
 @feed_app.route('/<name_in_url>/react/form', methods=['POST'])
 def apply_form(name_in_url):
     form = ApplyForm()
     if form.validate_on_submit():
         send_mail_from_form(form, Vacancy.query.filter(
             Vacancy.name_in_url == name_in_url).one())
-        return jsonify (success=True)
+        return jsonify(success=True)
     else:
-        return jsonify (success=False, **form.errors)
+        return jsonify(success=False, **form.errors)
