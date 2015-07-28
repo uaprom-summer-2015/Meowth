@@ -102,7 +102,6 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
-    CELERY_ALWAYS_EAGER = True
 
 
 logging.config.dictConfig(Config.LOG_CONFIG)
