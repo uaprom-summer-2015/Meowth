@@ -8,10 +8,11 @@ class CategoryBL(BaseBL):
 class VacancyBL(BaseBL):
 
     def get_visible(self):
-        vacancies = self.model.query \
-            .filter(self.model.hide == False) \
+        return (
+            self.model.query
+            .filter(self.model.hide == False)
             .all()  # NOQA
-        return vacancies
+        )
 
 
 class CityBL(BaseBL):
