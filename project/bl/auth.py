@@ -51,6 +51,7 @@ class UserBL(BaseBL):
         u = token.user
         random_password = generate_random_string(8)
         u.bl.set_password(random_password)
+        u.save()
         recipients = [u.email, ]
         title = 'Сброс пароля на HR портале'
         body = 'Ваш пароль был успешно cброшен! \n Новый пароль: {}'\
