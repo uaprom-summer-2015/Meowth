@@ -43,6 +43,7 @@ class Config:
     # Logger configuration
     LOG_CONFIG = {
         'version': 1,
+        'disable_existing_loggers': False,
         'handlers': {
             'console': {
                 'class': 'logging.StreamHandler',
@@ -89,7 +90,7 @@ class Config:
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql://root:qwerty@localhost/hrportal'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', None)
 
 
 class DevelopmentConfig(Config):

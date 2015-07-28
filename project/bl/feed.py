@@ -6,7 +6,6 @@ class CategoryBL(BaseBL):
 
 
 class VacancyBL(BaseBL):
-
     def get_visible(self):
         return (
             self.model.query
