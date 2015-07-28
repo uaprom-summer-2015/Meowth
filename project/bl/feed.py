@@ -14,6 +14,10 @@ class VacancyBL(BaseBL):
             .all()  # NOQA
         )
 
+    def visit(self):
+        self.model.visits += 1
+        self.model.save()
+
 
 class CityBL(BaseBL):
     pass

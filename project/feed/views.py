@@ -1,4 +1,4 @@
-from flask import render_template, flash, jsonify
+from flask import render_template, jsonify
 from project.blueprints import feed_app
 from project.models import Vacancy, Category, City
 from project.feed.forms import ApplyForm
@@ -10,12 +10,10 @@ def vacancies():
     return render_template('feed/vacancies.html')
 
 
-@feed_app.route('/<name_in_url>/react/')
+@feed_app.route('/<name_in_url>/')
 def get_vacancy_react(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
-    vacancy.visits += 1
-    vacancy.save()
-
+    vacancy.bl.visit()
     return render_template(
         'feed/reactvacancy.html',
         vacancy=vacancy,
@@ -34,28 +32,13 @@ def json_vacancies():
     )
 
 
-@feed_app.route('/<name_in_url>/', methods=['GET', 'POST'])
-def get_vacancy(name_in_url):
-    vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
-    vacancy.visits += 1
-    vacancy.save()
-
-    form = ApplyForm()
-    if form.validate_on_submit():
-        send_mail_from_form(form, vacancy)
-        flash('Ответ отправлен')
-
-    return render_template('feed/vacancy.html',
-                           vacancy=vacancy,
-                           form=form)
-
-
-@feed_app.route('/<name_in_url>/react/form', methods=['POST'])
+@feed_app.route('/<name_in_url>/form', methods=['POST'])
 def apply_form(name_in_url):
     form = ApplyForm()
     if form.validate_on_submit():
-        send_mail_from_form(form, Vacancy.query.filter(
-            Vacancy.name_in_url == name_in_url).one())
+        vacancy = Vacancy.query.filter(
+            Vacancy.name_in_url == name_in_url).one()
+        send_mail_from_form(form, vacancy)
         return jsonify(success=True)
     else:
         return jsonify(success=False, **form.errors)

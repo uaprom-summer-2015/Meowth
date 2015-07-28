@@ -47,28 +47,24 @@ var ApplyForm = React.createClass({
             return false;
         }
     },
-
+    handleLoad: function(resp) {
+        this.setState({ success: resp['success'], nameError: resp['name'],
+                                    emailError: resp['email'], phoneError: resp['phone'],
+                                    fileError: resp['attachment']});
+    },
     handleSubmit: function(e) {
         e.preventDefault();
-
         if (this.state.nameError || this.state.emailError
             || this.state.phoneError || this.state.fileError) {
             alert('Исправьте форму');
         } else {
-            function reqListener () {
-                console.log(this.response);
-            }
-            var form = document.forms.ApplyForm;
+            var form = React.findDOMNode(this.refs.ApplyForm)
             var formData = new FormData(form);
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange=function() {
                 if (xhr.readyState==4 && xhr.status==200)
                 {
-                    console.log(xhr.responseText);
-                    resp = JSON.parse(xhr.responseText);
-                    this.setState({ success: resp['success'], nameError: resp['name'],
-                                    emailError: resp['email'], phoneError: resp['phone'],
-                                    fileError: resp['attachment']});
+                    this.handleLoad(JSON.parse(xhr.responseText));
                 }
             }.bind(this);
             xhr.open("POST", "form", true);
@@ -82,9 +78,9 @@ var ApplyForm = React.createClass({
         if (this.state.success == false) {
             return (
                 <form className="form-horizontal" action='form' name='ApplyForm' id='ApplyForm'
-                      onSubmit={this.handleSubmit} encType="multipart/form-data">
+                      onSubmit={this.handleSubmit} encType="multipart/form-data" ref='ApplyForm'>
 
-                    <input type='hidden' name="csrf_token" value={document.getElementById('csrf_token').content} />
+                    <input type='hidden' name="csrf_token" value={this.props.csrf_token} />
 
                     <div className={nameClass} >
                         <label className="control-label" htmlFor="name">{ this.state.nameError }</label>
@@ -130,5 +126,5 @@ var ApplyForm = React.createClass({
 })
 
 var node = document.getElementById('attached-form');
-var securityToken = node.dataset['securityToken'];
-React.render(<ApplyForm securityToken={securityToken} />, node);
+var csrf_token = document.getElementById('csrf_token').content;
+React.render(<ApplyForm csrf_token={csrf_token} />, node);
