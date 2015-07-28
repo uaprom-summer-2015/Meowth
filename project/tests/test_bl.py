@@ -8,6 +8,10 @@ from project.models import User, Vacancy
 
 class TestUserBL(ProjectTestCase):
 
+    # Crutch for executing celery tasks
+    from project.tasks.mail import celery_send_mail
+    celery_send_mail.delay = celery_send_mail
+
     def test_set_password(self):
         """Check password setter correctness"""
         raw_pass = 'celestia'
@@ -30,9 +34,6 @@ class TestUserBL(ProjectTestCase):
                 'surname': 'Princess',
             }
             User.bl.create(data)
-            usr = User.bl.authenticate(login, orig_password)
-            self.assertIsNotNone(usr)
-            del usr
             User.bl.forgot_password(email)
             self.assertEqual(
                 len(outbox),
@@ -74,6 +75,84 @@ class TestUserBL(ProjectTestCase):
             self.assertIsNotNone(
                 usr,
                 msg="User was not authenticated with new password"
+            )
+
+    def test_create_with_password(self):
+        password = 'cadence'
+        email = 'cadence@canterlot.com'
+        login = 'cadence'
+        name = 'Cadence'
+        surname = 'Princess'
+        data = {
+            'login': login,
+            'password': password,
+            'email': email,
+            'name': name,
+            'surname': surname,
+        }
+        User.bl.create(data)
+        usr = User.bl.authenticate(login, password)
+        self.assertIsNotNone(
+            usr,
+            msg="Cannot authenticate created user",
+        )
+        self.assertEqual(
+            usr.name,
+            name,
+            msg='Names do not match',
+        )
+        self.assertEqual(
+            usr.surname,
+            surname,
+            msg='Surnames do not match',
+        )
+
+    def test_screate_without_password(self):
+        with mail.record_messages() as outbox:
+            email = 'celestia@canterlot.com'
+            login = 'celestia'
+            name = 'Celestia'
+            surname = 'Princess'
+            data = {
+                'login': login,
+                'email': email,
+                'name': name,
+                'surname': surname,
+            }
+            User.bl.create(data)
+            self.assertEqual(
+                len(outbox),
+                1,
+            )
+            self.assertEqual(
+                outbox[0].subject,
+                'Вам была создана учетная запись на HR портале!',
+                msg='Incorrect mail subject',
+            )
+            self.assertEqual(
+                outbox[0].recipients,
+                [email],
+                msg='Incorrect recipients',
+            )
+            password = outbox[0].body[-8:]
+            self.assertTrue(
+                'login: %s' % login in outbox[0].body,
+                msg='missing login %s in mesage body' % login,
+            )
+            usr = User.bl.authenticate(login, password)
+            self.assertIsNotNone(
+                usr,
+                msg="Cannot authenticate created user",
+            )
+            self.assertEqual(
+                usr.name,
+                name,
+                msg='Names do not match',
+            )
+            self.assertEqual(
+                usr.surname,
+                surname,
+                msg='Surnames do not match',
             )
 
 
