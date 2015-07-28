@@ -6,7 +6,7 @@ var ApplyForm = React.createClass({
                  attachment: null, success: false}
     },
     changeName: function(e) {
-        this.setState({ name: e.target.value, nameError: '' })
+        this.setState({ name: e.target.value, nameError: '' });
     },
     changeEmail: function(e) {
         this.setState({ email: e.target.value, emailError: '' });
@@ -18,33 +18,33 @@ var ApplyForm = React.createClass({
         this.setState({ comment: e.target.value });
     },
     changeFile: function(e) {
-        var error
-        var attachment = e.target.files[0]
-        largeSize = this.validateSize(attachment.size)
-        goodExtension = this.validateExtension(attachment.name)
+        var error;
+        var attachment = e.target.files[0];
+        var largeSize = this.validateSize(attachment.size);
+        var goodExtension = this.validateExtension(attachment.name);
         if (largeSize && !goodExtension) {
-            error = 'Слишком большой файл (макс 15 Мб). Недопустимое расширение файла.'
+            error = 'Слишком большой файл (макс 15 Мб). Недопустимое расширение файла.';
         } else if (largeSize) {
-            error = 'Слишком большой файл (макс 15 Мб).'
+            error = 'Слишком большой файл (макс 15 Мб).';
         } else if (!goodExtension) {
-            error = 'Недопустимое расширение файла.'
+            error = 'Недопустимое расширение файла.';
         } else {
-            error = ''
+            error = '';
         }
 
         this.setState({ largeSize: largeSize, goodExtension: goodExtension,
-                        fileError: error, attachment: attachment.file})
+                        fileError: error, attachment: attachment.file});
     },
     validateSize: function(size) {
         return size > 15 * 1024 * 1024;
     },
     validateExtension: function(name) {
         if ( name.indexOf('.') != -1 ) {
-            lst = name.split('.')
-            ext = lst[lst.length - 1]
-            return ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx'].indexOf(ext) != -1
+            var lst = name.split('.');
+            var ext = lst[lst.length - 1];
+            return ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx'].indexOf(ext) != -1;
         } else {
-            return false
+            return false;
         }
     },
 
@@ -53,7 +53,7 @@ var ApplyForm = React.createClass({
 
         if (this.state.nameError || this.state.emailError
             || this.state.phoneError || this.state.fileError) {
-            alert('Исправьте форму')
+            alert('Исправьте форму');
         } else {
             function reqListener () {
                 console.log(this.response);
@@ -68,17 +68,17 @@ var ApplyForm = React.createClass({
                     resp = JSON.parse(xhr.responseText);
                     this.setState({ success: resp['success'], nameError: resp['name'],
                                     emailError: resp['email'], phoneError: resp['phone'],
-                                    fileError: resp['attachment']})
+                                    fileError: resp['attachment']});
                 }
-            }.bind(this)
+            }.bind(this);
             xhr.open("POST", "form", true);
             xhr.send(formData);
         }
     },
     render: function() {
-        nameClass = "form-horizontal" + (this.state.nameError ? ' has-error' : '')
-        emailClass = "form-horizontal" + (this.state.emailError ? ' has-error' : '')
-        phoneClass = "form-horizontal" + (this.state.phoneError ? ' has-error' : '')
+        var nameClass = "form-horizontal" + (this.state.nameError ? ' has-error' : '');
+        var emailClass = "form-horizontal" + (this.state.emailError ? ' has-error' : '');
+        var phoneClass = "form-horizontal" + (this.state.phoneError ? ' has-error' : '');
         if (this.state.success == false) {
             return (
                 <form className="form-horizontal" action='form' name='ApplyForm' id='ApplyForm'
@@ -120,11 +120,11 @@ var ApplyForm = React.createClass({
 
                     <input type='submit' />
                 </form>
-            )
+            );
         } else {
             return (
                 <h2>Success</h2>
-            )
+            );
         }
     }
 })
