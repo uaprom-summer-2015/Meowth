@@ -7,7 +7,7 @@ install:
 # command to run tests
 script:
   - flake8 --exclude "*versions*" .
-  - coverage run --omit='*.html' -p -m unittest
+  - coverage run --source='.' -m unittest
 
 after_success:
   - coverage combine
