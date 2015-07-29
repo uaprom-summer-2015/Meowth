@@ -51,14 +51,31 @@
 
     <div class="container">
     {% for block in blocks %}
-        <div class="row media">
-            <div class="media-left">
-                <img class="media-object" src="{{ block.image }}" alt="...">
-            </div>
-            <div class="media-body">
+        <div class="row">
+            {% if block.block_type == block.TYPE.no_img %}
+            <div class="col-md-12">
                 <h4 class="media-heading">{{ block.title }}</h4>
                 {{ block.text|safe }}
             </div>
+            {% elif block.block_type == block.TYPE.img_left %}
+             <div class="col-md-5">
+                <img class="img-responsive" src="{{ block.image }}" alt="...">
+            </div><!--
+            --><div class="col-md-7">
+                <h4 class="media-heading">{{ block.title }}</h4>
+                {{ block.text|safe }}
+            </div>
+            {% elif block.block_type == block.TYPE.img_right %}
+            <div class="col-md-7">
+                <h4 class="media-heading">{{ block.title }}</h4>
+                {{ block.text|safe }}            
+            </div><!--
+            --><div class="col-md-5">
+                <img class="img-responsive" src="{{ block.image }}" alt="...">
+            </div>
+            {% else %}
+            <!-- NOT IMPLEMENTED YET -->
+            {% endif %}
         </div>
     {% endfor %}
     </div>
