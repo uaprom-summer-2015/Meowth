@@ -1,4 +1,4 @@
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import Mock, patch
 from werkzeug.security import check_password_hash
 from project.bl import UserBL
 from project.tests.utils import ProjectTestCase
@@ -6,7 +6,7 @@ from project.models import User, Vacancy
 import re
 
 
-celery_send_mail = MagicMock(return_value=None)
+celery_send_mail = Mock(return_value=None)
 
 
 class TestUserBL(ProjectTestCase):
