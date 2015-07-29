@@ -192,6 +192,32 @@ class TestUserBL(ProjectTestCase):
             msg='Surnames do not match',
         )
 
+    def test_create_superuser(self):
+        login = 'tirek'
+        password = 'tirek'
+        u = User.bl.create_superuser(login, password)
+        self.assertIsNotNone(
+            u,
+            msg='created superuser is None',
+        )
+        self.assertEqual(
+            u.role,
+            User.ROLE.superuser,
+            msg='created superuser is not actually a superuser',
+        )
+        del u
+        u = User.bl.authenticate(login, password)
+        self.assertIsNotNone(
+            u,
+            msg='Cannot authenticate created superuser',
+        )
+        self.assertEqual(
+            u.role,
+            User.ROLE.superuser,
+            msg='authenticated superuser is not actually a superuser',
+        )
+        del u
+
 
 class TestVacancyBL(ProjectTestCase):
 
