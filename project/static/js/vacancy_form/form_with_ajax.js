@@ -1,4 +1,6 @@
-var ApplyForm = React.createClass({
+var React = require('react');
+
+var ApplyForm = React.createClass({displayName: "ApplyForm",
     getInitialState: function() {
         return { name: '', email: '', phone: '', comment: '',
                  nameError: '', emailError: '', phoneError: '',
@@ -77,54 +79,52 @@ var ApplyForm = React.createClass({
         var phoneClass = "form-horizontal" + (this.state.phoneError ? ' has-error' : '');
         if (this.state.success == false) {
             return (
-                <form className="form-horizontal" action='form' name='ApplyForm' id='ApplyForm'
-                      onSubmit={this.handleSubmit} encType="multipart/form-data" ref='ApplyForm'>
+                React.createElement("form", {className: "form-horizontal", action: "form", name: "ApplyForm", id: "ApplyForm", 
+                      onSubmit: this.handleSubmit, encType: "multipart/form-data", ref: "ApplyForm"}, 
 
-                    <input type='hidden' name="csrf_token" value={this.props.csrf_token} />
+                    React.createElement("input", {type: "hidden", name: "csrf_token", value: this.props.csrf_token}), 
 
-                    <div className={nameClass} >
-                        <label className="control-label" htmlFor="name">{ this.state.nameError }</label>
-                        <input name='name' type="text" className="form-control" id="name"
-                               placeholder="Имя" value={this.state.name} onChange={this.changeName} />
-                    </div>
+                    React.createElement("div", {className: nameClass}, 
+                        React.createElement("label", {className: "control-label", htmlFor: "name"},  this.state.nameError), 
+                        React.createElement("input", {name: "name", type: "text", className: "form-control", id: "name", 
+                               placeholder: "Имя", value: this.state.name, onChange: this.changeName})
+                    ), 
 
-                    <div className={emailClass} >
-                        <label className="control-label" htmlFor="email">{ this.state.emailError }</label>
-                        <input name='email' type="email" className="form-control" id="email"
-                               placeholder="Email" value={this.state.email} onChange={this.changeEmail} />
-                    </div>
+                    React.createElement("div", {className: emailClass}, 
+                        React.createElement("label", {className: "control-label", htmlFor: "email"},  this.state.emailError), 
+                        React.createElement("input", {name: "email", type: "email", className: "form-control", id: "email", 
+                               placeholder: "Email", value: this.state.email, onChange: this.changeEmail})
+                    ), 
 
-                    <div className={phoneClass} >
-                        <label className="control-label" htmlFor="phone">{ this.state.phoneError }</label>
-                        <input name='phone' type="text" className="form-control" id="phone"
-                               placeholder="Телефон" value={this.state.phone} onChange={this.changePhone} />
-                    </div>
+                    React.createElement("div", {className: phoneClass}, 
+                        React.createElement("label", {className: "control-label", htmlFor: "phone"},  this.state.phoneError), 
+                        React.createElement("input", {name: "phone", type: "text", className: "form-control", id: "phone", 
+                               placeholder: "Телефон", value: this.state.phone, onChange: this.changePhone})
+                    ), 
 
-                    <div className="form-group">
-                        <textarea name='comment' id='comment' className="form-control"
-                                  placeholder="Коментарий" ></textarea>
-                    </div>
+                    React.createElement("div", {className: "form-group"}, 
+                        React.createElement("textarea", {name: "comment", id: "comment", className: "form-control", 
+                                  placeholder: "Коментарий"})
+                    ), 
 
-                    <div className="form-group">
-                        <label htmlFor="inputFile">Резюме</label>
-                        <input type="file" id="attachment" name='attachment'
-                               onChange={this.changeFile} multiple />
-                        <div className='has-error'>
-                            <p className="help-block">{this.state.fileError}</p>
-                        </div>
-                    </div>
+                    React.createElement("div", {className: "form-group"}, 
+                        React.createElement("label", {htmlFor: "inputFile"}, "Резюме"), 
+                        React.createElement("input", {type: "file", id: "attachment", name: "attachment", 
+                               onChange: this.changeFile, multiple: true}), 
+                        React.createElement("div", {className: "has-error"}, 
+                            React.createElement("p", {className: "help-block"}, this.state.fileError)
+                        )
+                    ), 
 
-                    <input type='submit' />
-                </form>
+                    React.createElement("input", {type: "submit"})
+                )
             );
         } else {
             return (
-                <h2>Success</h2>
+                React.createElement("h2", null, "Success")
             );
         }
     }
 })
 
-var node = document.getElementById('attached-form');
-var csrf_token = document.getElementById('csrf_token').content;
-React.render(<ApplyForm csrf_token={csrf_token} />, node);
+module.exports = ApplyForm;

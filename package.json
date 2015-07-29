@@ -75,5 +75,9 @@
       ]
     }
   },
-  "dist": "./project/static/dist"
+  "dist": "./project/static/dist",
+  "form": {
+    "file": "./project/static/js/vacancy_form/formfactory.js",
+    "name": "form.js"
+  }
 }
