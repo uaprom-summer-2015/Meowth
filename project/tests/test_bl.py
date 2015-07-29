@@ -20,11 +20,8 @@ class TestUserBL(ProjectTestCase):
         self.assertIsNotNone(instance.password)
         self.assertTrue(check_password_hash(instance.password, raw_pass))
 
-    @patch(
-        target='project.tasks.mail.celery_send_mail.delay',
-        new=celery_send_mail,
-    )
-    def test_reset_password(self):
+    @patch('project.tasks.mail.celery_send_mail.delay')
+    def test_reset_password(self, send_mail):
         orig_password = 'nightmaremoon'
         email = 'nightmaremoon@canterlot.com'
         login = 'nightmaremoon'
@@ -37,9 +34,9 @@ class TestUserBL(ProjectTestCase):
         }
         User.bl.create(data)
         User.bl.forgot_password(email)
-        fargs, kwfargs = celery_send_mail.call_args
-        mail, *_ = fargs
-        del _, fargs, kwfargs
+        self.assertEqual(send_mail.call_count, 1)
+        mail, *_ = send_mail.call_args[0]
+        del _
         self.assertIsNotNone(
             mail,
             msg='Mail was not sent',
@@ -65,9 +62,9 @@ class TestUserBL(ProjectTestCase):
             is_success,
             msg='Resetting password failed',
         )
-        fargs, fkwargs = celery_send_mail.call_args
-        mail, *_ = fargs
-        del _, fargs, fkwargs
+        self.assertEqual(send_mail.call_count, 2)
+        mail, *_ = send_mail.call_args[0]
+        del _
         self.assertIsNotNone(
             mail,
             msg='Mail was not sent',
@@ -93,6 +90,19 @@ class TestUserBL(ProjectTestCase):
         self.assertIsNotNone(
             usr,
             msg="User was not authenticated with new password"
+        )
+
+    @patch('project.tasks.mail.celery_send_mail.delay')
+    def test_reset_password_bad_token(self, send_mail):
+        fake_token = '-1!~ -2'
+        is_success = UserBL.reset_password(fake_token)
+        self.assertFalse(
+            is_success,
+            msg='resetToken succeeded on bad token',
+        )
+        self.assertFalse(
+            send_mail.called,
+            msg='send_mail was called, while it shouldn\'t'
         )
 
     def test_create_with_password(self):
@@ -125,11 +135,8 @@ class TestUserBL(ProjectTestCase):
             msg='Surnames do not match',
         )
 
-    @patch(
-        target='project.tasks.mail.celery_send_mail.delay',
-        new=celery_send_mail,
-    )
-    def test_create_without_password(self):
+    @patch('project.tasks.mail.celery_send_mail.delay')
+    def test_create_without_password(self, send_mail):
         email = 'celestia@canterlot.com'
         login = 'celestia'
         name = 'Celestia'
@@ -141,9 +148,9 @@ class TestUserBL(ProjectTestCase):
             'surname': surname,
         }
         User.bl.create(data)
-        fargs, fkwargs = celery_send_mail.call_args
-        mail, *_ = fargs
-        del fargs, fkwargs, _
+        self.assertEqual(send_mail.call_count, 1)
+        mail, *_ = send_mail.call_args[0]
+        del _
         self.assertIsNotNone(
             mail,
             msg='Mail was not sent',
