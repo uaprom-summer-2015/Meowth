@@ -1,11 +1,12 @@
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, MagicMock, patch
 from werkzeug.security import check_password_hash
 from project.bl import UserBL
 from project.tests.utils import ProjectTestCase
-from project.extensions import mail
 from project.models import User, Vacancy
-from project.tasks.mail import celery_send_mail
 import re
+
+
+celery_send_mail = MagicMock(return_value=None)
 
 
 class TestUserBL(ProjectTestCase):
@@ -24,68 +25,75 @@ class TestUserBL(ProjectTestCase):
         new=celery_send_mail,
     )
     def test_reset_password(self):
-        with mail.record_messages() as outbox:
-            orig_password = 'nightmaremoon'
-            email = 'nightmaremoon@canterlot.com'
-            login = 'nightmaremoon'
-            data = {
-                'login': login,
-                'password': orig_password,
-                'email': email,
-                'name': 'Luna',
-                'surname': 'Princess',
-            }
-            User.bl.create(data)
-            User.bl.forgot_password(email)
-            self.assertEqual(
-                len(outbox),
-                1,
-            )
-            self.assertEqual(
-                outbox[0].subject,
-                "Cброс пароля на HR портале",
-                msg="Incorrect mail subject",
-            )
-            self.assertEqual(
-                outbox[0].recipients,
-                [email],
-                msg="Incorrect recipients",
-            )
-            match = re.search(
-                r'/auth/reset/(?P<token>\w{20})',
-                outbox[0].body,
-            )
-            token = match.groupdict()['token'] if match else None
-            is_success = User.bl.reset_password(token)
-            self.assertTrue(
-                is_success,
-                msg='Resetting password failed',
-            )
-            self.assertEqual(
-                len(outbox),
-                2,
-            )
-            self.assertEqual(
-                outbox[1].recipients,
-                [email],
-                msg="Incorrect recipients",
-            )
-            usr = User.bl.authenticate(login, orig_password)
-            self.assertIsNone(
-                usr,
-                msg="User authenticated w/ old password",
-            )
-            del usr
-            match = re.search(
-                r'Новый пароль: (?P<new_password>\w{8})',
-                outbox[1].body,
-            )
-            new_password = match.groupdict()['new_password'] if match else None
-            usr = User.bl.authenticate(login, new_password)
-            self.assertIsNotNone(
-                usr,
-                msg="User was not authenticated with new password"
-            )
+        orig_password = 'nightmaremoon'
+        email = 'nightmaremoon@canterlot.com'
+        login = 'nightmaremoon'
+        data = {
+            'login': login,
+            'password': orig_password,
+            'email': email,
+            'name': 'Luna',
+            'surname': 'Princess',
+        }
+        User.bl.create(data)
+        User.bl.forgot_password(email)
+        fargs, kwfargs = celery_send_mail.call_args
+        mail, *_ = fargs
+        del _, fargs, kwfargs
+        self.assertIsNotNone(
+            mail,
+            msg='Mail was not sent',
+        )
+        self.assertEqual(
+            mail.subject,
+            "Cброс пароля на HR портале",
+            msg="Incorrect mail subject",
+        )
+        self.assertEqual(
+            mail.recipients,
+            [email],
+            msg="Incorrect recipients",
+        )
+        match = re.search(
+            r'/auth/reset/(?P<token>\w{20})',
+            mail.body,
+        )
+        del mail
+        token = match.groupdict()['token'] if match else None
+        is_success = User.bl.reset_password(token)
+        self.assertTrue(
+            is_success,
+            msg='Resetting password failed',
+        )
+        fargs, fkwargs = celery_send_mail.call_args
+        mail, *_ = fargs
+        del _, fargs, fkwargs
+        self.assertIsNotNone(
+            mail,
+            msg='Mail was not sent',
+        )
+        self.assertEqual(
+            mail.recipients,
+            [email],
+            msg="Incorrect recipients",
+        )
+        usr = User.bl.authenticate(login, orig_password)
+        self.assertIsNone(
+            usr,
+            msg="User authenticated w/ old password",
+        )
+        del usr
+        match = re.search(
+            r'Новый пароль: (?P<new_password>\w{8})',
+            mail.body,
+        )
+        del mail
+        new_password = match.groupdict()['new_password'] if match else None
+        usr = User.bl.authenticate(login, new_password)
+        self.assertIsNotNone(
+            usr,
+            msg="User was not authenticated with new password"
+        )
 
     def test_create_with_password(self):
         password = 'cadence'
@@ -122,58 +130,60 @@ class TestUserBL(ProjectTestCase):
         new=celery_send_mail,
     )
     def test_create_without_password(self):
-        with mail.record_messages() as outbox:
-            email = 'celestia@canterlot.com'
-            login = 'celestia'
-            name = 'Celestia'
-            surname = 'Princess'
-            data = {
-                'login': login,
-                'email': email,
-                'name': name,
-                'surname': surname,
-            }
-            User.bl.create(data)
-            self.assertEqual(
-                len(outbox),
-                1,
-            )
-            self.assertEqual(
-                outbox[0].subject,
-                'Вам была создана учетная запись на HR портале!',
-                msg='Incorrect mail subject',
-            )
-            self.assertEqual(
-                outbox[0].recipients,
-                [email],
-                msg='Incorrect recipients',
-            )
-            match = re.search(
-                r'login: (?P<_login>\w+)\npassword:(?P<_password>\w{8})',
-                outbox[0].body,
-            )
-            _login = match.groupdict()['_login'] if match else None
-            _password = match.groupdict()['_password'] if match else None
-            self.assertEqual(
-                _login,
-                login,
-                msg='Logins do not match!',
-            )
-            usr = User.bl.authenticate(login, _password)
-            self.assertIsNotNone(
-                usr,
-                msg="Cannot authenticate created user",
-            )
-            self.assertEqual(
-                usr.name,
-                name,
-                msg='Names do not match',
-            )
-            self.assertEqual(
-                usr.surname,
-                surname,
-                msg='Surnames do not match',
-            )
+        email = 'celestia@canterlot.com'
+        login = 'celestia'
+        name = 'Celestia'
+        surname = 'Princess'
+        data = {
+            'login': login,
+            'email': email,
+            'name': name,
+            'surname': surname,
+        }
+        User.bl.create(data)
+        fargs, fkwargs = celery_send_mail.call_args
+        mail, *_ = fargs
+        del fargs, fkwargs, _
+        self.assertIsNotNone(
+            mail,
+            msg='Mail was not sent',
+        )
+        self.assertEqual(
+            mail.subject,
+            'Вам была создана учетная запись на HR портале!',
+            msg='Incorrect mail subject',
+        )
+        self.assertEqual(
+            mail.recipients,
+            [email],
+            msg='Incorrect recipients',
+        )
+        match = re.search(
+            r'login: (?P<_login>\w+)\npassword:(?P<_password>\w{8})',
+            mail.body,
+        )
+        _login = match.groupdict()['_login'] if match else None
+        _password = match.groupdict()['_password'] if match else None
+        self.assertEqual(
+            _login,
+            login,
+            msg='Logins do not match!',
+        )
+        usr = User.bl.authenticate(login, _password)
+        self.assertIsNotNone(
+            usr,
+            msg="Cannot authenticate created user",
+        )
+        self.assertEqual(
+            usr.name,
+            name,
+            msg='Names do not match',
+        )
+        self.assertEqual(
+            usr.surname,
+            surname,
+            msg='Surnames do not match',
+        )
 
 
 class TestVacancyBL(ProjectTestCase):
