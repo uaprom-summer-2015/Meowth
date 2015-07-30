@@ -61,7 +61,7 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
             || this.state.phoneError || this.state.fileError) {
             alert('Исправьте форму');
         } else {
-            var form = React.findDOMNode(this.refs.ApplyForm)
+            var form = React.findDOMNode(this);
             var formData = new FormData(form);
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange=function() {

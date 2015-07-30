@@ -1,0 +1,60 @@
+from flask import url_for
+from project.models import Vacancy
+from project.tests.utils import ProjectTestCase
+from bs4 import BeautifulSoup
+
+
+class TestFeedView(ProjectTestCase):
+
+    def test_vacancy(self):
+        vacancy = Vacancy.query.first()
+        url = url_for('feed.get_vacancy', name_in_url=vacancy.name_in_url)
+        resp = self.client.get(url, follow_redirects=True)
+        self.assertIn(vacancy.title, resp.data.decode())
+        self.assertIn(vacancy.text, resp.data.decode())
+
+    def get_vacancy_with_csrf(self):
+        vacancy = Vacancy.query.first()
+        url = url_for('feed.get_vacancy', name_in_url=vacancy.name_in_url)
+        resp = self.client.get(url, follow_redirects=True)
+        soup = BeautifulSoup(resp.data, 'html.parser')
+        csrf_token = soup.find(id='csrf_token')['content']
+        return csrf_token, url
+
+    def test_not_completed_form(self):
+        csrf_token, url = self.get_vacancy_with_csrf()
+
+        new_resp = self.client.post(
+            url+'form', data=dict(
+                csrf_token=csrf_token,
+                name='',
+                email='',
+                phone='',
+                comment='',
+                attachment=open('test_feed.py', 'rb')
+            ), content_type='multipart/form-data'
+        )
+        self.assertFalse(False, new_resp.json['success'])
+        self.assertIsNotNone(new_resp.json['name'])
+        self.assertIsNotNone(new_resp.json['email'])
+        self.assertIsNotNone(new_resp.json['phone'])
+        self.assertIsNotNone(new_resp.json['attachment'])
+
+    def test_completed_form(self):
+        csrf_token, url = self.get_vacancy_with_csrf()
+
+        new_resp = self.client.post(
+            url+'form', data=dict(
+                csrf_token=csrf_token,
+                name='spam',
+                email='spam@gmail.com',
+                phone='0931234567',
+                comment='',
+                attachment=open('../../requirements.txt', 'rb')
+            ), content_type='multipart/form-data'
+        )
+        self.assertTrue(new_resp.json['success'])
+        self.assertFalse('name' in new_resp.json)
+        self.assertFalse('email' in new_resp.json)
+        self.assertFalse('phone' in new_resp.json)
+        self.assertFalse('attachment' in new_resp.json)

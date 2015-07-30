@@ -11,7 +11,7 @@ def vacancies():
 
 
 @feed_app.route('/<name_in_url>/')
-def get_vacancy_react(name_in_url):
+def get_vacancy(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
     vacancy.bl.visit()
     return render_template(
