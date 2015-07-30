@@ -48,3 +48,10 @@ gulp.task('clean', function(callback) {
   glob = pkginfo.dist + '/*';
   del([glob, '!.gitignore'], callback);
 });
+
+gulp.task('browserify', function(){
+  return browserify(pkginfo.form.file)
+        .bundle()
+        .pipe(source(pkginfo.form.name))
+        .pipe(gulp.dest(pkginfo.dist));
+});

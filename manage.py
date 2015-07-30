@@ -112,8 +112,6 @@ def collectstatic():
         after='Done',
     ):
         do_npm()
-        do_bower()
-        do_gulp()
 
 
 if __name__ == "__main__":
