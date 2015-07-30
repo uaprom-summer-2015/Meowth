@@ -1,4 +1,4 @@
-from project import PageChunk
+from project.models import PageChunk
 
 
 def inject_pagechunks():
