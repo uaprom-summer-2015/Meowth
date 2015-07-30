@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% from "pages/macros.html" import list_blocks %}
 {% block meta %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
@@ -50,34 +50,7 @@
     </div>
 
     <div class="container">
-    {% for block in blocks %}
-        <div class="row">
-            {% if block.block_type == block.TYPE.no_img %}
-            <div class="col-md-12">
-                <h4 class="media-heading">{{ block.title }}</h4>
-                {{ block.text|safe }}
-            </div>
-            {% elif block.block_type == block.TYPE.img_left %}
-             <div class="col-md-5">
-                <img class="img-responsive" src="{{ block.image }}" alt="...">
-            </div><!--
-            --><div class="col-md-7">
-                <h4 class="media-heading">{{ block.title }}</h4>
-                {{ block.text|safe }}
-            </div>
-            {% elif block.block_type == block.TYPE.img_right %}
-            <div class="col-md-7">
-                <h4 class="media-heading">{{ block.title }}</h4>
-                {{ block.text|safe }}            
-            </div><!--
-            --><div class="col-md-5">
-                <img class="img-responsive" src="{{ block.image }}" alt="...">
-            </div>
-            {% else %}
-            <!-- NOT IMPLEMENTED YET -->
-            {% endif %}
-        </div>
-    {% endfor %}
+        {{ list_blocks(blocks, img_col=5) }}
     </div>
 
     <div class="container" id="links"><a
