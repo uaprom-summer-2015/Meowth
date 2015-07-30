@@ -146,6 +146,7 @@ pageblock_list = EntryList.as_view(
 pageblock_view = EntryDetail.as_view(
     name='pageblock_detail',
     create_form=PageBlockForm,
+    template='admin/pageblock.html',
     model=PageBlock,
     success_url="pageblock_list",
 )

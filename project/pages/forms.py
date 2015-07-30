@@ -26,7 +26,7 @@ class PageBlockForm(Form):
         ],
     )
     short_description = TextAreaField(
-        label='Short description',
+        label='Short description (used to display pageblock in list)',
         validators=[
             Length(
                 max=256,
