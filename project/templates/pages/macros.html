@@ -1,0 +1,54 @@
+{% macro block_with_image_left(block, img_col=4) -%}
+    <div class="row">
+        <div class="col-md-{{ img_col }}">
+            <img class="img-responsive" src="{{ block.image }}" alt="...">
+        </div><!--
+        --><div class="col-md-{{ 12 - img_col }}">
+            <h4>{{ block.title }}</h4>
+            {{ block.text|safe }}
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro block_with_image_right(block, img_col=4) -%}
+    <div class="row">
+        <div class="col-md-{{ 12 - img_col }}">
+            <h4>{{ block.title }}</h4>
+            {{ block.text|safe }}
+        </div><!--
+        --><div class="col-md-{{ img_col }}">
+            <img class="img-responsive" src="{{ block.image }}" alt="...">
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro block_with_no_image(block) -%}
+    <div class="row">
+        <div class="col-md-12">
+            <h4>{{ block.title }}</h4>
+            {{ block.text|safe }}
+        </div>
+    </div>
+{%- endmacro %}
+
+{% macro not_implemented_yet(block) -%}
+    <!--{{ block.block_type }} is not implemented yet-->
+{%- endmacro %}
+
+{% macro display_block(block, img_col=4) -%}
+    {% if block.block_type == block.TYPE.no_img %}
+        {{ block_with_no_image(block) }}
+    {% elif block.block_type == block.TYPE.img_left %}
+        {{ block_with_image_left(block, img_col=img_col) }}
+    {% elif block.block_type == block.TYPE.img_right %}
+        {{ block_with_image_right(block, img_col=img_col) }}
+    {% else %}
+        {{ not_implemented_yet(block) }}
+    {% endif %}
+{%- endmacro %}
+
+{% macro list_blocks(blocks, img_col=4) -%}
+    {% for block in blocks %}
+        {{ display_block(block, img_col=img_col) }}
+    {% endfor %}
+{%- endmacro %}
