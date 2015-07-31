@@ -27,22 +27,20 @@ gulp.task('build:scripts:app', function (done) {
 
         if (err) done(err);
         var tasks = files.map(function (file) {
-                var b = browserify({
-                    debug: debug,
-                    entries: [file]
-                });
-                npmPackages.forEach(function (id) {
-                    b.external(id);
-                });
-                return b
-                    .bundle()
-                    .pipe(source(path.basename(file)))
-                    .pipe(rename({
-                        extname: ".bundle.js"
-                    }))
-                    .pipe(buffer())
-                    .pipe(debug ? gutil.noop() : uglify())
-                    .pipe(gulp.dest(pkginfo.dist));
+            var b = browserify({
+                debug: debug,
+                entries: [file]
+            });
+            b.external(npmPackages);
+            return b
+                .bundle()
+                .pipe(source(path.basename(file)))
+                .pipe(rename({
+                    extname: ".bundle.js"
+                }))
+                .pipe(buffer())
+                .pipe(debug ? gutil.noop() : uglify())
+                .pipe(gulp.dest(pkginfo.dist));
         });
         es.merge(tasks).on('end', done);
     });
@@ -54,20 +52,18 @@ gulp.task('build:scripts:vendor', [
 ]);
 
 gulp.task('build:scripts:vendor:common', function () {
-        var b = browserify({
-            debug: debug
-        });
-        npmPackages.forEach(function (id) {
-            b.require(id)
-        });
-        return b.bundle()
-            .pipe(source('common.vendor.js'))
-            .pipe(gulp.dest(pkginfo.dist));
+    var b = browserify({
+        debug: debug
+    });
+    b.require(npmPackages);
+    return b.bundle()
+        .pipe(source('common.vendor.js'))
+        .pipe(gulp.dest(pkginfo.dist));
 });
 
 gulp.task('build:scripts:vendor:ckeditor', function () {
-        gulp.src([pkginfo.assets.bower+'/**/*'])
-            .pipe(gulp.dest(pkginfo.dist));
+    gulp.src([pkginfo.assets.bower + '/**/*'])
+        .pipe(gulp.dest(pkginfo.dist));
 });
 
 
