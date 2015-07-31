@@ -99,8 +99,8 @@ def do_gulp():
         after='Gulp scripts executed successfully',
     ):
         shexec(
-            cmd=["gulp", "build"],
-            alt=["./node_modules/gulp/bin/gulp.js", "build"],
+            cmd=["gulp", ""],
+            alt=["./node_modules/gulp/bin/gulp.js", ""],
         )
 
 
@@ -112,7 +112,8 @@ def collectstatic():
         after='Done',
     ):
         do_npm()
-
+        do_bower()
+        do_gulp()
 
 if __name__ == "__main__":
     manager.run()
