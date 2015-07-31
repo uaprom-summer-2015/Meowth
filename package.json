@@ -45,6 +45,7 @@
     ]
   },
   "assets": {
+    "bower": "./bower_components",
     "scripts": {
       "entries": "./project/static/src/js/*.js",
       "watches": [
@@ -79,10 +80,7 @@
     "vinyl-fs": "~1.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "browserify": "~11.0.0"
-  },
-  "form": {
-    "file": "./project/static/js/vacancy_form/formfactory.js",
-    "name": "form.js"
+    "browserify": "~11.0.0",
+    "bower": "~1.4.1"
   }
 }
