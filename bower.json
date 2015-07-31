@@ -1,0 +1,19 @@
+{
+  "name": "Meowth",
+  "version": "0.0.0",
+  "homepage": "https://github.com/uaprom-summer-2015/Meowth",
+  "authors": [
+    "team-a"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ckeditor": "~4.5.1"
+  }
+}
