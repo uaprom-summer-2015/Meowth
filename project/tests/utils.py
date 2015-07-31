@@ -15,3 +15,20 @@ class ProjectTestCase(TestCase):
             db.create_all()
             load_fixtures(app.config['FIXTURES_DIR'])
         return app
+
+
+class ProjectTestCaseSetupOnce(ProjectTestCase):
+    """
+    magic to run _setUp Once
+    """
+    setupHappened = False
+
+    def setUp(self):
+        if (self.setupHappened):
+            pass
+        else:
+            self.doSetUp()
+            self.setupHappened = True
+
+    def doSetUp(self):
+        pass
