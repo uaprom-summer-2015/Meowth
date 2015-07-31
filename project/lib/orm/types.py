@@ -1,4 +1,5 @@
 from sqlalchemy.types import SmallInteger, TypeDecorator
+from enum import Enum
 
 
 class TypeEnum(TypeDecorator):
@@ -10,7 +11,11 @@ class TypeEnum(TypeDecorator):
         TypeDecorator.__init__(self, *args, **kwargs)
 
     def process_bind_param(self, enum, dialect):
-        return enum.value
+        if isinstance(enum, Enum):
+            return enum.value
+        elif isinstance(enum, int):
+            return enum
+        return None
 
     def process_literal_param(self, value, dialect):
         return self._enum(value)
