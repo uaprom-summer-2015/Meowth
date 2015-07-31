@@ -1,14 +1,14 @@
 from unittest.mock import Mock, patch
 from werkzeug.security import check_password_hash
 from project.bl import UserBL
-from project.tests.utils import ProjectTestCase, ProjectTestCaseSetupOnce
+from project.tests.utils import ProjectTestCase
 from project.models import User, Vacancy
 import re
 
 
-class TestUserBlResetPassword(ProjectTestCaseSetupOnce):
+class TestUserBlResetPassword(ProjectTestCase):
 
-    def doSetUp(self):
+    def setUp(self):
         self.data = {
             'login': "nightmaremoon",
             'password': 'nightmaremoon',
@@ -25,6 +25,19 @@ class TestUserBlResetPassword(ProjectTestCaseSetupOnce):
         self.assertIsNotNone(
             self.mail_tok,
             msg='Mail was not sent',
+        )
+
+    @patch('project.tasks.mail.celery_send_mail.delay')
+    def test_reset_password_bad_token(self, send_mail):
+        fake_token = '-1!~ -2'
+        is_success = UserBL.reset_password(fake_token)
+        self.assertFalse(
+            is_success,
+            msg='resetToken succeeded on bad token',
+        )
+        self.assertFalse(
+            send_mail.called,
+            msg='send_mail was called, while it shouldn\'t'
         )
 
     def test_is_subject_correct(self):
@@ -66,9 +79,9 @@ class TestUserBlResetPassword(ProjectTestCaseSetupOnce):
         )
 
 
-class TestUserBlCreateWithPassword(ProjectTestCaseSetupOnce):
+class TestUserBlCreateWithPassword(ProjectTestCase):
 
-    def doSetUp(self):
+    def setUp(self):
         self.data = {
             'login': 'cadance',
             'password': 'cadance',
@@ -96,9 +109,9 @@ class TestUserBlCreateWithPassword(ProjectTestCaseSetupOnce):
         )
 
 
-class TestUserBlCreateWithoutPassword(ProjectTestCaseSetupOnce):
+class TestUserBlCreateWithoutPassword(ProjectTestCase):
 
-    def doSetUp(self):
+    def setUp(self):
         self.data = {
             'login': 'celestia',
             'email': 'celestia@canterlot.com',
@@ -168,19 +181,6 @@ class TestUserBL(ProjectTestCase):
         bl.set_password(raw_pass)
         self.assertIsNotNone(instance.password)
         self.assertTrue(check_password_hash(instance.password, raw_pass))
-
-    @patch('project.tasks.mail.celery_send_mail.delay')
-    def test_reset_password_bad_token(self, send_mail):
-        fake_token = '-1!~ -2'
-        is_success = UserBL.reset_password(fake_token)
-        self.assertFalse(
-            is_success,
-            msg='resetToken succeeded on bad token',
-        )
-        self.assertFalse(
-            send_mail.called,
-            msg='send_mail was called, while it shouldn\'t'
-        )
 
     def test_create_superuser(self):
         login = 'tirek'
