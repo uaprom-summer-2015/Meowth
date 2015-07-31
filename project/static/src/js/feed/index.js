@@ -14,7 +14,7 @@ $.QueryString = (function(a) {
             b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
         }
         return b;
-    })(window.location.search.substr(1).split('&'))
+    })(window.location.search.substr(1).split('&'));
 
 
 function range(start, stop, step) {
@@ -38,8 +38,7 @@ function range(start, stop, step) {
     }
 
     return result;
-};
-
+}
 if (!String.prototype.format) {
   String.prototype.format = function() {
     var args = arguments;
@@ -52,7 +51,7 @@ if (!String.prototype.format) {
   };
 }
 
-var Paginate = React.createClass({
+var Paginate = React.createClass({displayName: "Paginate",
     handleClick: function(e) {
         this.props.click(e, e.target.id);
     },
@@ -61,28 +60,28 @@ var Paginate = React.createClass({
         var pageAmount = this.props.pagesAmount;
         result = range(pageAmount).map(function(p, key) {
             if (p == page) {
-                return <div className="page selected" key={key}><span id={key}>{p+1}</span></div>
+                return React.createElement("div", {className: "page selected", key: key}, React.createElement("span", {id: key}, p+1))
             } else {
-                return <div className="page" onClick={this.handleClick} key={key} id={key}><span id={key}>{p+1}</span></div>
+                return React.createElement("div", {className: "page", onClick: this.handleClick, key: key, id: key}, React.createElement("span", {id: key}, p+1))
             }
         }.bind(this));
-        return (<div className="paginator"> {result} </div>)
+        return (React.createElement("div", {className: "paginator"}, " ", result, " "))
     }
 });
 
-var ExpandButton = React.createClass({
+var ExpandButton = React.createClass({displayName: "ExpandButton",
     handleClick: function(e) {
         this.props.click(e);
     },
     render: function() {
-        return (<button type="button" onClick={this.handleClick} className="vacancyButton btn btn-info btn-circle" aria-label="Left Align">
-                 <span className={this.props.expanded ? "glyphicon glyphicon-menu-up" : "glyphicon glyphicon-menu-down"}>
-                 </span>
-                </button>);
+        return (React.createElement("button", {type: "button", onClick: this.handleClick, className: "vacancyButton btn btn-info btn-circle", "aria-label": "Left Align"}, 
+                 React.createElement("span", {className: this.props.expanded ? "glyphicon glyphicon-menu-up" : "glyphicon glyphicon-menu-down"}
+                 )
+                ));
     }
 });
 
-var VacancyNodeCompressed = React.createClass({
+var VacancyNodeCompressed = React.createClass({displayName: "VacancyNodeCompressed",
     getInitialState: function() {
         return {
             data: []
@@ -97,25 +96,25 @@ var VacancyNodeCompressed = React.createClass({
         this.props.click(e);
     },
     render: function() {
-        city_id = this.state.data.city_id
-        citylist = this.props.citylist
+        city_id = this.state.data.city_id;
+        citylist = this.props.citylist;
         city = citylist.filter(function(n) {
             return n.id == city_id;
         }).map(function(n) {
             return n.name;
         });
         return (
-            <div className="panel panel-default vacancyNodeCompressed">
-            <ExpandButton expanded={this.props.expanded} ref="button" click={this.handleButtonClick} />
-            <p className="vacancyTitle"> <a href={this.state.data.name_in_url}>{this.state.data.title}</a></p>
-            <p className="vacancyCity">{city}</p> <p className="vacancySalary">{this.state.data.salary}</p>
-            </div>
+            React.createElement("div", {className: "panel panel-default vacancyNodeCompressed"}, 
+            React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}), 
+            React.createElement("p", {className: "vacancyTitle"}, " ", React.createElement("a", {href: this.state.data.name_in_url}, this.state.data.title)), 
+            React.createElement("p", {className: "vacancyCity"}, city), " ", React.createElement("p", {className: "vacancySalary"}, this.state.data.salary)
+            )
         );
     }
 });
 
 
-var VacancyNodeExpanded = React.createClass({
+var VacancyNodeExpanded = React.createClass({displayName: "VacancyNodeExpanded",
     getInitialState: function() {
         return {
             data: []
@@ -133,26 +132,26 @@ var VacancyNodeExpanded = React.createClass({
         window.location.href = this.state.data.name_in_url;
     },
     render: function() {
-        city_id = this.state.data.city_id
-        citylist = this.props.citylist
+        city_id = this.state.data.city_id;
+        citylist = this.props.citylist;
         city = citylist.filter(function(n) {
             return n.id == city_id;
         }).map(function(n) {
             return n.name;
         });
         return (
-            <div className="panel panel-default vacancyNodeExpanded">
-            <ExpandButton expanded={this.props.expanded} ref="button" click={this.handleButtonClick} />
-            <p className="vacancyTitle"> <a href={this.state.data.name_in_url}>{this.state.data.title}</a></p>
-            <p className="vacancyCity">{city}</p> <p className="vacancySalary">{this.state.data.salary}</p>
-            <p className="vacancyDescr">{this.state.data.short_description}</p>
-            <button type="button" onClick={this.handleToVacancyClick} className="btn btn-info goToVacancyButton">Перейти к вакансии</button>
-            </div>
+            React.createElement("div", {className: "panel panel-default vacancyNodeExpanded"}, 
+            React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}), 
+            React.createElement("p", {className: "vacancyTitle"}, " ", React.createElement("a", {href: this.state.data.name_in_url}, this.state.data.title)), 
+            React.createElement("p", {className: "vacancyCity"}, city), " ", React.createElement("p", {className: "vacancySalary"}, this.state.data.salary), 
+            React.createElement("p", {className: "vacancyDescr"}, this.state.data.short_description), 
+            React.createElement("button", {type: "button", onClick: this.handleToVacancyClick, className: "btn btn-info goToVacancyButton"}, "Перейти к вакансии")
+            )
         );
     }
 });
 
-var VacancyNode = React.createClass({
+var VacancyNode = React.createClass({displayName: "VacancyNode",
     getInitialState: function() {
         return {
             data: [],
@@ -171,14 +170,14 @@ var VacancyNode = React.createClass({
     },
     render: function() {
         if (!this.state.expanded) {
-            return (<VacancyNodeCompressed citylist={this.props.citylist} expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
+            return (React.createElement(VacancyNodeCompressed, {citylist: this.props.citylist, expanded: this.state.expanded, ref: "node", className: "col-xs-6 col-sm-4", data: this.props.data, click: this.handleButtonClick}));
         } else {
-            return (<VacancyNodeExpanded citylist={this.props.citylist} expanded={this.state.expanded} ref="node" className="col-xs-6 col-sm-4" data={this.props.data} click={this.handleButtonClick} />);
+            return (React.createElement(VacancyNodeExpanded, {citylist: this.props.citylist, expanded: this.state.expanded, ref: "node", className: "col-xs-6 col-sm-4", data: this.props.data, click: this.handleButtonClick}));
         }
     }
 });
 
-var VacancyList = React.createClass({
+var VacancyList = React.createClass({displayName: "VacancyList",
     getInitialState: function () {
         qs = $.QueryString;
         var page = '1';
@@ -209,9 +208,9 @@ var VacancyList = React.createClass({
     },
 
     render: function() {
-        per_page = this.props.per_page
-        page = this.state.page
-        filtered_data = this.getList()
+        per_page = this.props.per_page;
+        page = this.state.page;
+        filtered_data = this.getList();
         amount = Math.ceil(filtered_data.length / per_page);
         if (page>amount-1) {
             page=amount-1;
@@ -220,20 +219,20 @@ var VacancyList = React.createClass({
             page=0;
         }
         offset = per_page*page;
-        filtered_data = this.getList().slice(offset, offset+per_page)
+        filtered_data = this.getList().slice(offset, offset+per_page);
         var vaclist = filtered_data.map(function(p) {
-            return <VacancyNode key={p.id} citylist={this.props.citylist} data={p} />
+            return React.createElement(VacancyNode, {key: p.id, citylist: this.props.citylist, data: p})
         }.bind(this));
         return (
-            <div className="vacancyList">
-            {vaclist}
-            <Paginate pagesAmount={amount} page={page} click={this.handlePageClick} ref="paginate"/>
-            </div>
+            React.createElement("div", {className: "vacancyList"}, 
+            vaclist, 
+            React.createElement(Paginate, {pagesAmount: amount, page: page, click: this.handlePageClick, ref: "paginate"})
+            )
         );
     }
 });
 
-var SpecSelect = React.createClass({
+var SpecSelect = React.createClass({displayName: "SpecSelect",
     handleChange: function(val) {
         this.props.onChange(this, val);
     },
@@ -255,13 +254,13 @@ var SpecSelect = React.createClass({
         })[0];
 
         return (
-            <Select onChange={this.handleChange} clearable={false} value={initial_value} options={options} placeholder="Категория" className="categoryDropdown">
-            </Select>
+            React.createElement(Select, {onChange: this.handleChange, clearable: false, value: initial_value, options: options, placeholder: "Категория", className: "categoryDropdown"}
+            )
         );
     }
 });
 
-var CitySelect = React.createClass({
+var CitySelect = React.createClass({displayName: "CitySelect",
     handleChange: function(val) {
         this.props.onChange(this, val);
     },
@@ -283,14 +282,14 @@ var CitySelect = React.createClass({
         })[0];
 
         return (
-            <Select onChange={this.handleChange} clearable={false} value={initial_value} options={options} placeholder="Город" className="cityDropdown">
-            </Select>
+            React.createElement(Select, {onChange: this.handleChange, clearable: false, value: initial_value, options: options, placeholder: "Город", className: "cityDropdown"}
+            )
         );
     }
 });
 
 
-var VacancyBox = React.createClass({
+var VacancyBox = React.createClass({displayName: "VacancyBox",
     getInitialState: function () {
         return {
             category: 0,
@@ -336,14 +335,13 @@ var VacancyBox = React.createClass({
         offset = 2*this.state.page;
         amount = Math.ceil(results.length / 2);
         return (
-            <div className="vacancyBox">
-            <SpecSelect onChange={this.handleSpecSelect} value={this.state.category} list={this.state.data.categories} ref="select" />
-            <CitySelect onChange={this.handleCitySelect}  value={this.state.city} list={this.state.data.cities} ref="select" />
-            <VacancyList per_page={5} data={results} parent={this} citylist={this.state.data.cities} category={this.state.category} city={this.state.city} ref="list"/>
-            </div>
+            React.createElement("div", {className: "vacancyBox"}, 
+            React.createElement(SpecSelect, {onChange: this.handleSpecSelect, value: this.state.category, list: this.state.data.categories, ref: "select"}), 
+            React.createElement(CitySelect, {onChange: this.handleCitySelect, value: this.state.city, list: this.state.data.cities, ref: "select"}), 
+            React.createElement(VacancyList, {per_page: 5, data: results, parent: this, citylist: this.state.data.cities, category: this.state.category, city: this.state.city, ref: "list"})
+            )
         );
     }
 });
 
 module.exports = VacancyBox;
-

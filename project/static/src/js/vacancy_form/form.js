@@ -61,7 +61,7 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
             || this.state.phoneError || this.state.fileError) {
             alert('Исправьте форму');
         } else {
-            var form = React.findDOMNode(this.refs.ApplyForm)
+            var form = React.findDOMNode(this.refs.ApplyForm);
             var formData = new FormData(form);
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange=function() {
@@ -75,9 +75,9 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
         }
     },
     render: function() {
-        var nameClass = classNames("form-group", {'has-error': this.state.nameError})
-        var emailClass = classNames("form-group", {'has-error': this.state.emailError})
-        var phoneClass = classNames("form-group", {'has-error': this.state.phoneError})
+        var nameClass = classNames("form-group", {'has-error': this.state.nameError});
+        var emailClass = classNames("form-group", {'has-error': this.state.emailError});
+        var phoneClass = classNames("form-group", {'has-error': this.state.phoneError});
         if (this.state.success == false) {
             return (
                 React.DOM.form({className: "form-horizontal", action: "form", name: "ApplyForm", id: "ApplyForm",
@@ -126,6 +126,6 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
             );
         }
     }
-})
+});
 
 module.exports = React.createFactory(ApplyForm);
