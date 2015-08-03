@@ -2,7 +2,7 @@ import os
 from unittest.mock import patch
 from flask import url_for
 from config import BASEDIR
-from project.models import Vacancy
+from project.models import Vacancy, City, Category
 from project.tests.utils import ProjectTestCase
 from bs4 import BeautifulSoup
 
@@ -68,3 +68,14 @@ class TestFeedView(ProjectTestCase):
         self.assertFalse('phone' in new_resp.json)
         self.assertFalse('attachment' in new_resp.json)
         self.assertEqual(send_mail.call_count, 2)
+
+    def test_vacancies_json(self):
+        url = url_for('feed.json_vacancies')
+        resp = self.client.get(url)
+        cities= resp.json['cities']
+        categories = resp.json['categories']
+        vacancies = resp.json['vacancies']
+
+        self.assertEqual(cities, [c.as_dict() for c in City.query.all()])
+        self.assertEqual(categories, [c.as_dict() for c in Category.query.all()])
+        self.assertEqual(vacancies, [v.as_dict() for v in Vacancy.bl.get_visible()])
