@@ -6,90 +6,25 @@ from project.models import User, Vacancy
 import re
 
 
-celery_send_mail = Mock(return_value=None)
+class TestUserBlResetPassword(ProjectTestCase):
 
-
-class TestUserBL(ProjectTestCase):
-
-    def test_set_password(self):
-        """Check password setter correctness"""
-        raw_pass = 'celestia'
-        instance = Mock(password=None)
-        bl = UserBL(instance)
-        bl.set_password(raw_pass)
-        self.assertIsNotNone(instance.password)
-        self.assertTrue(check_password_hash(instance.password, raw_pass))
-
-    @patch('project.tasks.mail.celery_send_mail.delay')
-    def test_reset_password(self, send_mail):
-        orig_password = 'nightmaremoon'
-        email = 'nightmaremoon@canterlot.com'
-        login = 'nightmaremoon'
-        data = {
-            'login': login,
-            'password': orig_password,
-            'email': email,
+    def setUp(self):
+        self.data = {
+            'login': "nightmaremoon",
+            'password': 'nightmaremoon',
+            'email': 'nightmaremoon@canterlot.com',
             'name': 'Luna',
             'surname': 'Princess',
         }
-        User.bl.create(data)
-        User.bl.forgot_password(email)
-        self.assertEqual(send_mail.call_count, 1)
-        mail, *_ = send_mail.call_args[0]
-        del _
+        User.bl.create(self.data)
+        with patch('project.tasks.mail.celery_send_mail.delay') as send_mail:
+            User.bl.forgot_password(self.data['email'])
+            self.mail_tok, *_ = send_mail.call_args[0]
+
+    def test_is_mail_sent(self):
         self.assertIsNotNone(
-            mail,
+            self.mail_tok,
             msg='Mail was not sent',
-        )
-        self.assertEqual(
-            mail.subject,
-            "Cброс пароля на HR портале",
-            msg="Incorrect mail subject",
-        )
-        self.assertEqual(
-            mail.recipients,
-            [email],
-            msg="Incorrect recipients",
-        )
-        match = re.search(
-            r'/auth/reset/(?P<token>\w{20})',
-            mail.body,
-        )
-        del mail
-        token = match.groupdict()['token'] if match else None
-        is_success = User.bl.reset_password(token)
-        self.assertTrue(
-            is_success,
-            msg='Resetting password failed',
-        )
-        self.assertEqual(send_mail.call_count, 2)
-        mail, *_ = send_mail.call_args[0]
-        del _
-        self.assertIsNotNone(
-            mail,
-            msg='Mail was not sent',
-        )
-        self.assertEqual(
-            mail.recipients,
-            [email],
-            msg="Incorrect recipients",
-        )
-        usr = User.bl.authenticate(login, orig_password)
-        self.assertIsNone(
-            usr,
-            msg="User authenticated w/ old password",
-        )
-        del usr
-        match = re.search(
-            r'Новый пароль: (?P<new_password>\w{8})',
-            mail.body,
-        )
-        del mail
-        new_password = match.groupdict()['new_password'] if match else None
-        usr = User.bl.authenticate(login, new_password)
-        self.assertIsNotNone(
-            usr,
-            msg="User was not authenticated with new password"
         )
 
     @patch('project.tasks.mail.celery_send_mail.delay')
@@ -105,92 +40,147 @@ class TestUserBL(ProjectTestCase):
             msg='send_mail was called, while it shouldn\'t'
         )
 
-    def test_create_with_password(self):
-        password = 'cadence'
-        email = 'cadence@canterlot.com'
-        login = 'cadence'
-        name = 'Cadence'
-        surname = 'Princess'
-        data = {
-            'login': login,
-            'password': password,
-            'email': email,
-            'name': name,
-            'surname': surname,
+    def test_is_subject_correct(self):
+        self.assertEqual(
+            self.mail_tok.subject,
+            "Cброс пароля на HR портале",
+        )
+
+    def test_is_recipient_correct(self):
+        self.assertEqual(
+            self.mail_tok.recipients,
+            [self.data['email']],
+        )
+
+    def test_is_success(self):
+        match = re.search(
+            r'/auth/reset/(?P<token>\w{20})',
+            self.mail_tok.body,
+        )
+        token = match.groupdict()['token'] if match else None
+        with patch('project.tasks.mail.celery_send_mail.delay') as send_mail:
+            is_success = User.bl.reset_password(token)
+            mail_pwd, *_ = send_mail.call_args[0]
+        self.assertTrue(is_success)
+        usr = User.bl.authenticate(self.data['login'], self.data['password'])
+        self.assertIsNone(
+            usr,
+            msg='user was authenticated w/ old password',
+        )
+        match = re.search(
+            r'Новый пароль: (?P<new_password>\w{8})',
+            mail_pwd.body,
+        )
+        new_password = match.groupdict()['new_password'] if match else None
+        usr = User.bl.authenticate(self.data['login'], new_password)
+        self.assertIsNotNone(
+            usr,
+            msg='user was not authenticated w/ new password',
+        )
+
+
+class TestUserBlCreateWithPassword(ProjectTestCase):
+
+    def setUp(self):
+        self.data = {
+            'login': 'cadance',
+            'password': 'cadance',
+            'email': 'cadance@canterlot.com',
+            'name': 'Cadance',
+            'surname': 'Princess',
         }
-        User.bl.create(data)
-        usr = User.bl.authenticate(login, password)
+        User.bl.create(self.data)
+
+    def test_is_user_created(self):
+        usr = User.bl.authenticate(self.data['login'], self.data['password'])
         self.assertIsNotNone(
             usr,
             msg="Cannot authenticate created user",
         )
         self.assertEqual(
             usr.name,
-            name,
+            self.data['name'],
             msg='Names do not match',
         )
         self.assertEqual(
             usr.surname,
-            surname,
+            self.data['surname'],
             msg='Surnames do not match',
         )
 
-    @patch('project.tasks.mail.celery_send_mail.delay')
-    def test_create_without_password(self, send_mail):
-        email = 'celestia@canterlot.com'
-        login = 'celestia'
-        name = 'Celestia'
-        surname = 'Princess'
-        data = {
-            'login': login,
-            'email': email,
-            'name': name,
-            'surname': surname,
+
+class TestUserBlCreateWithoutPassword(ProjectTestCase):
+
+    def setUp(self):
+        self.data = {
+            'login': 'celestia',
+            'email': 'celestia@canterlot.com',
+            'name': 'Celestia',
+            'surname': 'Princess',
         }
-        User.bl.create(data)
-        self.assertEqual(send_mail.call_count, 1)
-        mail, *_ = send_mail.call_args[0]
-        del _
+        with patch('project.tasks.mail.celery_send_mail.delay') as send_mail:
+            User.bl.create(self.data)
+            self.mail, *_ = send_mail.call_args[0]
+
+    def test_is_mail_sent(self):
         self.assertIsNotNone(
-            mail,
+            self.mail,
             msg='Mail was not sent',
         )
+
+    def test_is_mail_subject_correct(self):
         self.assertEqual(
-            mail.subject,
+            self.mail.subject,
             'Вам была создана учетная запись на HR портале!',
             msg='Incorrect mail subject',
         )
+
+    def test_is_mail_recipients_correct(self):
         self.assertEqual(
-            mail.recipients,
-            [email],
+            self.mail.recipients,
+            [self.data['email']],
             msg='Incorrect recipients',
         )
+
+    def test_is_user_created(self):
         match = re.search(
             r'login: (?P<_login>\w+)\npassword:(?P<_password>\w{8})',
-            mail.body,
+            self.mail.body,
         )
         _login = match.groupdict()['_login'] if match else None
         _password = match.groupdict()['_password'] if match else None
         self.assertEqual(
             _login,
-            login,
+            self.data['login'],
             msg='Logins do not match!',
         )
-        usr = User.bl.authenticate(login, _password)
+        usr = User.bl.authenticate(_login, _password)
         self.assertIsNotNone(
             usr,
             msg="Cannot authenticate created user",
         )
         self.assertEqual(
             usr.name,
-            name,
+            self.data['name'],
             msg='Names do not match',
         )
         self.assertEqual(
             usr.surname,
-            surname,
+            self.data['surname'],
             msg='Surnames do not match',
         )
+
+
+class TestUserBL(ProjectTestCase):
+
+    def test_set_password(self):
+        """Check password setter correctness"""
+        raw_pass = 'celestia'
+        instance = Mock(password=None)
+        bl = UserBL(instance)
+        bl.set_password(raw_pass)
+        self.assertIsNotNone(instance.password)
+        self.assertTrue(check_password_hash(instance.password, raw_pass))
 
     def test_create_superuser(self):
         login = 'tirek'
@@ -205,7 +195,6 @@ class TestUserBL(ProjectTestCase):
             User.ROLE.superuser,
             msg='created superuser is not actually a superuser',
         )
-        del u
         u = User.bl.authenticate(login, password)
         self.assertIsNotNone(
             u,
@@ -216,7 +205,6 @@ class TestUserBL(ProjectTestCase):
             User.ROLE.superuser,
             msg='authenticated superuser is not actually a superuser',
         )
-        del u
 
 
 class TestVacancyBL(ProjectTestCase):

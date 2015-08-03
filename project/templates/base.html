@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="{{ url_for('static', filename="dist/js/common.vendor.js") }}" type="text/javascript"></script>
     {% block meta %}{% endblock%}
-    <link rel="stylesheet" href="{{ url_for('static', filename='dist/bundle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/styles/bundle.css') }}">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>

@@ -1,17 +1,11 @@
 {
-  "name": "meowth",
-  "version": "1.0.0",
+  "name": "Meowth",
+  "version": "0.0.0",
   "homepage": "https://github.com/uaprom-summer-2015/Meowth",
   "authors": [
-    "Team A"
+    "team-a"
   ],
-  "description": "HR portal written during the internship at Prom.ua",
-  "keywords": [
-    "hrportal",
-    "internship",
-    "Prom.ua",
-    "python"
-  ],
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -20,9 +14,6 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "~3.3.5",
-    "bootstrap-stylus": "~4.0.5",
-    "bootstrap-select": "~1.6.5",
-    "blueimp-bootstrap-image-gallery": "~3.1.2"
+    "ckeditor": "~4.5.1"
   }
 }

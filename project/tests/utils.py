@@ -10,8 +10,17 @@ class ProjectTestCase(TestCase):
     """
 
     def create_app(self):
-        app = app_factory()
-        with app.app_context():
+        self.app = app_factory()
+        with self.app.app_context():
             db.create_all()
-            load_fixtures(app.config['FIXTURES_DIR'])
-        return app
+            load_fixtures(self.app.config['FIXTURES_DIR'])
+        return self.app
+
+    def tearDown(self):
+        """
+        Drop it all!
+
+        DO NOT FORGET TO CALL THIS METHOD WHEN OVERRIDING
+        """
+        with self.app.app_context():
+            db.drop_all()
