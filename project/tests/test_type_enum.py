@@ -32,6 +32,12 @@ class TestTypeEnumConversion(TestCase):
 
     def test_negative_bind(self):
         bad_value = 0
+        # selfcheck:
+        self.assertNotIn(
+            bad_value,
+            self.testing_typeenum._enum.__members__.values(),
+            msg="Test selfcheck failed. Please update the test",
+        )
         with self.assertRaises(TypeError):
             self.testing_typeenum.process_bind_param(
                 bad_value,
