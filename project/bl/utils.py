@@ -68,4 +68,5 @@ class BaseBL:
         db.session.commit()
 
     def as_dict(self):
-        return {c.name: getattr(self.model, c.name) for c in self.model.__table__.columns}
+        return {c.name: getattr(self.model, c.name)
+                for c in self.model.__table__.columns}
