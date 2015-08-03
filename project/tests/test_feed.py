@@ -72,10 +72,16 @@ class TestFeedView(ProjectTestCase):
     def test_vacancies_json(self):
         url = url_for('feed.json_vacancies')
         resp = self.client.get(url)
-        cities= resp.json['cities']
+        cities = resp.json['cities']
         categories = resp.json['categories']
         vacancies = resp.json['vacancies']
 
         self.assertEqual(cities, [c.as_dict() for c in City.query.all()])
-        self.assertEqual(categories, [c.as_dict() for c in Category.query.all()])
-        self.assertEqual(vacancies, [v.as_dict() for v in Vacancy.bl.get_visible()])
+        self.assertEqual(
+            categories,
+            [c.as_dict() for c in Category.query.all()]
+        )
+        self.assertEqual(
+            vacancies,
+            [v.as_dict() for v in Vacancy.bl.get_visible()]
+        )

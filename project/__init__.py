@@ -2,12 +2,9 @@ import logging
 import os
 from project.application import create_app
 from project.bl import init_resource_registry
-from project.utils import inject_pagechunks
 
 init_resource_registry()
 app = create_app()
-
-app.template_context_processors[None].append(inject_pagechunks)
 
 
 # noinspection PyUnusedLocal
