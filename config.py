@@ -29,6 +29,16 @@ class Config:
 
     # Celery
     CELERY_IMPORTS = ("project.tasks.mail", )
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'
+    CELERY_BACKEND_URL = CELERY_BROKER_URL
+
+    # Email
+    MAIL_SERVER = 'smtp.yandex.ru'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'hrportal@yandex.ru'
+    MAIL_PASSWORD = 'useaverystrongpasswordLuke'
+    MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
 
     # Logger configuration
     LOG_CONFIG = {
@@ -103,18 +113,6 @@ class DevelopmentConfig(Config):
 
     # Database
     SQLALCHEMY_DATABASE_URI = 'postgresql://root:qwerty@localhost/hrportal'
-
-    # Celery
-    CELERY_BROKER_URL = 'redis://localhost:6379/0'
-    CELERY_BACKEND_URL = CELERY_BROKER_URL
-
-    # Email
-    MAIL_SERVER = 'smtp.yandex.ru'
-    MAIL_PORT = 465
-    MAIL_USE_SSL = True
-    MAIL_USERNAME = 'hrportal@yandex.ru'
-    MAIL_PASSWORD = 'useaverystrongpasswordLuke'
-    MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
 
 
 class TestingConfig(Config):
