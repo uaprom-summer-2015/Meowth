@@ -2,7 +2,7 @@ import os
 import logging
 import logging.config
 
-_basedir = os.path.abspath(os.path.dirname(__file__))
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class Hardcoded:
@@ -18,14 +18,14 @@ class Config:
     CSRF = True
     CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
-    UPLOAD_FOLDER = os.path.join(_basedir, 'media')
+    UPLOAD_FOLDER = os.path.join(BASEDIR, 'media')
     ALLOWED_EXTENSIONS = {
         'txt', 'pdf', 'png', 'jpg',
         'jpeg', 'gif', 'doc', 'docx',
     }
     MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 
-    FIXTURES_DIR = os.path.join(_basedir, 'fixtures')
+    FIXTURES_DIR = os.path.join(BASEDIR, 'fixtures')
 
     # Celery
     CELERY_IMPORTS = ("project.tasks.mail", )
