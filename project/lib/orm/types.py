@@ -14,6 +14,11 @@ class TypeEnum(TypeDecorator):
         if isinstance(enum, Enum):
             return enum.value
         elif isinstance(enum, int):
+            if enum not in self._enum.__members__.values():
+                raise TypeError(
+                    'cannot use value {} with enum \'{}\''
+                    .format(enum, self._enum.__name__)
+                )
             return enum
         return None
 
