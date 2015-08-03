@@ -105,7 +105,7 @@ def do_gulp():
 
 
 @manager.command
-def collectstatic():
+def collectstatic(noinput=False):
     with wrap_logging(
         before='Collecting static...',
         fail='Error while collecting static',
