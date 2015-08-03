@@ -22,9 +22,9 @@ def get_vacancy(name_in_url):
 
 @feed_app.route('/list')
 def json_vacancies():
-    list_vacancies = [v.as_dict() for v in Vacancy.bl.get_visible()]
-    list_categories = [c.as_dict() for c in Category.query.all()]
-    list_cities = [v.as_dict() for v in City.query.all()]
+    list_vacancies = [v.bl.as_dict() for v in Vacancy.bl.get_visible()]
+    list_categories = [c.bl.as_dict() for c in Category.query.all()]
+    list_cities = [v.bl.as_dict() for v in City.query.all()]
     return jsonify(
         vacancies=list_vacancies,
         categories=list_categories,

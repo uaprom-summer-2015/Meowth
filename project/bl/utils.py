@@ -1,4 +1,5 @@
 import weakref
+from project.extensions import db
 
 
 class Registry:
@@ -48,12 +49,23 @@ class BaseBL:
 
     def create(self, data):
         model = self.model(**data)
-        model.save()
+        self.save()
         return model
 
     def update(self, data):
         model = self.model
         for key, value in data.items():
             setattr(model, key, value)
-        model.save()
+        self.save()
         return model
+
+    def save(self):
+        db.session.add(self.model)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self.model)
+        db.session.commit()
+
+    def as_dict(self):
+        return {c.name: getattr(self.model, c.name) for c in self.model.__table__.columns}
