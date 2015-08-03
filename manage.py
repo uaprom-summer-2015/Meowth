@@ -99,20 +99,18 @@ def do_gulp():
         after='Gulp scripts executed successfully',
     ):
         shexec(
-            cmd=["gulp", ""],
-            alt=["./node_modules/gulp/bin/gulp.js", ""],
+            cmd=["gulp"],
+            alt=["./node_modules/gulp/bin/gulp.js"],
         )
 
 
 @manager.command
-def collectstatic():
+def collectstatic(noinput=False):
     with wrap_logging(
         before='Collecting static...',
         fail='Error while collecting static',
         after='Done',
     ):
-        do_npm()
-        do_bower()
         do_gulp()
 
 if __name__ == "__main__":
