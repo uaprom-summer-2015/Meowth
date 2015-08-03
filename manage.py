@@ -111,8 +111,6 @@ def collectstatic(noinput=False):
         fail='Error while collecting static',
         after='Done',
     ):
-        do_npm()
-        do_bower()
         do_gulp()
 
 if __name__ == "__main__":
