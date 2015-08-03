@@ -1,6 +1,6 @@
 from .auth import UserBL
 from .feed import CategoryBL, CityBL, VacancyBL
-from .pages import PageBL, PageBlockBL, PageChunkBL
+from .pages import PageBL, PageBlockBL, PageChunkBL, TokenBL
 from .utils import registry
 
 __all__ = ["UserBL", "CategoryBL", "CityBL", "VacancyBL", "PageBL",
@@ -15,3 +15,4 @@ def init_resource_registry():
     registry['bl.pagechunk'] = lambda pagechunk: PageChunkBL(pagechunk)
     registry['bl.pageblock'] = lambda pageblock: PageBlockBL(pageblock)
     registry['bl.page'] = lambda page: PageBL(page)
+    registry['bl.token'] = lambda token: TokenBL(token)

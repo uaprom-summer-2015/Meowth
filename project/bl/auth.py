@@ -23,7 +23,7 @@ class UserBL(BaseBL):
             body = 'login: {}\npassword:{}'\
                 .format(data['login'], random_password)
             send_mail(title, body, recipients)
-        model.save()
+        model.bl.save()
         return model
 
     def forgot_password(self, email):
@@ -34,7 +34,7 @@ class UserBL(BaseBL):
             .filter(func.lower(model.email) == func.lower(email))\
             .first()
         token = Token(token=generate_random_string(20), user=u)
-        token.save()
+        token.bl.save()
         recipients = [u.email, ]
         title = 'Cброс пароля на HR портале'
         body = 'Ваша ссылка для сброса пароля: localhost:5000/auth/reset/{}'\
@@ -51,13 +51,13 @@ class UserBL(BaseBL):
         u = token.user
         random_password = generate_random_string(8)
         u.bl.set_password(random_password)
-        u.save()
+        u.bl.save()
         recipients = [u.email, ]
         title = 'Сброс пароля на HR портале'
         body = 'Ваш пароль был успешно cброшен! \n Новый пароль: {}'\
             .format(random_password)
         send_mail(title, body, recipients)
-        token.delete()
+        token.bl.delete()
         return True
 
     def create_superuser(self, login, password):
@@ -68,7 +68,7 @@ class UserBL(BaseBL):
             'email': 'admin@admin.com',
         })
         superuser.role = model.ROLE.superuser
-        superuser.save()
+        superuser.bl.save()
         return superuser
 
     def authenticate(self, login, password):

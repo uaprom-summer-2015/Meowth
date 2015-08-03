@@ -15,3 +15,7 @@ class PageBL(BaseBL):
 
 class PageBlockBL(BaseBL):
     pass  # There is no PageBlock specific logic here
+
+
+class TokenBL(BaseBL):
+    pass

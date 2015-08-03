@@ -1,5 +1,4 @@
 from enum import IntEnum
-
 from project.bl.utils import Resource
 from project.extensions import db
 from project.lib.orm.types import TypeEnum
@@ -29,13 +28,6 @@ class Vacancy(db.Model):
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.title)
 
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
 
 class Category(db.Model):
     __tablename__ = 'category'
@@ -49,13 +41,6 @@ class Category(db.Model):
 
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.name)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class User(db.Model):
@@ -83,10 +68,6 @@ class User(db.Model):
     def get_full_name(self):
         return '{} {}'.format(self.name, self.surname)
 
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
     def is_superuser(self):
         return self.role == self.ROLE.superuser
 
@@ -102,13 +83,6 @@ class City(db.Model):
 
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.name)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class BlockPageAssociation(db.Model):
@@ -128,15 +102,6 @@ class BlockPageAssociation(db.Model):
         'PageBlock',
     )
 
-    def delete(self):
-        """ Deletes the object immideately """
-        db.session.delete(self)
-        db.session.commit()
-
-    def soft_delete(self):
-        """ schedules object deletion """
-        db.session.delete(self)
-
 
 class PageChunk(db.Model):
     __tablename__ = 'pagechunks'
@@ -145,10 +110,6 @@ class PageChunk(db.Model):
     text = db.Column(db.Text)
 
     bl = Resource('bl.pagechunk')
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
 
 
 class PageBlock(db.Model):
@@ -186,23 +147,6 @@ class PageBlock(db.Model):
     def __str__(self):
         return '%s: %s' % (self.title, self.text or self.short_description)
 
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-    def delete(self):
-        """ Deletes the object immideately """
-        db.session.delete(self)
-        db.session.commit()
-
-    def soft_delete(self):
-        """ schedules object deletion """
-        db.session.delete(self)
-
-    def save(self):
-        # TODO: move save operation to bl
-        db.session.add(self)
-        db.session.commit()
-
 
 class Page(db.Model):
     __tablename__ = 'pages'
@@ -227,23 +171,6 @@ class Page(db.Model):
     def __str__(self):
         return '%s (%s)' % (self.title, self.url)
 
-    def save(self):
-        # TODO: move save operation to bl
-        db.session.add(self)
-        db.session.commit()
-
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-    def delete(self):
-        """ Deletes the object immideately """
-        db.session.delete(self)
-        db.session.commit()
-
-    def soft_delete(self):
-        """ schedules object deletion """
-        db.session.delete(self)
-
 
 class Token(db.Model):
     __tablename__ = 'tokens'
@@ -253,14 +180,7 @@ class Token(db.Model):
         'User',
     )
     token = db.Column(db.String, nullable=False)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+    bl = Resource('bl.token')
 
 
 def init_db():

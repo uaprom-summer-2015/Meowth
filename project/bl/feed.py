@@ -15,7 +15,7 @@ class VacancyBL(BaseBL):
 
     def visit(self):
         self.model.visits += 1
-        self.model.save()
+        self.save()
 
 
 class CityBL(BaseBL):

@@ -76,12 +76,12 @@ class TestFeedView(ProjectTestCase):
         categories = resp.json['categories']
         vacancies = resp.json['vacancies']
 
-        self.assertEqual(cities, [c.as_dict() for c in City.query.all()])
+        self.assertEqual(cities, [c.bl.as_dict() for c in City.query.all()])
         self.assertEqual(
             categories,
-            [c.as_dict() for c in Category.query.all()]
+            [c.bl.as_dict() for c in Category.query.all()]
         )
         self.assertEqual(
             vacancies,
-            [v.as_dict() for v in Vacancy.bl.get_visible()]
+            [v.bl.as_dict() for v in Vacancy.bl.get_visible()]
         )
