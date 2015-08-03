@@ -46,6 +46,7 @@
   },
   "assets": {
     "bower": "./bower_components",
+    "node": "./node_modules",
     "scripts": {
       "entries": "./project/static/src/js/*.js",
       "watches": [
@@ -66,7 +67,12 @@
       ]
     }
   },
-  "dist": "./project/static/dist",
+  "dist": {
+    "path": "./project/static/dist",
+    "styles": "/styles",
+    "fonts": "/fonts",
+    "js": "/js"
+  },
   "devDependencies": {
     "gulp": "~3.9.0",
     "del": "^1.2.0",
