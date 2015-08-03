@@ -99,8 +99,8 @@ def do_gulp():
         after='Gulp scripts executed successfully',
     ):
         shexec(
-            cmd=["gulp", ""],
-            alt=["./node_modules/gulp/bin/gulp.js", ""],
+            cmd=["gulp"],
+            alt=["./node_modules/gulp/bin/gulp.js"],
         )
 
 
