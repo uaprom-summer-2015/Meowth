@@ -1,4 +1,6 @@
+import os
 from flask import url_for
+from config import BASEDIR
 from project.models import Vacancy
 from project.tests.utils import ProjectTestCase
 from bs4 import BeautifulSoup
@@ -9,9 +11,10 @@ class TestFeedView(ProjectTestCase):
     def test_vacancy(self):
         vacancy = Vacancy.query.first()
         url = url_for('feed.get_vacancy', name_in_url=vacancy.name_in_url)
-        resp = self.client.get(url, follow_redirects=True)
-        self.assertIn(vacancy.title, resp.data.decode())
-        self.assertIn(vacancy.text, resp.data.decode())
+        with self.client as client:
+            resp = client.get(url, follow_redirects=True)
+            self.assertIn(vacancy.title, resp.data.decode())
+            self.assertIn(vacancy.text, resp.data.decode())
 
     def get_vacancy_with_csrf(self):
         vacancy = Vacancy.query.first()
@@ -24,6 +27,7 @@ class TestFeedView(ProjectTestCase):
     def test_not_completed_form(self):
         csrf_token, url = self.get_vacancy_with_csrf()
 
+        attachment = os.path.join(BASEDIR, 'project/tests/test_feed.py')
         new_resp = self.client.post(
             url+'form', data=dict(
                 csrf_token=csrf_token,
@@ -31,7 +35,7 @@ class TestFeedView(ProjectTestCase):
                 email='',
                 phone='',
                 comment='',
-                attachment=open('test_feed.py', 'rb')
+                attachment=open(attachment, 'rb')
             ), content_type='multipart/form-data'
         )
         self.assertFalse(False, new_resp.json['success'])
@@ -43,6 +47,7 @@ class TestFeedView(ProjectTestCase):
     def test_completed_form(self):
         csrf_token, url = self.get_vacancy_with_csrf()
 
+        attachment = os.path.join(BASEDIR, 'requirements.txt')
         new_resp = self.client.post(
             url+'form', data=dict(
                 csrf_token=csrf_token,
@@ -50,7 +55,7 @@ class TestFeedView(ProjectTestCase):
                 email='spam@gmail.com',
                 phone='0931234567',
                 comment='',
-                attachment=open('../../requirements.txt', 'rb')
+                attachment=open(attachment, 'rb')
             ), content_type='multipart/form-data'
         )
         self.assertTrue(new_resp.json['success'])

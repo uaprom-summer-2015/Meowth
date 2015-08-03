@@ -43,3 +43,4 @@ WTForms-Components==0.9.7
 Flask-Celery-Helper==1.1.0
 gunicorn==19.3.0
 beautifulsoup4==4.4.0
+git+https://github.com/jarus/flask-testing.git
