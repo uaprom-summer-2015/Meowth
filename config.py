@@ -35,7 +35,7 @@ class Config:
     # Email
     MAIL_SERVER = 'smtp.yandex.ru'
     MAIL_PORT = 465
-    MAIL_USE_SSL = True
+    # MAIL_USE_SSL = True
     MAIL_USERNAME = 'hrportal@yandex.ru'
     MAIL_PASSWORD = 'useaverystrongpasswordLuke'
     MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
@@ -100,7 +100,7 @@ class ProductionConfig(Config):
     # Email
     MAIL_SERVER = os.environ.get("MAILGUN_SMTP_SERVER", None)
     MAIL_PORT = os.environ.get("MAILGUN_SMTP_PORT", None)
-    MAIL_USE_SSL = True
+    # MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get("MAILGUN_SMTP_LOGIN", None)
     MAIL_PASSWORD = os.environ.get("MAILGUN_SMTP_PASSWORD", None)
     MAIL_DEFAULT_SENDER = 'hrportal@hruaprom.herokuapp.com'
