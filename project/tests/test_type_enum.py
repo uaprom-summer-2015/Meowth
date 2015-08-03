@@ -20,8 +20,9 @@ class TestTypeEnumConversion(TestCase):
             },
         )
 
-    def positive_bind_test(self, *, typeenum):
-        te = typeenum
+    def test_positive_bind(self):
+        ie = self.testing_intenum
+        te = TypeEnum(ie)
         for val in te._enum:
             processed_type = te.process_bind_param(
                 val,
@@ -34,8 +35,9 @@ class TestTypeEnumConversion(TestCase):
             self.assertEqual(processed_type, val.value)
             self.assertEqual(processed_int, val.value)
 
-    def negative_bind_test(self, *, typeenum):
-        te = typeenum  # alias
+    def test_negative_bind(self):
+        ie = self.testing_intenum
+        te = TypeEnum(ie)
         while True:
             v = randint(MININT, MAXINT)
             if v not in te._enum.__members__.values():
@@ -45,20 +47,6 @@ class TestTypeEnumConversion(TestCase):
                 v,
                 dialect=None,
             )
-
-    def test_positive_custom(self):
-        ie = self.testing_intenum
-        te = TypeEnum(ie)
-        self.positive_bind_test(
-            typeenum=te,
-        )
-
-    def test_negative_custom(self):
-        ie = self.testing_intenum
-        te = TypeEnum(ie)
-        self.negative_bind_test(
-            typeenum=te,
-        )
 
     def test_none_param(self):
         ie = self.testing_intenum
