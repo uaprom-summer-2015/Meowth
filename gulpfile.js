@@ -40,7 +40,7 @@ gulp.task('build:scripts:app', function (done) {
                 }))
                 .pipe(buffer())
                 .pipe(debug ? gutil.noop() : uglify())
-                .pipe(gulp.dest(pkginfo.dist));
+                .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.js));
         });
         es.merge(tasks).on('end', done);
     });
@@ -51,19 +51,27 @@ gulp.task('build:scripts:vendor', [
     "build:scripts:vendor:ckeditor"
 ]);
 
-gulp.task('build:scripts:vendor:common', function () {
+gulp.task('build:scripts:vendor:common', function (done) {
     var b = browserify({
         debug: debug
     });
-    b.require(npmPackages);
-    return b.bundle()
+
+    var bundle = b.require(npmPackages)
+        .bundle()
         .pipe(source('common.vendor.js'))
-        .pipe(gulp.dest(pkginfo.dist));
+        .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.js));
+
+
+    var bs_fonts = gulp.src([pkginfo.assets.node + '/bootstrap/fonts/**/*'])
+        .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.fonts));
+
+
+    es.merge([bundle, bs_fonts]).on('end', done);
 });
 
 gulp.task('build:scripts:vendor:ckeditor', function () {
     gulp.src([pkginfo.assets.bower + '/**/*'])
-        .pipe(gulp.dest(pkginfo.dist));
+        .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.js));
 });
 
 
@@ -74,7 +82,7 @@ gulp.task('build:styles', function () {
         include: pkginfo.stylus.includes
     }))
         .pipe(rename('bundle.css'))
-        .pipe(gulp.dest(pkginfo.dist));
+        .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.styles));
 });
 
 
@@ -85,6 +93,6 @@ gulp.task('watch', ['build'], function () {
 
 
 gulp.task('clean', function (callback) {
-    glob = pkginfo.dist + '/*';
+    glob = pkginfo.dist.path + '/*';
     del([glob, '!.gitignore'], callback);
 });

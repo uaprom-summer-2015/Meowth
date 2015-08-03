@@ -2,16 +2,9 @@ import logging
 import os
 from project.application import create_app
 from project.bl import init_resource_registry
-from project.models import PageChunk
 
 init_resource_registry()
 app = create_app()
-
-
-@app.context_processor
-def inject_pagechunks():
-    chunks = {chunk.name: chunk.text for chunk in PageChunk.query.all()}
-    return {"pagechunks": chunks}
 
 
 # noinspection PyUnusedLocal

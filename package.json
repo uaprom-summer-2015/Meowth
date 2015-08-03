@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "HR portal written during the internship at Prom.ua",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node_modules/bower/bin/bower install && node_modules/gulp/bin/gulp.js"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
   },
   "assets": {
     "bower": "./bower_components",
+    "node": "./node_modules",
     "scripts": {
       "entries": "./project/static/src/js/*.js",
       "watches": [
@@ -66,7 +68,12 @@
       ]
     }
   },
-  "dist": "./project/static/dist",
+  "dist": {
+    "path": "./project/static/dist",
+    "styles": "/styles",
+    "fonts": "/fonts",
+    "js": "/js"
+  },
   "devDependencies": {
     "gulp": "~3.9.0",
     "del": "^1.2.0",

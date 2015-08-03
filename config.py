@@ -2,7 +2,7 @@ import os
 import logging
 import logging.config
 
-_basedir = os.path.abspath(os.path.dirname(__file__))
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class Hardcoded:
@@ -18,27 +18,27 @@ class Config:
     CSRF = True
     CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
-    UPLOAD_FOLDER = os.path.join(_basedir, 'media')
+    UPLOAD_FOLDER = os.path.join(BASEDIR, 'media')
     ALLOWED_EXTENSIONS = {
         'txt', 'pdf', 'png', 'jpg',
         'jpeg', 'gif', 'doc', 'docx',
     }
     MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 
-    FIXTURES_DIR = os.path.join(_basedir, 'fixtures')
+    FIXTURES_DIR = os.path.join(BASEDIR, 'fixtures')
+
+    # Celery
+    CELERY_IMPORTS = ("project.tasks.mail", )
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'
+    CELERY_BACKEND_URL = CELERY_BROKER_URL
 
     # Email
     MAIL_SERVER = 'smtp.yandex.ru'
     MAIL_PORT = 465
-    MAIL_USE_SSL = True
+    # MAIL_USE_SSL = True
     MAIL_USERNAME = 'hrportal@yandex.ru'
     MAIL_PASSWORD = 'useaverystrongpasswordLuke'
     MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
-
-    # Celery
-    CELERY_BROKER_URL = 'redis://localhost:6379/0'
-    CELERY_BACKEND_URL = CELERY_BROKER_URL
-    CELERY_IMPORTS = ("project.tasks.mail", )
 
     # Logger configuration
     LOG_CONFIG = {
@@ -90,12 +90,28 @@ class Config:
 
 
 class ProductionConfig(Config):
+    # Database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', None)
+
+    # Celery
+    CELERY_BROKER_URL = os.environ.get('REDIS_URL', None)
+    CELERY_BACKEND_URL = CELERY_BROKER_URL
+
+    # Email
+    MAIL_SERVER = os.environ.get("MAILGUN_SMTP_SERVER", None)
+    MAIL_PORT = os.environ.get("MAILGUN_SMTP_PORT", None)
+    # MAIL_USE_SSL = True
+    MAIL_USERNAME = os.environ.get("MAILGUN_SMTP_LOGIN", None)
+    MAIL_PASSWORD = os.environ.get("MAILGUN_SMTP_PASSWORD", None)
+    MAIL_DEFAULT_SENDER = 'hrportal@hruaprom.herokuapp.com'
 
 
 class DevelopmentConfig(Config):
+    # Flask
     DEBUG = True
     DEVELOPMENT = True
+
+    # Database
     SQLALCHEMY_DATABASE_URI = 'postgresql://root:qwerty@localhost/hrportal'
 
 
