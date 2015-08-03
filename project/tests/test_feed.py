@@ -1,4 +1,5 @@
 import os
+from unittest.mock import patch
 from flask import url_for
 from config import BASEDIR
 from project.models import Vacancy
@@ -24,7 +25,8 @@ class TestFeedView(ProjectTestCase):
         csrf_token = soup.find(id='csrf_token')['content']
         return csrf_token, url
 
-    def test_not_completed_form(self):
+    @patch('project.tasks.mail.celery_send_mail.delay')
+    def test_not_completed_form(self, send_mail):
         csrf_token, url = self.get_vacancy_with_csrf()
 
         attachment = os.path.join(BASEDIR, 'project/tests/test_feed.py')
@@ -38,13 +40,15 @@ class TestFeedView(ProjectTestCase):
                 attachment=open(attachment, 'rb')
             ), content_type='multipart/form-data'
         )
-        self.assertFalse(False, new_resp.json['success'])
+        self.assertFalse(new_resp.json['success'])
         self.assertIsNotNone(new_resp.json['name'])
         self.assertIsNotNone(new_resp.json['email'])
         self.assertIsNotNone(new_resp.json['phone'])
         self.assertIsNotNone(new_resp.json['attachment'])
+        self.assertEqual(send_mail.call_count, 0)
 
-    def test_completed_form(self):
+    @patch('project.tasks.mail.celery_send_mail.delay')
+    def test_completed_form(self, send_mail):
         csrf_token, url = self.get_vacancy_with_csrf()
 
         attachment = os.path.join(BASEDIR, 'requirements.txt')
@@ -63,3 +67,4 @@ class TestFeedView(ProjectTestCase):
         self.assertFalse('email' in new_resp.json)
         self.assertFalse('phone' in new_resp.json)
         self.assertFalse('attachment' in new_resp.json)
+        self.assertEqual(send_mail.call_count, 2)
