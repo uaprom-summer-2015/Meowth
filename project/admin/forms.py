@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, TextAreaField, BooleanField
+from wtforms import StringField, TextAreaField, BooleanField, SubmitField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
 from project.models import Category, City
@@ -75,3 +75,16 @@ class CityForm(Form):
 class PageChunkForm(Form):
     name = StringField('Название элемента', validators=[DataRequired()])
     text = TextAreaField('Текст элемента', validators=[DataRequired()])
+
+
+class MailTemplateForm(Form):
+    subject = StringField(
+        'Тема письма',
+        validators=[
+            DataRequired(),
+            Length(max=79,
+                   message='Длина не дожна быть больше 79 символов'
+                   ),
+        ],
+    )
+    body_html = TextAreaField('Текст письма', validators=[DataRequired()])

@@ -1,14 +1,14 @@
 from flask import render_template, url_for, session, redirect
 
 from project.admin.forms import VacancyForm, CategoryForm, CityForm, \
-    PageChunkForm
+    PageChunkForm, MailTemplateForm
 from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm
 from project.models import Vacancy, Category, City, User, PageBlock, Page, \
-    PageChunk
+    PageChunk, MailTemplate
 
 SECTIONS = {}  # list_name: list_endpoint
 
@@ -206,6 +206,31 @@ register_section(
     list_view=pagechunk_list,
     detail_view=pagechunk_detail,
     list_endpoint="pagechunk_list",
+)
+
+
+# Mail Templates
+mail_templates_list = EntryList.as_view(
+    name="mail_templates_list",
+    model=MailTemplate,
+    template="admin/mailtemplates.html",
+)
+
+mail_template_detail = EntryDetail.as_view(
+    name='mail_template_detail',
+    create_form=MailTemplateForm,
+    model=MailTemplate,
+    template="admin/mailtemplate.html",
+    success_url="mail_templates_list",
+)
+
+register_section(
+    section_name="Шаблоны писем",
+    list_route="/mail_templates/",
+    detail_route="/mail_template/",
+    list_view=mail_templates_list,
+    detail_view=mail_template_detail,
+    list_endpoint="mail_templates_list",
 )
 
 

@@ -43,7 +43,9 @@ class EntryDetail(MethodView):
                 abort(404)
             entry_form = self.update_form(obj=entry)
 
-        return self.render_response(entry_form=entry_form)
+        return self.render_response(
+            entry_form=entry_form,
+            entry=entry)
 
     def post(self, entry_id):
         if entry_id is None:

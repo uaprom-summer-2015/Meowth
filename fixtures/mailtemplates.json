@@ -1,0 +1,11 @@
+[
+  {
+    "model": "project.models.MailTemplate",
+    "fields": {
+      "title": "Подтверждение получения резюме",
+      "subject": "Subject",
+      "html": "Body",
+      "help_msg": "something to change"
+    }
+  }
+]

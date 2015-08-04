@@ -22,7 +22,9 @@ class UserBL(BaseBL):
             title = 'Вам была создана учетная запись на HR портале!'
             body = 'login: {}\npassword:{}'\
                 .format(data['login'], random_password)
-            send_mail(title, body, recipients)
+            send_mail(title=title,
+                      recipients=recipients,
+                      body=body)
         model.bl.save()
         return model
 
@@ -39,7 +41,9 @@ class UserBL(BaseBL):
         title = 'Cброс пароля на HR портале'
         body = 'Ваша ссылка для сброса пароля: localhost:5000/auth/reset/{}'\
             .format(token.token)
-        send_mail(title, body, recipients)
+        send_mail(title=title,
+                  body=body,
+                  recipients=recipients)
 
     @staticmethod
     def reset_password(token):
@@ -56,7 +60,9 @@ class UserBL(BaseBL):
         title = 'Сброс пароля на HR портале'
         body = 'Ваш пароль был успешно cброшен! \n Новый пароль: {}'\
             .format(random_password)
-        send_mail(title, body, recipients)
+        send_mail(title=title,
+                  body=body,
+                  recipients=recipients)
         token.bl.delete()
         return True
 
