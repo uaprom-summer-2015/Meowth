@@ -2,7 +2,7 @@ from flask import render_template, jsonify
 from project.blueprints import feed_app
 from project.models import Vacancy, Category, City
 from project.feed.forms import ApplyForm
-from project.bl.mail import send_mail_from_form
+from project.lib.mail import send_mail_from_form
 
 
 @feed_app.route('/')

@@ -11,7 +11,7 @@ class UserBL(BaseBL):
         model.password = generate_password_hash(password)
 
     def create(self, data):
-        from .mail import send_mail
+        from project.lib.mail import send_mail
         model = self.model(**data)
         if 'password' in data:
             model.bl.set_password(data['password'])
@@ -30,7 +30,7 @@ class UserBL(BaseBL):
 
     def forgot_password(self, email):
         from project.models import Token
-        from .mail import send_mail
+        from project.lib.mail import send_mail
         model = self.model
         u = model.query\
             .filter(func.lower(model.email) == func.lower(email))\
@@ -48,7 +48,7 @@ class UserBL(BaseBL):
     @staticmethod
     def reset_password(token):
         from project.models import Token
-        from .mail import send_mail
+        from project.lib.mail import send_mail
         token = Token.query.filter(Token.token == token).first()
         if not token:
             return False
