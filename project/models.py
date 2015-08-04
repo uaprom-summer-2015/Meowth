@@ -9,19 +9,19 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 
 class Vacancy(db.Model):
-    __tablename__ = 'vacancy'
+    __tablename__ = 'vacancies'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     short_description = db.Column(db.String(300), nullable=False)
     text = db.Column(db.Text(), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     category = db.relationship('Category', backref=db.backref('vacancies'))
     name_in_url = db.Column(db.String(50), nullable=False, unique=True)
     visits = db.Column(db.Integer, nullable=False, default=0)
     salary = db.Column(db.String(50))
     description = db.Column(db.String(200))  # for search spider
     keywords = db.Column(db.String(1000))
-    city_id = db.Column(db.Integer, db.ForeignKey('city.id'))
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.id'))
     city = db.relationship('City', backref=db.backref('vacancies'))
     hide = db.Column(db.Boolean, nullable=False, default=False)
 
@@ -32,7 +32,7 @@ class Vacancy(db.Model):
 
 
 class Category(db.Model):
-    __tablename__ = 'category'
+    __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
 
@@ -75,7 +75,7 @@ class User(db.Model):
 
 
 class City(db.Model):
-    __tablename__ = 'city'
+    __tablename__ = 'cities'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False, unique=True)
     bl = Resource('bl.city')
@@ -88,7 +88,7 @@ class City(db.Model):
 
 
 class BlockPageAssociation(db.Model):
-    __tablename__ = 'block_page_association'
+    __tablename__ = 'block_page_associations'
     page_id = db.Column(
         db.Integer,
         db.ForeignKey('pages.id'),

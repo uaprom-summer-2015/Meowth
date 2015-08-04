@@ -1,7 +1,9 @@
 #!/usr/bin/env python3.4
 from flask.ext.script import Manager
+from flask.ext.migrate import Migrate, MigrateCommand
 from project import app
 from project.models import init_db as init
+from project.extensions import db
 from project.fixtures import load_fixtures
 import logging
 from contextlib import contextmanager
@@ -37,6 +39,8 @@ def shexec(cmd, alt=None):
 
 
 manager = Manager(app)
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
 
 
 @manager.command
@@ -54,6 +58,12 @@ def init_empty_db():
 def init_db():
     """ Create database and populate it with fixtures """
     init_empty_db()
+    populate_db()
+
+
+@manager.command
+def populate_db():
+    """ Populate database with fixtures """
     with wrap_logging(
         before='Loading fixtures...',
         fail='Cannot populate fixtures',
