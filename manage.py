@@ -58,6 +58,12 @@ def init_empty_db():
 def init_db():
     """ Create database and populate it with fixtures """
     init_empty_db()
+    populate_db()
+
+
+@manager.command
+def populate_db():
+    """ Populate database with fixtures """
     with wrap_logging(
         before='Loading fixtures...',
         fail='Cannot populate fixtures',
