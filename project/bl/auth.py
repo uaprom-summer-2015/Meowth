@@ -76,3 +76,7 @@ class UserBL(BaseBL):
         u = model.query.filter(model.login == login).first()
         if u and check_password_hash(u.password, password):
             return u
+
+
+class TokenBL(BaseBL):
+    pass

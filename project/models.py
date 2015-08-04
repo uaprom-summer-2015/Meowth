@@ -1,4 +1,5 @@
 from enum import IntEnum
+import datetime
 from project.bl.utils import Resource
 from project.extensions import db
 from project.lib.orm.types import TypeEnum
@@ -181,6 +182,22 @@ class Token(db.Model):
     )
     token = db.Column(db.String, nullable=False)
     bl = Resource('bl.token')
+
+
+class MailTemplate(db.Model):
+    __tablename__ = 'mailtemplates'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    subject = db.Column(db.String(79), nullable=False)
+    body_html = db.Column(db.Text, nullable=False)
+    help_msg = db.Column(db.Text)
+    updated_at = db.Column(db.Date, onupdate=datetime.datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    who_updated = db.relationship('User')
+    bl = Resource('bl.mailtemplate')
+
+    def __str__(self):
+        return str(self.title)
 
 
 def init_db():
