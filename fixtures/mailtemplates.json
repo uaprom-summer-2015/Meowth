@@ -5,7 +5,16 @@
       "title": "Подтверждение получения резюме",
       "subject": "Subject",
       "html": "Body",
-      "help_msg": "something to change"
+      "help_msg": "Для вставки в письмо используй<br>{{name}} - имя заполнившего форму<br>{{title}} - название вакансии"
+    }
+  },
+  {
+    "model": "project.models.MailTemplate",
+    "fields": {
+      "title": "Уведомление о новом резюме",
+      "subject": "Subject",
+      "html": "Body",
+      "help_msg": "Для вставки в письмо используй<br>{{name}} - имя заполнившего форму<br>{{email}} - email заполнившего форму<br>{{phone}} - телефон заполнившего форму<br>{{comment}} - коментарий заполнившего форму{{title}} - название вакансии"
     }
   }
 ]

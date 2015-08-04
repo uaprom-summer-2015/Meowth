@@ -1,6 +1,7 @@
 from email.policy import EmailPolicy
 from flask import request
 import flask_mail
+from jinja2 import Template
 from config import Hardcoded
 from project.bl.utils import BaseBL
 from project.tasks.mail import celery_send_mail
@@ -29,24 +30,26 @@ def get_message(title, recipients, body=None, html=None, attachment_name=None,
 
 def get_message_from_form(form, vacancy):
     recipients = [Hardcoded.MAIL_TO_SEND]
-    title = 'Ответ на вакансию: {}'.format(vacancy.title)
-    body = 'Ответ на вакансию: {}\n' \
-           'Имя: {}\n' \
-           'Email: {}\n' \
-           'Телефон: {}'.format(vacancy.title,
-                                form.name.data,
-                                form.email.data,
-                                form.phone.data,
-                                )
-    if form.comment.data:
-        body += '\nКоментарий: {}'.format(form.comment.data)
+    kwargs = {
+        'name': form.name.data,
+        'email': form.email.data,
+        'phone': form.phone.data,
+        'comment': form.comment.data,
+        'title': vacancy.title,
+    }
+    from project.models import MailTemplate
+    mail_temp = MailTemplate.query.filter(
+        MailTemplate.title=='Уведомление о новом резюме'
+    ).one()
 
+    subject = Template(mail_temp.subject).render(**kwargs)
+    html = Template(mail_temp.html).render(**kwargs)
     attachment = request.files[form.attachment.name]
 
     return get_message(
-        title=title,
+        title=subject,
         recipients=recipients,
-        body=body,
+        html=html,
         attachment_name=attachment.filename,
         attachment_type=attachment.content_type,
         attachment=attachment
@@ -70,13 +73,18 @@ def send_mail(title, recipients, body=None, html=None, attachment_name=None,
 
 
 def get_msg_for_reply(form, vacancy):
+    kwargs = {
+        'name': form.name.data,
+        'title': vacancy.title,
+    }
     from project.models import MailTemplate
     mail_temp = MailTemplate.query.filter(
         MailTemplate.title=='Подтверждение получения резюме'
     ).one()
+
     recipients = [form.email.data]
-    subject = mail_temp.subject
-    html = mail_temp.html
+    subject = Template(mail_temp.subject).render(**kwargs)
+    html = Template(mail_temp.html).render(**kwargs)
     return get_message(
         title=subject,
         html=html,

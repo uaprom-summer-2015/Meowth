@@ -87,4 +87,4 @@ class MailTemplateForm(Form):
                    ),
         ],
     )
-    body_html = TextAreaField('Текст письма', validators=[DataRequired()])
+    html = TextAreaField('Текст письма', validators=[DataRequired()])
