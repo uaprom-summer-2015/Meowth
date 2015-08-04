@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, TextAreaField, BooleanField, SubmitField
+from wtforms import StringField, TextAreaField, BooleanField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
 from project.models import Category, City

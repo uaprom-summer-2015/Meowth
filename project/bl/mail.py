@@ -39,7 +39,7 @@ def get_message_from_form(form, vacancy):
     }
     from project.models import MailTemplate
     mail_temp = MailTemplate.query.filter(
-        MailTemplate.title=='Уведомление о новом резюме'
+        MailTemplate.title == 'Уведомление о новом резюме'
     ).one()
 
     subject = Template(mail_temp.subject).render(**kwargs)
@@ -79,7 +79,7 @@ def get_msg_for_reply(form, vacancy):
     }
     from project.models import MailTemplate
     mail_temp = MailTemplate.query.filter(
-        MailTemplate.title=='Подтверждение получения резюме'
+        MailTemplate.title == 'Подтверждение получения резюме'
     ).one()
 
     recipients = [form.email.data]
@@ -90,4 +90,3 @@ def get_msg_for_reply(form, vacancy):
         html=html,
         recipients=recipients
     )
-
