@@ -1,4 +1,5 @@
 from flask import request
+from html2text import html2text
 from jinja2 import Template
 from config import Hardcoded
 from project.tasks.mail import celery_send_mail
@@ -40,6 +41,7 @@ def get_message_from_form(form, vacancy):
     subject = Template(mail_temp.subject).render(**kwargs)
     html = Template(mail_temp.html).render(**kwargs)
     attachment = request.files[form.attachment.name]
+    body = html2text(html)
 
     return get_message(
         title=subject,
@@ -47,7 +49,8 @@ def get_message_from_form(form, vacancy):
         html=html,
         attachment_name=attachment.filename,
         attachment_type=attachment.content_type,
-        attachment=attachment
+        attachment=attachment,
+        body=body,
     )
 
 
@@ -73,8 +76,10 @@ def get_msg_for_reply(form, vacancy):
     recipients = [form.email.data]
     subject = Template(mail_temp.subject).render(**kwargs)
     html = Template(mail_temp.html).render(**kwargs)
+    body = html2text(html)
     return get_message(
         title=subject,
         html=html,
-        recipients=recipients
+        recipients=recipients,
+        body=body,
     )
