@@ -2,7 +2,7 @@
   {
     "model": "project.models.MailTemplate",
     "fields": {
-      "slug": "reply to CV",
+      "mail": 1,
       "title": "Подтверждение получения резюме",
       "subject": "Мы получили Ваше резюме",
       "html": "Спасибо за отклик на вакансию {{title}}",
@@ -12,7 +12,7 @@
   {
     "model": "project.models.MailTemplate",
     "fields": {
-      "slug": "CV",
+      "mail": 0,
       "title": "Уведомление о новом резюме",
       "subject": "Новое резюме",
       "html": "Вакансия: {{title}}<br>Имя: {{name}}<br>Email: {{email}}<br>Телефон: {{phone}}<br>Коментарий: {{comment}}",

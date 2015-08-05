@@ -186,8 +186,14 @@ class Token(db.Model):
 
 class MailTemplate(db.Model):
     __tablename__ = 'mailtemplates'
+
+    MAIL = IntEnum('Mail', {
+        'CV': 0,
+        'reply_to_CV': 1,
+    })
+
     id = db.Column(db.Integer, primary_key=True)
-    slug = db.Column(db.String, nullable=False)
+    mail = db.Column(TypeEnum(MAIL), nullable=False)
     title = db.Column(db.String, nullable=False)
     subject = db.Column(db.String(79), nullable=False)
     html = db.Column(db.Text, nullable=False)
