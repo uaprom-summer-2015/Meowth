@@ -78,6 +78,8 @@ class PageChunkForm(Form):
 
 
 class MailTemplateForm(Form):
+    title = StringField('Название письма (отображение в админке)',
+                        validators=[DataRequired()])
     subject = StringField(
         'Тема письма',
         validators=[

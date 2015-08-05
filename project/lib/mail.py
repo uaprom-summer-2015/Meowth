@@ -35,10 +35,10 @@ def get_message_from_form(form, vacancy):
     }
 
     mail_temp = MailTemplate.query.filter(
-        MailTemplate.title == 'Уведомление о новом резюме'
+        MailTemplate.slug == 'CV'
     ).one()
 
-    subject = Template(mail_temp.subject).render(**kwargs)
+    subject = mail_temp.subject
     html = Template(mail_temp.html).render(**kwargs)
     attachment = request.files[form.attachment.name]
     body = html2text(html)
@@ -70,11 +70,11 @@ def get_msg_for_reply(form, vacancy):
         'title': vacancy.title,
     }
     mail_temp = MailTemplate.query.filter(
-        MailTemplate.title == 'Подтверждение получения резюме'
+        MailTemplate.slug == 'reply to CV'
     ).one()
 
     recipients = [form.email.data]
-    subject = Template(mail_temp.subject).render(**kwargs)
+    subject = mail_temp.subject
     html = Template(mail_temp.html).render(**kwargs)
     body = html2text(html)
     return get_message(
