@@ -200,7 +200,7 @@ class MailTemplate(db.Model):
     )
     who_updated = db.relationship('User')
 
-    def __str__(self):
+    def __repr__(self):
         return str(self.title)
 
 
