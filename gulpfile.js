@@ -86,8 +86,8 @@ gulp.task('build:styles', function () {
 });
 
 
-gulp.task('watch', ['build'], function () {
-    gulp.watch(pkginfo.assets.scripts.watches, ['build:scripts']);
+gulp.task('watch', ['default'], function () {
+    gulp.watch(pkginfo.assets.scripts.watches, ['build:scripts:app']);
     gulp.watch(pkginfo.assets.styles.watches, ['build:styles']);
 });
 
