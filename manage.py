@@ -2,74 +2,20 @@
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 from project import app
-from project.models import init_db as init
 from project.extensions import db
-from project.fixtures import load_fixtures
-import logging
-from contextlib import contextmanager
-from subprocess import call
-import os
-
-logger = logging.getLogger()
-
-
-@contextmanager
-def wrap_logging(before, fail, after):
-    logger.info(before)
-    try:
-        yield
-    except Exception as e:
-        logger.error(fail)
-        logger.error(e)
-    else:
-        logger.info(after)
-
-
-def shexec(cmd, alt=None):
-    try:
-        call(cmd)
-    except OSError as e:
-        if e.errno == os.errno.ENOENT and alt:
-            try:
-                call(alt)
-            except OSError as ex:
-                raise ex
-        else:
-            raise e
+from commands.dbutils import DBUtils, DBUtilsCommand
+from commands.static import StaticCommand, npm
 
 
 manager = Manager(app)
+
+devutils = DBUtils(app, db)
+manager.add_command('dbutils', DBUtilsCommand)
+
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 
-
-@manager.command
-def init_empty_db():
-    """ Create empty database """
-    with wrap_logging(
-        before='Creating empty DB ...',
-        fail='Cannot create empty DB',
-        after='Done',
-    ):
-        init()
-
-
-@manager.command
-def init_db():
-    """ Create database and populate it with fixtures """
-    init_empty_db()
-    populate_db()
-
-
-@manager.command
-def populate_db():
-    """ Populate database with fixtures """
-    with wrap_logging(
-        before='Loading fixtures...',
-        fail='Cannot populate fixtures',
-        after='Done',
-    ):
-        load_fixtures(app.config['FIXTURES_DIR'])
+manager.add_command('static', StaticCommand)
 
 
 @manager.command
@@ -78,50 +24,16 @@ def run():
     app.run(debug=True)
 
 
-@manager.command
-def do_npm():
-    with wrap_logging(
-        before='Installing node modules',
-        fail='Cannot install node modules',
-        after='Node modules installed successfully',
-    ):
-        shexec(["npm", "install"])
-
-
-@manager.command
-def do_bower():
-    with wrap_logging(
-        before='Installing bower components',
-        fail='Cannot install bower components',
-        after='Bower components installed successfully',
-    ):
-        shexec(
-            cmd=["bower", "install"],
-            alt=["./node_modules/bower/bin/bower", "install"],
-        )
-
-
-@manager.command
-def do_gulp():
-    with wrap_logging(
-        before='Executing gulp scripts',
-        fail='Error while executing gulp scripts',
-        after='Gulp scripts executed successfully',
-    ):
-        shexec(
-            cmd=["gulp"],
-            alt=["./node_modules/gulp/bin/gulp.js"],
-        )
-
-
-@manager.command
+@manager.option(
+    '--noinput',
+    dest='noinput',
+    action='store_true',
+    default=False,
+    help='Do not ask user anything',
+)
 def collectstatic(noinput=False):
-    with wrap_logging(
-        before='Collecting static...',
-        fail='Error while collecting static',
-        after='Done',
-    ):
-        do_gulp()
+    """ Collect and build all static """
+    npm(noinput)
 
 if __name__ == "__main__":
     manager.run()
