@@ -1,4 +1,5 @@
 import weakref
+from project.lib.signals import model_update
 from project.extensions import db
 
 
@@ -54,6 +55,7 @@ class BaseBL:
 
     def update(self, data):
         model = self.model
+        model_update.send(model)
         for key, value in data.items():
             setattr(model, key, value)
         self.save()
