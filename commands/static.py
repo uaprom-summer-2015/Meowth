@@ -69,3 +69,16 @@ def gulp():
             cmd=["gulp"],
             alt=["./node_modules/gulp/bin/gulp.js"],
         )
+
+
+@StaticCommand.command
+def clean():
+    """ Clean built static files """
+    with perform(
+        name='static clean',
+        before='run gulp clean',
+    ):
+        alt_exec(
+            cmd=["gulp", "clean"],
+            alt=["./node_modules/gulp/bin/gulp.js", "clean"],
+        )
