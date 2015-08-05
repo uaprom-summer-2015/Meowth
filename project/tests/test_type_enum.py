@@ -6,6 +6,7 @@ from enum import IntEnum
 class TestTypeEnumConversion(TestCase):
 
     def setUp(self):
+        # noinspection PyTypeChecker
         testing_intenum = IntEnum(
             'Custom IntEnum',
             {
