@@ -52,16 +52,12 @@ def get_message_from_form(form, vacancy):
 
 
 def send_mail_from_form(form, vacancy):
-    msg = get_message_from_form(form, vacancy)
-    msg4reply = get_msg_for_reply(form, vacancy)
-    celery_send_mail.delay(msg)
-    celery_send_mail.delay(msg4reply)
+    celery_send_mail.delay(get_message_from_form(form, vacancy))
+    celery_send_mail.delay(get_msg_for_reply(form, vacancy))
 
 
-def send_mail(title, recipients, body=None, html=None, attachment_name=None,
-              attachment_type=None, attachment=None):
-    msg = get_message(title, recipients, body, html, attachment_name,
-                      attachment_type, attachment)
+def send_mail(title, recipients, **kwargs):
+    msg = get_message(title, recipients, **kwargs)
     celery_send_mail.delay(msg)
 
 

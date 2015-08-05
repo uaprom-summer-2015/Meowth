@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+from flask import request, url_for
 from project.bl.utils import BaseBL
 from werkzeug.security import check_password_hash, generate_password_hash
 from project.lib.auth import generate_random_string
@@ -39,8 +41,11 @@ class UserBL(BaseBL):
         token.bl.save()
         recipients = [u.email, ]
         title = 'Cброс пароля на HR портале'
-        body = 'Ваша ссылка для сброса пароля: localhost:5000/auth/reset/{}'\
-            .format(token.token)
+        url = urljoin(
+            request.host_url,
+            url_for('auth.confirm_reset', token=token.token)
+        )
+        body = 'Ваша ссылка для сброса пароля: {}'.format(url)
         send_mail(title=title,
                   body=body,
                   recipients=recipients)

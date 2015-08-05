@@ -32,6 +32,7 @@ class EntryDetail(MethodView):
         return _data
 
     def get(self, entry_id):
+        entry = None
         if entry_id is None:
             # Add a new entry
             entry_form = self.create_form()

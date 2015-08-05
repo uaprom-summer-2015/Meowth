@@ -1,6 +1,6 @@
 from enum import IntEnum
 import datetime
-from flask import g
+from flask import session
 from project.bl.utils import Resource
 from project.extensions import db
 from project.lib.orm.types import TypeEnum
@@ -196,7 +196,7 @@ class MailTemplate(db.Model):
     bl = Resource('bl.mailtemplate')
     user_id = db.Column(
         db.Integer, db.ForeignKey('users.id'),
-        onupdate=lambda: g.user.id
+        onupdate=lambda: session['user_id']
     )
     who_updated = db.relationship('User')
 
