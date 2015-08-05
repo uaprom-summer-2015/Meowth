@@ -1,8 +1,8 @@
 from email.policy import EmailPolicy
 from flask import request
 import flask_mail
-from config import Hardcoded
 from project.tasks.mail import celery_send_mail
+from flask import current_app
 
 
 flask_mail.message_policy = EmailPolicy(linesep='\r\n', refold_source='none')
@@ -20,7 +20,7 @@ def get_message(title, body, recipients, attachment_name=None,
 
 
 def get_message_from_form(form, vacancy):
-    recipients = [Hardcoded.MAIL_TO_SEND]
+    recipients = current_app["MAILS_TO_SEND"]
     title = 'Ответ на вакансию: {}'.format(vacancy.title)
     body = 'Ответ на вакансию: {}\n' \
            'Имя: {}\n' \
