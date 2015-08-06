@@ -9,6 +9,7 @@ class ProjectTestCase(TestCase):
     Base class for all tests in project
     """
 
+    # noinspection PyAttributeOutsideInit
     def create_app(self):
         self.app = app_factory()
         with self.app.app_context():
@@ -16,6 +17,7 @@ class ProjectTestCase(TestCase):
             load_fixtures(self.app.config['FIXTURES_DIR'])
         return self.app
 
+    # noinspection PyPep8Naming
     def tearDown(self):
         """
         Drop it all!

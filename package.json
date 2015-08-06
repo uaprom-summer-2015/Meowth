@@ -4,7 +4,7 @@
   "description": "HR portal written during the internship at Prom.ua",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node_modules/bower/bin/bower install && node_modules/gulp/bin/gulp.js"
+    "postinstall": "node_modules/bower/bin/bower install && node_modules/gulp/bin/gulp.js --type production"
   },
   "repository": {
     "type": "git",
@@ -37,22 +37,13 @@
       "./node_modules"
     ]
   },
-  "browserify": {
-    "transform": [
-      "reactify"
-    ],
-    "extensions": [
-      ".js"
-    ]
-  },
   "assets": {
     "bower": "./bower_components",
     "node": "./node_modules",
     "scripts": {
       "entries": "./project/static/src/js/*.js",
       "watches": [
-        "./project/static/src/js/**/*.js",
-        "./project/static/src/js/**/*.jsx"
+        "./project/static/src/js/**/*.js"
       ],
       "paths": [
         "./node_modules",
@@ -81,10 +72,8 @@
     "gulp-stylus": "^2.0.5",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "reactify": "^1.1.1",
     "glob": "~5.0.14",
     "event-stream": "~3.3.1",
-    "vinyl-fs": "~1.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "browserify": "~11.0.0",
