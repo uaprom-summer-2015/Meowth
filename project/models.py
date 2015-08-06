@@ -224,6 +224,8 @@ class UploadedImage(db.Model):
     title = db.Column(db.VARCHAR(32))
     description = db.Column(db.VARCHAR(128))
 
+    bl = Resource('bl.uploadedimage')
+
 
 def init_db():
     db.drop_all()
