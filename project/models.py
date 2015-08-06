@@ -207,6 +207,24 @@ class MailTemplate(db.Model):
         return str(self.title)
 
 
+class UploadedImage(db.Model):
+    __tablename__ = 'uploaded_images'
+
+    IMG_CATEGORY = IntEnum('cat', {
+        'other': 0,
+        'gallery': 1,
+    })
+
+    uid = db.Column(db.VARCHAR(40), primary_key=True)  # uuid(32)+ext
+    img_category = db.Column(
+        TypeEnum(IMG_CATEGORY),
+        default=IMG_CATEGORY.other,
+        primary_key=True
+    )
+    title = db.Column(db.VARCHAR(32))
+    description = db.Column(db.VARCHAR(128))
+
+
 def init_db():
     db.drop_all()
     db.create_all()
