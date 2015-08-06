@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, TextAreaField, BooleanField
+from wtforms import StringField, TextAreaField, BooleanField, FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
 from project.models import Category, City
@@ -90,3 +90,27 @@ class MailTemplateForm(Form):
         ],
     )
     html = TextAreaField('Текст письма', validators=[DataRequired()])
+
+
+class ImageUploadForm(Form):
+    title = StringField(
+        label='Название',
+        validators=[
+            Length(
+                max=32,
+                message='Must not exceed 32 symbols',
+            )
+        ],
+    )
+    description = TextAreaField(
+        label='Описание (замещающий текст)',
+        validators=[
+            Length(
+                max=128,
+                message='Must not exceed 128 symbols',
+            )
+        ],
+    )
+    image = FileField(
+        label='Картинка',
+    )
