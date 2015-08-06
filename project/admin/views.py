@@ -1,14 +1,11 @@
 from flask import render_template, url_for, session, redirect
-
-from project.admin.forms import VacancyForm, CategoryForm, CityForm, \
-    PageChunkForm
+from project.admin import forms
 from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm
-from project.models import Vacancy, Category, City, User, PageBlock, Page, \
-    PageChunk
+from project import models
 
 SECTIONS = {}  # list_name: list_endpoint
 
@@ -43,14 +40,14 @@ def register_section(*, section_name, list_endpoint,
 # Vacancies
 vacancy_list = EntryList.as_view(
     name='vacancy_list',
-    model=Vacancy,
+    model=models.Vacancy,
     template="admin/vacancies.html",
 )
 
 vacancy_detail = EntryDetail.as_view(
     name='vacancy_detail',
-    create_form=VacancyForm,
-    model=Vacancy,
+    create_form=forms.VacancyForm,
+    model=models.Vacancy,
     template="admin/vacancy.html",
     success_url="vacancy_list",
 )
@@ -68,14 +65,14 @@ register_section(
 # Categories
 category_list = EntryList.as_view(
     name="category_list",
-    model=Category,
+    model=models.Category,
     template="admin/categories.html",
 )
 
 category_detail = EntryDetail.as_view(
     name='category_detail',
-    create_form=CategoryForm,
-    model=Category,
+    create_form=forms.CategoryForm,
+    model=models.Category,
     success_url="category_list",
 )
 
@@ -92,13 +89,13 @@ register_section(
 # Cities
 city_list = EntryList.as_view(
     name="city_list",
-    model=City,
+    model=models.City,
     template="admin/cities.html",
 )
 city_view = EntryDetail.as_view(
     name='city_detail',
-    create_form=CityForm,
-    model=City,
+    create_form=forms.CityForm,
+    model=models.City,
     success_url="city_list",
 )
 
@@ -115,14 +112,14 @@ register_section(
 # Users
 user_list = EntryList.as_view(
     name="user_list",
-    model=User,
+    model=models.User,
     template="admin/users.html",
 )
 
 user_detail = EntryDetail.as_view(
     name='user_detail',
     create_form=RegisterForm,
-    model=User,
+    model=models.User,
     success_url="user_list",
 )
 
@@ -139,7 +136,7 @@ register_section(
 # PageBlocks
 pageblock_list = EntryList.as_view(
     name='pageblock_list',
-    model=PageBlock,
+    model=models.PageBlock,
     template="admin/pageblocks.html",
 )
 
@@ -147,7 +144,7 @@ pageblock_view = EntryDetail.as_view(
     name='pageblock_detail',
     create_form=PageBlockForm,
     template='admin/pageblock.html',
-    model=PageBlock,
+    model=models.PageBlock,
     success_url="pageblock_list",
 )
 
@@ -164,14 +161,14 @@ register_section(
 # Pages
 page_list = EntryList.as_view(
     name="page_list",
-    model=Page,
+    model=models.Page,
     template="admin/pages.html",
 )
 
 page_view = PageDetail.as_view(
     name='page_detail',
     create_form=PageForm,
-    model=Page,
+    model=models.Page,
     success_url="page_list",
 )
 
@@ -187,14 +184,14 @@ register_section(
 # Page chunks
 pagechunk_list = EntryList.as_view(
     name="pagechunk_list",
-    model=PageChunk,
+    model=models.PageChunk,
     template="admin/pagechunks.html",
 )
 
 pagechunk_detail = EntryDetail.as_view(
     name='pagechunk_detail',
-    create_form=PageChunkForm,
-    model=PageChunk,
+    create_form=forms.PageChunkForm,
+    model=models.PageChunk,
     template="admin/pagechunk.html",
     success_url="pagechunk_list",
 )
@@ -206,6 +203,31 @@ register_section(
     list_view=pagechunk_list,
     detail_view=pagechunk_detail,
     list_endpoint="pagechunk_list",
+)
+
+
+# Mail Templates
+mail_templates_list = EntryList.as_view(
+    name="mail_templates_list",
+    model=models.MailTemplate,
+    template="admin/mailtemplates.html",
+)
+
+mail_template_detail = EntryDetail.as_view(
+    name='mail_template_detail',
+    create_form=forms.MailTemplateForm,
+    model=models.MailTemplate,
+    template="admin/mailtemplate.html",
+    success_url="mail_templates_list",
+)
+
+register_section(
+    section_name="Шаблоны писем",
+    list_route="/mail_templates/",
+    detail_route="/mail_template/",
+    list_view=mail_templates_list,
+    detail_view=mail_template_detail,
+    list_endpoint="mail_templates_list",
 )
 
 

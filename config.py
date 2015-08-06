@@ -35,7 +35,7 @@ class Config:
     # Email
     MAIL_SERVER = 'smtp.yandex.ru'
     MAIL_PORT = 465
-    # MAIL_USE_SSL = True
+    MAIL_USE_SSL = True
     MAIL_USERNAME = 'hrportal@yandex.ru'
     MAIL_PASSWORD = 'useaverystrongpasswordLuke'
     MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'

@@ -43,3 +43,4 @@ Flask-Celery-Helper==1.1.0
 gunicorn==19.3.0
 beautifulsoup4==4.4.0
 -e git+https://github.com/jarus/flask-testing.git#egg=Flask-Testing
+html2text==2015.6.21
