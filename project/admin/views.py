@@ -254,7 +254,7 @@ def upload():
         return (
             '.' in filename and
             filename.rsplit('.', 1)[1] in
-            current_app.config['ALLOWED_EXTENSIONS']
+            current_app.config['IMG_EXTENSIONS']
         )
 
     form = forms.ImageUploadForm()
