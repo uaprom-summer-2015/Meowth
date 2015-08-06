@@ -15,6 +15,9 @@ class Config:
     CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
     UPLOAD_FOLDER = os.path.join(BASEDIR, 'media')
+    IMG_EXTENSIONS = {
+        'gif', 'jpeg', 'jpg', 'png',
+    }
     ALLOWED_EXTENSIONS = {
         'txt', 'pdf', 'png', 'jpg',
         'jpeg', 'gif', 'doc', 'docx',
