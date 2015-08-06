@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+from flask import request, url_for
 from project.bl.utils import BaseBL
 from werkzeug.security import check_password_hash, generate_password_hash
 from project.lib.auth import generate_random_string
@@ -11,7 +13,7 @@ class UserBL(BaseBL):
         model.password = generate_password_hash(password)
 
     def create(self, data):
-        from .mail import send_mail
+        from project.lib.mail import send_mail
         model = self.model(**data)
         if 'password' in data:
             model.bl.set_password(data['password'])
@@ -22,13 +24,15 @@ class UserBL(BaseBL):
             title = 'Вам была создана учетная запись на HR портале!'
             body = 'login: {}\npassword:{}'\
                 .format(data['login'], random_password)
-            send_mail(title, body, recipients)
+            send_mail(title=title,
+                      recipients=recipients,
+                      body=body)
         model.bl.save()
         return model
 
     def forgot_password(self, email):
         from project.models import Token
-        from .mail import send_mail
+        from project.lib.mail import send_mail
         model = self.model
         u = model.query\
             .filter(func.lower(model.email) == func.lower(email))\
@@ -37,14 +41,19 @@ class UserBL(BaseBL):
         token.bl.save()
         recipients = [u.email, ]
         title = 'Cброс пароля на HR портале'
-        body = 'Ваша ссылка для сброса пароля: localhost:5000/auth/reset/{}'\
-            .format(token.token)
-        send_mail(title, body, recipients)
+        url = urljoin(
+            request.host_url,
+            url_for('auth.confirm_reset', token=token.token)
+        )
+        body = 'Ваша ссылка для сброса пароля: {}'.format(url)
+        send_mail(title=title,
+                  body=body,
+                  recipients=recipients)
 
     @staticmethod
     def reset_password(token):
         from project.models import Token
-        from .mail import send_mail
+        from project.lib.mail import send_mail
         token = Token.query.filter(Token.token == token).first()
         if not token:
             return False
@@ -56,7 +65,9 @@ class UserBL(BaseBL):
         title = 'Сброс пароля на HR портале'
         body = 'Ваш пароль был успешно cброшен! \n Новый пароль: {}'\
             .format(random_password)
-        send_mail(title, body, recipients)
+        send_mail(title=title,
+                  body=body,
+                  recipients=recipients)
         token.bl.delete()
         return True
 
@@ -76,3 +87,7 @@ class UserBL(BaseBL):
         u = model.query.filter(model.login == login).first()
         if u and check_password_hash(u.password, password):
             return u
+
+
+class TokenBL(BaseBL):
+    pass

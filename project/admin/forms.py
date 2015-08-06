@@ -75,3 +75,18 @@ class CityForm(Form):
 class PageChunkForm(Form):
     name = StringField('Название элемента', validators=[DataRequired()])
     text = TextAreaField('Текст элемента', validators=[DataRequired()])
+
+
+class MailTemplateForm(Form):
+    title = StringField('Название письма (отображение в админке)',
+                        validators=[DataRequired()])
+    subject = StringField(
+        'Тема письма',
+        validators=[
+            DataRequired(),
+            Length(max=79,
+                   message='Длина не дожна быть больше 79 символов'
+                   ),
+        ],
+    )
+    html = TextAreaField('Текст письма', validators=[DataRequired()])
