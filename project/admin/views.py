@@ -1,5 +1,5 @@
 from flask import render_template, url_for, session, redirect
-from flask import current_app, request
+from flask import request
 from project.admin import forms
 from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
@@ -7,6 +7,7 @@ from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList
 from project.auth.forms import RegisterForm
 from project import models
+from project.lib.media.validators import allowed_image as allowed_file
 
 SECTIONS = {}  # list_name: list_endpoint
 
@@ -250,13 +251,6 @@ def mainpage():
     methods=['GET', 'POST'],
 )
 def upload():
-    def allowed_file(filename):
-        return (
-            '.' in filename and
-            filename.rsplit('.', 1)[1] in
-            current_app.config['IMG_EXTENSIONS']
-        )
-
     form = forms.ImageUploadForm()
     if form.validate_on_submit():
         image = request.files['image']

@@ -3,6 +3,7 @@ from wtforms import StringField, TextAreaField, BooleanField, FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
 from project.models import Category, City
+from project.admin.validators import allowed_extension
 
 
 class VacancyForm(Form):
@@ -113,4 +114,8 @@ class ImageUploadForm(Form):
     )
     image = FileField(
         label='Картинка',
+        validators=[
+            allowed_extension(),
+            DataRequired(),
+        ]
     )
