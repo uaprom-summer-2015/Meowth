@@ -24,7 +24,10 @@ class Config:
     FIXTURES_DIR = os.path.join(BASEDIR, 'fixtures')
 
     # Celery
-    CELERY_IMPORTS = ("project.tasks.mail", )
+    CELERY_IMPORTS = (
+        "project.tasks.mail",
+        "project.tasks.uploads",
+    )
     CELERY_BROKER_URL = 'redis://localhost:6379/0'
     CELERY_BACKEND_URL = CELERY_BROKER_URL
 

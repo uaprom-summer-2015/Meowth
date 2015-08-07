@@ -1,8 +1,8 @@
 from flask import current_app
-import Image
 from os import mkdir, remove
 from os.path import exists, join
 from project.bl.utils import BaseBL
+from project.tasks.uploads import celery_make_thumbnail
 from uuid import uuid4
 from werkzeug import secure_filename
 
@@ -10,6 +10,7 @@ from werkzeug import secure_filename
 class UploadedImageBL(BaseBL):
 
     def save_image(self, *, image, img_category, **kwargs):
+
         def mkdir_ifn_exists(dirpath):
             if not exists(dirpath):
                 mkdir(dirpath, mode=0o751)
@@ -18,9 +19,10 @@ class UploadedImageBL(BaseBL):
             return
         if 'title' not in kwargs:
             kwargs['title'] = secure_filename(image.filename)
+
         category_dir = join(
             current_app.config['UPLOAD_FOLDER'],
-            img_category.name
+            img_category.name,
         )
         mkdir_ifn_exists(category_dir)
 
@@ -33,9 +35,12 @@ class UploadedImageBL(BaseBL):
         ext = image.filename.rsplit('.', 1)[1]
         name = "{}.{}".format(uid, ext)
         image.save(join(fullsized_dir, name))
-        thumb = Image.open(join(fullsized_dir, name))
-        thumb.thumbnail((75, 75), Image.NEAREST)
-        thumb.save(join(thumbnail_dir, name))
+
+        celery_make_thumbnail.delay(
+            path_to_original=join(fullsized_dir, name),
+            destination=join(thumbnail_dir, name),
+            size=(75, 75),
+        )
 
         uploaded_image = self.model(
             name=uid,
