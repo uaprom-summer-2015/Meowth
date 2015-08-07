@@ -30,6 +30,11 @@ gulp.task('build:scripts:app', function (done) {
                 entries: [file]
             });
             b.external(npmPackages);
+
+            // jQuery has been removed from package.json
+            // and replaced by zepto.js with expose="jquery"
+            b.external("jquery");
+
             return b
                 .bundle()
                 .pipe(source(path.basename(file)))
@@ -55,6 +60,7 @@ gulp.task('build:scripts:vendor:common', function (done) {
     });
 
     var bundle = b.require(npmPackages)
+        .require("npm-zepto", {"expose": "jquery"})
         .bundle()
         .pipe(source('common.vendor.js'))
         .pipe(buffer())
