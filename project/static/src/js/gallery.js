@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", (function () {
-    $  = require('jquery');
+    var $ = require('jquery');
     require('magnific-popup');
     $('#gallery').magnificPopup({
         delegate: 'a',
