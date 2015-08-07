@@ -31,14 +31,15 @@ class UploadedImageBL(BaseBL):
 
         uid = uuid4().hex
         ext = image.filename.rsplit('.', 1)[1]
-        uid += '.' + ext
-        image.save(join(fullsized_dir, uid))
-        thumb = Image.open(join(fullsized_dir, uid))
+        name = "{}.{}".format(uid, ext)
+        image.save(join(fullsized_dir, name))
+        thumb = Image.open(join(fullsized_dir, name))
         thumb.thumbnail((75, 75), Image.NEAREST)
-        thumb.save(join(thumbnail_dir, uid))
+        thumb.save(join(thumbnail_dir, name))
 
         uploaded_image = self.model(
-            uid=uid,
+            name=uid,
+            ext=ext,
             img_category=img_category,
             title=kwargs.pop('title'),
             description=kwargs.pop('description'),
@@ -46,14 +47,15 @@ class UploadedImageBL(BaseBL):
         uploaded_image.bl.save()
 
     def delete(self):
-        cat = self.model.img_category
-        uid = self.model.uid
+        instance = self.model
+        uid = instance.name.replace('-', '')
+        name = "{}.{}".format(uid, instance.ext)
         category_dir = join(
-            current_app._config['UPLOAD_DIR'],
-            cat.name
+            current_app.config['UPLOAD_FOLDER'],
+            instance.img_category.name
         )
         thumbnail_dir = join(category_dir, 'thumb')
         fullsized_dir = join(category_dir, 'full')
-        remove(join(thumbnail_dir, uid))
-        remove(join(fullsized_dir, uid))
+        remove(join(thumbnail_dir, name))
+        remove(join(fullsized_dir, name))
         super().delete()

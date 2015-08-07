@@ -5,6 +5,7 @@ from project.extensions import db
 from project.lib.orm.types import TypeEnum
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.dialects.postgresql import UUID
 
 
 class Vacancy(db.Model):
@@ -210,19 +211,31 @@ class MailTemplate(db.Model):
 class UploadedImage(db.Model):
     __tablename__ = 'uploaded_images'
 
-    IMG_CATEGORY = IntEnum('cat', {
-        'other': 0,
-        'gallery': 1,
-    })
+    IMG_CATEGORY = IntEnum(
+        '',
+        {
+            'other': 0,
+            'gallery': 1,
+        },
+    )
 
-    uid = db.Column(db.VARCHAR(40), primary_key=True)  # uuid(32)+ext
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(UUID, nullable=False)
+    ext = db.Column(db.VARCHAR, nullable=False)
     img_category = db.Column(
         TypeEnum(IMG_CATEGORY),
         default=IMG_CATEGORY.other,
-        primary_key=True
+        nullable=False,
     )
     title = db.Column(db.VARCHAR(32))
     description = db.Column(db.VARCHAR(128))
+    __table_args__ = (
+        db.UniqueConstraint(
+            'name',
+            'ext',
+            'img_category',
+        ),
+    )
 
     bl = Resource('bl.uploadedimage')
 
