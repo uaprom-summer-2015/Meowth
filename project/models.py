@@ -1,3 +1,4 @@
+from collections import namedtuple
 from enum import IntEnum
 import datetime
 from project.bl.utils import Resource
@@ -187,18 +188,16 @@ class Token(db.Model):
 class MailTemplate(db.Model):
     __tablename__ = 'mailtemplates'
 
-    MAIL = IntEnum('Mail', {
-        'CV': 0,
-        'reply_to_CV': 1,
-    })
+    MAIL = namedtuple('Mail', ['CV', 'REPLY'])(0, 1)
 
     id = db.Column(db.Integer, primary_key=True)
-    mail = db.Column(TypeEnum(MAIL), nullable=False)
+    mail = db.Column(db.Enum(MAIL), nullable=False)
     title = db.Column(db.String, nullable=False)
     subject = db.Column(db.String(79), nullable=False)
     html = db.Column(db.Text, nullable=False)
     help_msg = db.Column(db.Text)
-    updated_at = db.Column(db.Date, onupdate=datetime.datetime.now)
+    updated_at = db.Column(db.Date, onupdate=datetime.datetime.now,
+                           default=datetime.datetime.now)
     bl = Resource('bl.mailtemplate')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     who_updated = db.relationship('User')
