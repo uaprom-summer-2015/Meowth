@@ -15,13 +15,10 @@ class Config:
     CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
     UPLOAD_FOLDER = os.path.join(BASEDIR, 'media')
-    IMG_EXTENSIONS = {
-        'gif', 'jpeg', 'jpg', 'png',
-    }
-    ALLOWED_EXTENSIONS = {
-        'txt', 'pdf', 'png', 'jpg',
-        'jpeg', 'gif', 'doc', 'docx',
-    }
+    IMG_EXTENSIONS = {'gif', 'jpeg', 'jpg', 'png'}
+    DOC_EXTENSIONS = {'txt', 'pdf', 'doc', 'docx'}
+    ALLOWED_EXTENSIONS = IMG_EXTENSIONS | DOC_EXTENSIONS
+
     MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 
     FIXTURES_DIR = os.path.join(BASEDIR, 'fixtures')
