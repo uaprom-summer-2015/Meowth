@@ -1,5 +1,4 @@
 var React = require('react');
-//var $ = require('jquery');
 
 
 var feed = React.createFactory(require('./feed/index.js'));

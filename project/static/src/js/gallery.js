@@ -1,7 +1,18 @@
 document.addEventListener("DOMContentLoaded", (function () {
-    var React = require('react');
-    var Gallery = require('./gallery/gallery');
-
-    React.render(React.createElement(Gallery, null),
-        document.getElementById('gallery'));
+    var $ = require('jquery');
+    require('magnific-popup');
+    $('#gallery').magnificPopup({
+        delegate: 'a',
+        type: 'image',
+        closeOnContentClick: false,
+        closeBtnInside: false,
+        mainClass: 'mfp-with-zoom mfp-img-mobile',
+        image: {
+            verticalFit: true
+        },
+        gallery: {
+            enabled: true,
+            preload: [1, 1]
+        }
+    });
 }));
