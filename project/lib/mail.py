@@ -1,7 +1,6 @@
-from flask import request
+from flask import request, current_app
 from html2text import html2text
 from string import Template
-from config import Hardcoded
 from project.tasks.mail import celery_send_mail
 from email.policy import EmailPolicy
 from project.models import MailTemplate
@@ -25,7 +24,7 @@ def get_message(title, recipients, body=None, html=None, attachment_name=None,
 
 
 def get_message_from_form(form, vacancy):
-    recipients = [Hardcoded.MAIL_TO_SEND]
+    recipients = current_app.config["MAILS_TO_SEND"]
     kwargs = {
         'name': form.name.data,
         'email': form.email.data,

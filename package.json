@@ -4,7 +4,7 @@
   "description": "HR portal written during the internship at Prom.ua",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node_modules/bower/bin/bower install && node_modules/gulp/bin/gulp.js"
+    "postinstall": "node_modules/bower/bin/bower install && node_modules/gulp/bin/gulp.js --type production"
   },
   "repository": {
     "type": "git",
@@ -24,25 +24,15 @@
   "homepage": "https://github.com/uaprom-summer-2015/Meowth#readme",
   "dependencies": {
     "lodash": "~3.10.0",
-    "bootstrap": "~3.3.5",
-    "bootstrap-select": "~1.7.3",
-    "jquery": "~2.1.4",
     "react": "~0.13.3",
     "react-mini-router": "~1.1.7",
     "react-select": "~0.5.5",
-    "classnames": "~2.1.3"
+    "classnames": "~2.1.3",
+    "magnific-popup": "~1.0.0"
   },
   "stylus": {
     "includes": [
       "./node_modules"
-    ]
-  },
-  "browserify": {
-    "transform": [
-      "reactify"
-    ],
-    "extensions": [
-      ".js"
     ]
   },
   "assets": {
@@ -51,8 +41,7 @@
     "scripts": {
       "entries": "./project/static/src/js/*.js",
       "watches": [
-        "./project/static/src/js/**/*.js",
-        "./project/static/src/js/**/*.jsx"
+        "./project/static/src/js/**/*.js"
       ],
       "paths": [
         "./node_modules",
@@ -81,13 +70,14 @@
     "gulp-stylus": "^2.0.5",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "reactify": "^1.1.1",
     "glob": "~5.0.14",
     "event-stream": "~3.3.1",
-    "vinyl-fs": "~1.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "browserify": "~11.0.0",
+    "npm-zepto": "~1.1.7",
+    "bootstrap": "~3.3.5",
+    "bootstrap-select": "~1.7.3",
     "bower": "~1.4.1"
   }
 }

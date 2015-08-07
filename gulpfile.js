@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var pkginfo = require('./package.json');
 var path = require('path');
 var es = require('event-stream');
 var glob = require('glob');
@@ -11,12 +10,11 @@ var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var stylus = require('gulp-stylus');
 var uglify = require('gulp-uglify');
-var _ = require('lodash');
-var fs = require('vinyl-fs');
+var pkginfo = require('./package.json');
 
 var debug = gutil.env.type !== 'production';
 
-var npmPackages = _.keys(require('./package.json').dependencies) || [];
+var npmPackages = Object.keys(pkginfo.dependencies) || [];
 
 gulp.task('default', ['build:scripts', 'build:styles']);
 
@@ -32,6 +30,11 @@ gulp.task('build:scripts:app', function (done) {
                 entries: [file]
             });
             b.external(npmPackages);
+
+            // jQuery has been removed from package.json
+            // and replaced by zepto.js with expose="jquery"
+            b.external("jquery");
+
             return b
                 .bundle()
                 .pipe(source(path.basename(file)))
@@ -40,7 +43,7 @@ gulp.task('build:scripts:app', function (done) {
                 }))
                 .pipe(buffer())
                 .pipe(debug ? gutil.noop() : uglify())
-                .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.js));
+                .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.js));
         });
         es.merge(tasks).on('end', done);
     });
@@ -57,13 +60,16 @@ gulp.task('build:scripts:vendor:common', function (done) {
     });
 
     var bundle = b.require(npmPackages)
+        .require("npm-zepto", {"expose": "jquery"})
         .bundle()
         .pipe(source('common.vendor.js'))
-        .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.js));
+        .pipe(buffer())
+        .pipe(debug ? gutil.noop() : uglify())
+        .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.js));
 
 
     var bs_fonts = gulp.src([pkginfo.assets.node + '/bootstrap/fonts/**/*'])
-        .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.fonts));
+        .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.fonts));
 
 
     es.merge([bundle, bs_fonts]).on('end', done);
@@ -71,7 +77,7 @@ gulp.task('build:scripts:vendor:common', function (done) {
 
 gulp.task('build:scripts:vendor:ckeditor', function () {
     gulp.src([pkginfo.assets.bower + '/**/*'])
-        .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.js));
+        .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.js));
 });
 
 
@@ -82,7 +88,7 @@ gulp.task('build:styles', function () {
         include: pkginfo.stylus.includes
     }))
         .pipe(rename('bundle.css'))
-        .pipe(gulp.dest(pkginfo.dist.path+pkginfo.dist.styles));
+        .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.styles));
 });
 
 

@@ -16,7 +16,7 @@
     {% endfor %}
     <input type="submit" value={{ submit }}>
     {% if title == 'Вход' %}
-        <a href="/auth/reset">Забыли пароль?</a>
+        <a href="{{ url_for('auth.reset') }}">Забыли пароль?</a>
     {% endif %}
 </form>
 {% endblock %}
