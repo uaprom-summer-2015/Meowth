@@ -85,7 +85,9 @@ class TestFeedView(ProjectTestCase):
 
         # after json datetime repr as str
         list_vacanies = [v.bl.as_dict() for v in Vacancy.bl.get_visible()]
-        list_vacanies = loads(jsonify(data=list_vacanies).data.decode())['data']
+        list_vacanies = loads(
+            jsonify(data=list_vacanies).data.decode()
+        )['data']
         self.assertEqual(
             vacancies,
             list_vacanies,
