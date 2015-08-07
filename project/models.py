@@ -190,7 +190,7 @@ class MailTemplate(db.Model):
     #  noinspection PyTypeChecker
     MAIL = IntEnum('Mail', {
         'CV': 0,
-        'reply_to_CV': 1,
+        'REPLY': 1,
     })
 
     id = db.Column(db.Integer, primary_key=True)

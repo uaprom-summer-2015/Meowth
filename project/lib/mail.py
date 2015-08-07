@@ -70,7 +70,7 @@ def get_msg_for_reply(form, vacancy):
         'title': vacancy.title,
     }
     mail_temp = MailTemplate.query.filter(
-        MailTemplate.mail == MailTemplate.MAIL.reply_to_CV
+        MailTemplate.mail == MailTemplate.MAIL.REPLY
     ).one()
 
     recipients = [form.email.data]
