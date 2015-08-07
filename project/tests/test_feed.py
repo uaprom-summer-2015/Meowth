@@ -1,6 +1,7 @@
+from json import loads
 import os
 from unittest.mock import patch
-from flask import url_for
+from flask import url_for, jsonify
 from config import BASEDIR
 from project.models import Vacancy, City, Category
 from project.tests.utils import ProjectTestCase
@@ -81,7 +82,11 @@ class TestFeedView(ProjectTestCase):
             categories,
             [c.bl.as_dict() for c in Category.query.all()]
         )
+
+        # after json datetime repr as str
+        list_vacanies = [v.bl.as_dict() for v in Vacancy.bl.get_visible()]
+        list_vacanies = loads(jsonify(data=list_vacanies).data.decode())['data']
         self.assertEqual(
             vacancies,
-            [v.bl.as_dict() for v in Vacancy.bl.get_visible()]
+            list_vacanies,
         )

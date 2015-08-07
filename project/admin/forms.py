@@ -62,6 +62,7 @@ class VacancyForm(Form):
         validators=[DataRequired('Required field')]
     )
     hide = BooleanField(label='Не показывать вакансию')
+    deleted = BooleanField(label='Удалить')
 
 
 class CategoryForm(Form):

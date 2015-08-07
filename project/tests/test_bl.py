@@ -212,6 +212,7 @@ class TestVacancyBL(ProjectTestCase):
     def test_get_visible(self):
         visible_list = Vacancy.bl.get_visible()
         vacancy_list = Vacancy.query.all()
+        actual_list = Vacancy.bl.get_actual()
 
         for vacancy in visible_list:
             self.assertTrue(
@@ -222,10 +223,29 @@ class TestVacancyBL(ProjectTestCase):
                 vacancy.hide,
                 msg='Vacancy returned by get_visible is hidden',
             )
+            self.assertFalse(
+                vacancy.deleted,
+                msg='Vacancy returned by get_visible but it is deleted',
+            )
+        for vacancy in actual_list:
+            self.assertTrue(
+                vacancy in vacancy_list,
+                msg='Vacancy returned by get_actual is not in all vacancies',
+            )
+            self.assertFalse(
+                vacancy.deleted,
+                msg='Vacancy returned by get_actual but it is deleted',
+            )
         for vacancy in vacancy_list:
             if vacancy not in visible_list:
                 self.assertTrue(
-                    vacancy.hide,
+                    vacancy.hide or vacancy.deleted,
                     msg='There is a visible vacancy which is not returned'
                         'with get_visible',
+                )
+            if vacancy not in actual_list:
+                self.assertTrue(
+                    vacancy.deleted,
+                    msg='There is a visible vacancy which is not returned'
+                        'with get_actual'
                 )
