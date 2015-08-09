@@ -2,10 +2,9 @@ from enum import IntEnum
 import datetime
 from project.bl.utils import Resource
 from project.extensions import db
-from project.lib.orm.types import TypeEnum
+from project.lib.orm.types import TypeEnum, GUID
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.dialects.postgresql import UUID
 
 
 class Vacancy(db.Model):
@@ -220,7 +219,7 @@ class UploadedImage(db.Model):
     )
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(UUID, nullable=False)
+    name = db.Column(GUID, nullable=False)
     ext = db.Column(db.VARCHAR, nullable=False)
     img_category = db.Column(
         TypeEnum(IMG_CATEGORY),

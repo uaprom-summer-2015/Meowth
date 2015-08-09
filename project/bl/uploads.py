@@ -53,7 +53,7 @@ class UploadedImageBL(BaseBL):
 
     def delete(self):
         instance = self.model
-        uid = instance.name.replace('-', '')
+        uid = instance.name.hex
         name = "{}.{}".format(uid, instance.ext)
         category_dir = join(
             current_app.config['UPLOAD_FOLDER'],
