@@ -12,7 +12,7 @@ down_revision = '20b9c5b88f9'
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import UUID
+from project.lib.orm.types import GUID
 
 
 def upgrade():
@@ -37,7 +37,7 @@ def upgrade():
     )
     op.add_column(
         'uploaded_images',
-        sa.Column('name', UUID(), nullable=True)
+        sa.Column('name', GUID(), nullable=True)
     )
     op.create_primary_key(
         name='uploaded_images_pkey',
