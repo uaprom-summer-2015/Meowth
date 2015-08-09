@@ -8,7 +8,11 @@
 
 {% block content %}
 <div>
-    <p>Шаблон изменен: {{ entry.updated_at }}, пользователем {{ entry.who_updated.name }}</p>
+    <p>Шаблон изменен: {{ entry.updated_at }},
+        {% if entry.who_updated.name %}
+            пользователем {{ entry.who_updated.name }}\
+        {% endif %}
+    </p>
 </div>
 <form method="post">
     {{ entry_form.hidden_tag() }}
