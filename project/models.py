@@ -158,9 +158,17 @@ class PageBlock(db.Model):
 class Page(db.Model):
     __tablename__ = 'pages'
 
+    #  noinspection PyTypeChecker
+    TYPE = IntEnum('Page_type', {
+        'PROJECTS': 1,
+        'ABOUT': 2,
+        'CONTACTS': 3,
+        'MAINPAGE': 4,
+    })
+
     id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(TypeEnum(TYPE), unique=True, nullable=False)
     title = db.Column(db.VARCHAR(128))
-    url = db.Column(db.Text)
     _blocks = db.relationship(
         "BlockPageAssociation",
         order_by='BlockPageAssociation.position',

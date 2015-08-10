@@ -2,29 +2,29 @@
   {
     "model": "project.models.Page",
     "fields": {
-      "title": "Проекты",
-      "url": "/projects"
+      "type": 1,
+      "title": "Проекты"
     }
   },
   {
     "model": "project.models.Page",
     "fields": {
-      "title": "О компании",
-      "url": "/company"
+      "type": 2,
+      "title": "О компании"
     }
   },
   {
     "model": "project.models.Page",
     "fields": {
-      "title": "Контакты",
-      "url": "/contacts"
+      "type" : 3,
+      "title": "Контакты"
     }
   },
   {
     "model": "project.models.Page",
     "fields": {
-      "title": "Главная",
-      "url": "/"
+      "type" : 4,
+      "title": "Главная"
     }
   }
 ]
