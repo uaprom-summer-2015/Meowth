@@ -254,14 +254,13 @@ def upload():
     form = forms.ImageUploadForm()
     if form.validate_on_submit():
         image = request.files['image']
-        if image and allowed_file(image.filename):
-            models.UploadedImage.bl.save_image(
-                image=image,
-                img_category=models.UploadedImage.IMG_CATEGORY.gallery,
-                title=form.data['title'],
-                description=form.data['description'],
-            )
-            return redirect(url_for('admin.mainpage'))
+        models.UploadedImage.bl.save_image(
+            image=image,
+            img_category=models.UploadedImage.IMG_CATEGORY.gallery,
+            title=form.data['title'],
+            description=form.data['description'],
+        )
+        return redirect(url_for('admin.mainpage'))
     return render_template("admin/image_upload.html", form=form)
 
 
