@@ -24,7 +24,7 @@ def AllowedMime(message=None):
     def _allowed_mime(form, file):
         # Warning! Crutch ahead!
         try:
-            img = Image.open(request.files[file.name].stream)
+            Image.open(request.files[file.name].stream)
         except IOError as ioe:
             raise ValidationError(message) from ioe
 

@@ -7,7 +7,7 @@ from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList, VacancyList
 from project.auth.forms import RegisterForm
 from project import models
-from project.lib.media.validators import allowed_image as allowed_file
+
 
 SECTIONS = {}  # list_name: list_endpoint
 
