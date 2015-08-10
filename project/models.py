@@ -23,6 +23,11 @@ class Vacancy(db.Model):
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'))
     city = db.relationship('City', backref=db.backref('vacancies'))
     hide = db.Column(db.Boolean, nullable=False, default=False)
+    deleted = db.Column(db.Boolean, nullable=False, default=False)
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.now,
+                           onupdate=datetime.datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    who_updated = db.relationship('User')
 
     bl = Resource("bl.vacancy")
 

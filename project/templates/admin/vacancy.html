@@ -7,6 +7,11 @@
 {% endblock %}
 
 {% block content %}
+    <p>Вакансия изменена: {{ entry.updated_at | strftime }}
+        {% if entry.who_updated.name %}
+            пользователем {{ entry.who_updated.name }}
+        {% endif %}
+    </p>
     <form method="post">
         {{ entry_form.hidden_tag() }}
         {% for field in entry_form if field.widget.input_type != 'hidden' %}
