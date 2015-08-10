@@ -79,3 +79,11 @@ class EntryList(View):
             self.template,
             entries=self.model.query.all(),
         )
+
+
+class VacancyList(EntryList):
+    def dispatch_request(self):
+        return render_template(
+            self.template,
+            entries=self.model.bl.get_actual(),
+        )

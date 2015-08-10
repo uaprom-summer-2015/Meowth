@@ -3,7 +3,7 @@ from project.admin import forms
 from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
-from project.admin.utils import EntryDetail, EntryList
+from project.admin.utils import EntryDetail, EntryList, VacancyList
 from project.auth.forms import RegisterForm
 from project import models
 
@@ -38,7 +38,7 @@ def register_section(*, section_name, list_endpoint,
 
 
 # Vacancies
-vacancy_list = EntryList.as_view(
+vacancy_list = VacancyList.as_view(
     name='vacancy_list',
     model=models.Vacancy,
     template="admin/vacancies.html",
