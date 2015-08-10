@@ -1,6 +1,6 @@
 from flask import current_app
 from os import mkdir, remove
-from os.path import exists, join
+from os.path import exists, join, splitext
 from project.bl.utils import BaseBL
 from project.tasks.uploads import celery_make_thumbnail
 from uuid import uuid4
@@ -32,7 +32,7 @@ class UploadedImageBL(BaseBL):
         mkdir_ifn_exists(fullsized_dir)
 
         uid = uuid4().hex
-        ext = image.filename.rsplit('.', 1)[1]
+        ext = splitext(image.filename)[1][1:]
         name = "{}.{}".format(uid, ext)
         image.save(join(fullsized_dir, name))
 
