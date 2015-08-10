@@ -112,7 +112,7 @@ class BlockPageAssociation(db.Model):
 class PageChunk(db.Model):
     __tablename__ = 'pagechunks'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, unique=True, nullable=False) # for use in template vars
+    name = db.Column(db.Text, unique=True, nullable=False)  # use in template
     title = db.Column(db.Text, unique=True, nullable=False)
     text = db.Column(db.Text)
 

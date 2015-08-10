@@ -74,7 +74,7 @@ class CityForm(Form):
 
 
 class PageChunkForm(Form):
-    name = StringField('Название элемента', validators=[DataRequired()])
+    title = StringField('Название элемента', validators=[DataRequired()])
     text = TextAreaField('Текст элемента', validators=[DataRequired()])
 
 
