@@ -1,4 +1,4 @@
-import Image
+from PIL import Image
 from project.extensions import celery
 
 
