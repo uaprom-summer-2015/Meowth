@@ -2,7 +2,7 @@ from enum import IntEnum
 import datetime
 from project.bl.utils import Resource
 from project.extensions import db
-from project.lib.orm.types import TypeEnum
+from project.lib.orm.types import TypeEnum, GUID
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -212,6 +212,38 @@ class MailTemplate(db.Model):
 
     def __repr__(self):
         return str(self.title)
+
+
+class UploadedImage(db.Model):
+    __tablename__ = 'uploaded_images'
+
+    IMG_CATEGORY = IntEnum(
+        '',
+        {
+            'other': 0,
+            'gallery': 1,
+        },
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(GUID, nullable=False)
+    ext = db.Column(db.VARCHAR, nullable=False)
+    img_category = db.Column(
+        TypeEnum(IMG_CATEGORY),
+        default=IMG_CATEGORY.other,
+        nullable=False,
+    )
+    title = db.Column(db.VARCHAR(32))
+    description = db.Column(db.VARCHAR(128))
+    __table_args__ = (
+        db.UniqueConstraint(
+            'name',
+            'ext',
+            'img_category',
+        ),
+    )
+
+    bl = Resource('bl.uploadedimage')
 
 
 def init_db():
