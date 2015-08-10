@@ -51,3 +51,10 @@ class TestTypeEnumConversion(TestCase):
             dialect=None,
         )
         self.assertIsNone(processed)
+
+    def test_process_literal_param(self):
+        processed = self.testing_typeenum.process_literal_param(
+            -1,
+            dialect=None,
+        )
+        self.assertEqual(processed, self.testing_typeenum._enum.val_1)
