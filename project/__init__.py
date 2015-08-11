@@ -2,9 +2,7 @@ from flask import send_from_directory
 import logging
 import os
 from project.application import create_app
-from project.bl import init_resource_registry
 
-init_resource_registry()
 app = create_app()
 
 
