@@ -25,6 +25,7 @@ def AllowedMime(message=None):
         # Warning! Crutch ahead!
         try:
             Image.open(request.files[file.name].stream)
+            request.files[file.name].stream.seek(0)
         except IOError as ioe:
             raise ValidationError(message) from ioe
 
