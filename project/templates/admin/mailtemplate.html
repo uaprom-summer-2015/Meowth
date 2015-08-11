@@ -8,9 +8,9 @@
 
 {% block content %}
 <div>
-    <p>Шаблон изменен: {{ entry.updated_at }},
+    <p>Шаблон изменен: {{ entry.updated_at }}
         {% if entry.who_updated.name %}
-            пользователем {{ entry.who_updated.name }}\
+            пользователем {{ entry.who_updated.name }}
         {% endif %}
     </p>
 </div>

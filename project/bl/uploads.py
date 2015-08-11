@@ -29,6 +29,7 @@ class UploadedImageBL(BaseBL):
         if 'title' not in kwargs:
             kwargs['title'] = secure_filename(image.filename)
 
+        mkdir_ifn_exists(current_app.config['UPLOAD_FOLDER'])
         category_dir = join(
             current_app.config['UPLOAD_FOLDER'],
             img_category.name,
