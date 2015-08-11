@@ -117,6 +117,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+    UPLOAD_FOLDER = '/tmp/media'
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
 
 
