@@ -6,6 +6,8 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+    SERVER_NAME = "localhost:5000"
+
     DEBUG = False
     TESTING = False
 
@@ -14,6 +16,7 @@ class Config:
     CSRF = True
     CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
+    STATIC_SERVER = "flask"
     UPLOAD_FOLDER = os.path.join(BASEDIR, 'media')
     IMG_EXTENSIONS = {'gif', 'jpeg', 'jpg', 'png'}
     DOC_EXTENSIONS = {'txt', 'pdf', 'doc', 'docx'}
