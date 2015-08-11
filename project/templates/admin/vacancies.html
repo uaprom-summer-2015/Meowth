@@ -1,33 +1,11 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Позиция</th>
-            <th>Видимость</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for entry in entries %}
-            <tr>
-                <td>
-                    <a href="{{ url_for('admin.vacancy_detail', entry_id=entry.id) }}">
-                        {{ entry.title }}
-                    </a>
-                </td>
-                <td>
-                    {% if entry.hide %}
-                        Невидимая
-                    {% else %}
-                        Видимая
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+    <div id="id_table"></div>
 
     <a href="{{ url_for('admin.vacancy_detail') }}"
        class="btn btn-primary btn-lg">Добавить новую вакансию</a>
+
+    <script src="{{ url_for('static', filename="dist/js/table.bundle.js") }}" type="text/javascript"></script>
 {% endblock %}

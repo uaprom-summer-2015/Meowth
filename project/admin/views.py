@@ -1,4 +1,4 @@
-from flask import render_template, url_for, session, redirect
+from flask import render_template, url_for, session, redirect, jsonify
 from flask import request
 from project.admin import forms
 from project.blueprints import admin_app
@@ -262,6 +262,14 @@ def upload():
         )
         return redirect(url_for('admin.mainpage'))
     return render_template("admin/image_upload.html", form=form)
+
+
+@admin_app.route('/vacancies/list/')
+def json_vacancies():
+    list_vacancies = [v.bl.get_dict() for v in models.Vacancy.bl.get_actual()]
+    return jsonify(
+        vacancies=list_vacancies,
+    )
 
 
 # noinspection PyUnusedLocal
