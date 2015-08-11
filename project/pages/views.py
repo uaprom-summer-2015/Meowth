@@ -3,8 +3,6 @@ from project.blueprints import pages_app
 from project.models import Page
 
 
-# All pages are hardcoded for now
-
 @pages_app.route("/")
 def mainpage():
     page = Page.bl.get(Page.TYPE.MAINPAGE)
