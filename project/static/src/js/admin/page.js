@@ -6,25 +6,38 @@ var option_elements = document.getElementById("block_1").getElementsByTagName("o
 var options = [];
 
 for (var i = 0; i < option_elements.length; i++) {
+    var e = option_elements[i];
     options.push({
-        value: option_elements[i].getAttribute("value"),
-        label: option_elements[i].innerHTML
-    })
+        value: e.getAttribute("value"),
+        label: e.innerHTML
+    });
 }
-
 
 var PageBlockChooser = React.createClass(
     {
         displayName: "PageBlocks",
         ref: "chooser",
+        elPrefix: "block_",
 
         getInitialState: function () {
+            var selects = document.getElementsByTagName("select");
+            var pageblocks = [];
+
+            for (var i = 0; i < selects.length; i++) {
+                var e = selects[i];
+
+                pageblocks.push(
+                    e.options[e.selectedIndex].value
+                );
+            }
             return {
-                pageblocks: ["1", "3", "2"]
+                pageblocks: pageblocks
             }
         },
         addBlock: function () {
-            return {pageblocks: this.state.pageblocks.concat(["1"])}
+            this.setState(function () {
+                return {pageblocks: this.state.pageblocks.concat(["1"])}
+            });
         },
         removeBlock: function (i) {
             this.setState(function (prevState) {
@@ -33,18 +46,27 @@ var PageBlockChooser = React.createClass(
                 return {pageblocks: pageblocks};
             })
         },
+        selectOnChange: function (el, newValue) {
+            this.setState(function (prevState) {
+                var pageblocks = prevState.pageblocks.slice();
+                pageblocks[el] = newValue;
+                return {pageblocks: pageblocks};
+            })
+        },
 
         render: function () {
             var self = this;
-
             return React.createElement("ul", null,
-                this.state.pageblocks.map(function (pageblock, i) {
+                this.state.pageblocks.map(function (selectedValue, i) {
+                    // TODO: fix i and index in wtforms (should starts from 0)
+                    var index = i+1;
                     return React.createElement("div", null,
                         React.createElement(Select, {
-                            inputProps: {"id": i, "name": i},
-                            key: i,
+                            name: self.elPrefix+index,
+                            key: index,
                             options: options,
-                            value: pageblock
+                            value: selectedValue,
+                            onChange: self.selectOnChange.bind(self, i)
                         }),
                         React.createElement("div", {
                             onClick: self.removeBlock.bind(self, i)
