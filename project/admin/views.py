@@ -170,6 +170,7 @@ page_view = PageDetail.as_view(
     create_form=PageForm,
     model=models.Page,
     success_url="page_list",
+    template="admin/page.html",
 )
 
 register_section(
