@@ -6,11 +6,13 @@ from project.tasks.uploads import celery_make_thumbnail as make_thumbnail
 from unittest.mock import patch
 from werkzeug.datastructures import FileStorage, Headers
 from project.tests.utils import ProjectTestCase
+import tempfile
 
 
 class TestUploadImage(ProjectTestCase):
 
     def setUp(self):
+        self.app.config['UPLOAD_FOLDER'] = tempfile.mkdtemp()
         self.upload_folder = pathlib.Path(self.app.config['UPLOAD_FOLDER'])
         path = pathlib.Path(BASEDIR)
         path = path / 'testdata' / 'images' / 'testimage1.jpg'
