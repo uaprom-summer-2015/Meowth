@@ -120,3 +120,7 @@ bower_components/
 
 # frontend dist:
 project/static/dist/
+
+
+# media stuff
+media/gallery/
