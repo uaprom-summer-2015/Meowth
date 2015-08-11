@@ -2,12 +2,21 @@ from flask import current_app
 from os import mkdir, remove
 from os.path import exists, join, splitext
 from project.bl.utils import BaseBL
+from project.extensions import imageHandler
 from project.tasks.uploads import celery_make_thumbnail
 from uuid import uuid4
 from werkzeug import secure_filename
 
 
 class UploadedImageBL(BaseBL):
+
+    def get_full_url(self):
+        return imageHandler.get_image_url(
+            "{type}/full/{filename}.{ext}".format(
+                type=self.model.type,
+                filename=self.model.name,
+                ext=self.model.ext
+            ))
 
     def save_image(self, *, image, img_category, **kwargs):
 

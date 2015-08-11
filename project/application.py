@@ -3,7 +3,7 @@ from os import environ
 from flask import Flask
 from project.lib.filters import datetime
 from project.utils import inject_pagechunks
-from project.extensions import mail, celery, csrf, db
+from project.extensions import mail, celery, csrf, db, imageHandler
 from project.blueprints import all_blueprints
 
 
@@ -25,6 +25,7 @@ def create_app():
     mail.init_app(app)
     celery.init_app(app)
     csrf.init_app(app)
+    imageHandler.init_app(app)
     app.template_context_processors[None].append(inject_pagechunks)
     app.jinja_env.filters['strftime'] = datetime
 
