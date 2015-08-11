@@ -3,7 +3,7 @@ import pathlib
 from config import BASEDIR
 from project.models import UploadedImage
 from project.tasks.uploads import celery_make_thumbnail as make_thumbnail
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 from werkzeug.datastructures import FileStorage, Headers
 from project.tests.utils import ProjectTestCase
 
