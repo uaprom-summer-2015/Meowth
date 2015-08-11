@@ -7,10 +7,8 @@ class PageChunkBL(BaseBL):
 
 class PageBL(BaseBL):
 
-    def get_page_by_url(self, url):
-        page_model = self.model
-        page = page_model.query.filter(page_model.url == url).first()
-        return page if page else None
+    def get(self, _type):
+        return self.model.query.filter(self.model.type == _type).one()
 
 
 class PageBlockBL(BaseBL):
