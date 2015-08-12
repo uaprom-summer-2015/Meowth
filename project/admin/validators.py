@@ -1,32 +1,47 @@
-from project.lib.media.validators import allowed_image
-from flask import request
+from flask import request, current_app
 from wtforms.validators import ValidationError
-from PIL import Image
+import magic as friendship  # cause friendship is magic
 
 
-def AllowedExtension(message=None):
-    if message is None:
-        message = 'Нельзя отправлять такой тип файла'
+class AllowedExtension:
+    def __init__(self, extensions=None, message=None):
+        self.extensions = extensions
+        if not message:
+            message = u'Нельзя отправлять файл с таким расширением'
+        self.message = message
 
-    # noinspection PyUnusedLocal
-    def _allowed_extension(form, file):
-        if not allowed_image(request.files[file.name].filename):
+    def __call__(self, form, field):
+        if self.extensions is None:
+            self.extensions = current_app.config['ALLOWED_EXTENSIONS']
+        filename = request.files[field.name].filename
+        AllowedExtension.validate(filename, self.extensions, self.message)
+
+    @staticmethod
+    def validate(filename, extensions, message):
+        if '.' not in filename:
+            raise ValidationError(message)
+        name, ext = filename.rsplit('.', 1)
+        if ext not in extensions:
             raise ValidationError(message)
 
-    return _allowed_extension
 
+class AllowedMime:
+    def __init__(self, mimes=None, message=None):
+        self.mimes = mimes
+        if not message:
+            message = u'Нельзя отправлять такой тип файла'
+        self.message = message
 
-def AllowedMime(message=None):
-    if message is None:
-        message = 'Нельзя отправлять такой тип файла'
+    def __call__(self, form, field):
+        if self.mimes is None:
+            self.mimes = current_app.config['ALLOWED_MIMES']
+        header = request.files[field.name].stream.read(16)
+        request.files[field.name].stream.seek(0)
+        AllowedMime.validate(header, self.mimes, self.message)
 
-    # noinspection PyUnusedLocal
-    def _allowed_mime(form, file):
-        # Warning! Crutch ahead!
-        try:
-            Image.open(request.files[file.name].stream)
-            request.files[file.name].stream.seek(0)
-        except IOError as ioe:
-            raise ValidationError(message) from ioe
-
-    return _allowed_mime
+    @staticmethod
+    def validate(header, mimes, message):
+        magic = friendship.Magic(mime=True)
+        mime = magic.from_buffer(header).decode()
+        if mime not in mimes:
+            raise ValidationError(message)
