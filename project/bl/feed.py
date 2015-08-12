@@ -34,16 +34,6 @@ class VacancyBL(BaseBL):
     def update_user(self):
         self.model.user_id = session['user_id']
 
-    def as_dict(self):
-        d = super().as_dict()
-        user = self.model.who_updated
-        d.update({
-            'city': self.model.city.name,
-            'category': self.model.category.name,
-            'user': getattr(user, 'name', None)
-        })
-        return d
-
 
 class CityBL(BaseBL):
     pass
