@@ -3,7 +3,7 @@ from wtforms import StringField, TextAreaField, BooleanField, FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
 from project.models import Category, City
-from project.admin.validators import AllowedExtension, AllowedMime
+from project.lib.media.validators import AllowedMime
 
 
 class VacancyForm(Form):
@@ -15,12 +15,6 @@ class VacancyForm(Form):
                 max=100,
                 message='Must not exceed 100 symbols'
             ),
-            Regexp(
-                '^[\.\d\w\sА-Яа-яІіЇїҐґ\-\+]+$',
-                message='Should contain only cyrillic \
-                         and latin letters,- ,+, . and \
-                         spaces'
-            )
         ]
     )
     name_in_url = StringField(
@@ -94,30 +88,33 @@ class MailTemplateForm(Form):
     html = TextAreaField('Текст письма', validators=[DataRequired()])
 
 
-class ImageUploadForm(Form):
-    title = StringField(
-        label='Название',
-        validators=[
-            Length(
-                max=32,
-                message='Must not exceed 32 symbols',
-            )
-        ],
-    )
-    description = TextAreaField(
-        label='Описание (замещающий текст)',
-        validators=[
-            Length(
-                max=128,
-                message='Must not exceed 128 symbols',
-            )
-        ],
-    )
-    image = FileField(
-        label='Картинка',
-        validators=[
-            AllowedExtension(),
-            AllowedMime(),
-            DataRequired(),
-        ]
-    )
+def image_upload_form_factory(config):
+    assert config is not None  # cause config=None can be passed
+
+    class ImageUploadForm(Form):
+        title = StringField(
+            label='Название',
+            validators=[
+                Length(
+                    max=32,
+                    message='Must not exceed 32 symbols',
+                )
+            ],
+        )
+        description = TextAreaField(
+            label='Описание (замещающий текст)',
+            validators=[
+                Length(
+                    max=128,
+                    message='Must not exceed 128 symbols',
+                )
+            ],
+        )
+        image = FileField(
+            label='Картинка',
+            validators=[
+                AllowedMime(config['IMG_MIMES']),
+                DataRequired(),
+            ]
+        )
+    return ImageUploadForm

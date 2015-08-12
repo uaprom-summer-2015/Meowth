@@ -1,7 +1,7 @@
-from flask import render_template, jsonify
+from flask import render_template, jsonify, current_app
 from project.blueprints import feed_app
 from project.models import Vacancy, Category, City
-from project.feed.forms import ApplyForm
+from project.feed.forms import apply_form_factory
 from project.lib.mail import send_mail_from_form
 
 
@@ -34,6 +34,7 @@ def json_vacancies():
 
 @feed_app.route('/<name_in_url>/form', methods=['POST'])
 def apply_form(name_in_url):
+    ApplyForm = apply_form_factory(config=current_app.config)
     form = ApplyForm()
     if form.validate_on_submit():
         vacancy = Vacancy.query.filter(

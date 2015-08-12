@@ -1,5 +1,5 @@
 from flask import render_template, url_for, session, redirect
-from flask import request
+from flask import request, current_app
 from project.admin import forms
 from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
@@ -251,7 +251,8 @@ def mainpage():
     methods=['GET', 'POST'],
 )
 def upload():
-    form = forms.ImageUploadForm()
+    clazz = forms.image_upload_form_factory(config=current_app.config)
+    form = clazz()
     if form.validate_on_submit():
         image = request.files['image']
         models.UploadedImage.bl.save_image(
