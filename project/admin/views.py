@@ -266,7 +266,7 @@ def upload():
 
 @admin_app.route('/vacancies/list/')
 def json_vacancies():
-    list_vacancies = [v.bl.get_dict() for v in models.Vacancy.bl.get_actual()]
+    list_vacancies = [v.bl.as_dict() for v in models.Vacancy.bl.get_actual()]
     return jsonify(
         vacancies=list_vacancies,
     )
