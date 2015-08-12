@@ -94,7 +94,7 @@ var columnMeta = [
         'displayName': 'Когда обновлена'
     },
     {
-        'columnName': 'user',
+        'columnName': 'username',
         'displayName': 'Кем обновлена'
     },
     {

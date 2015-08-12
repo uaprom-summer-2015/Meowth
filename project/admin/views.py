@@ -2,6 +2,7 @@ from flask import render_template, url_for, session, redirect, jsonify
 from flask import request
 from project.admin import forms
 from project.blueprints import admin_app
+from project.lib.admin import get_vacancies_list
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList, VacancyList
@@ -266,9 +267,9 @@ def upload():
 
 @admin_app.route('/vacancies/list/')
 def json_vacancies():
-    list_vacancies = [v.bl.as_dict() for v in models.Vacancy.bl.get_actual()]
+    vacancies_list = get_vacancies_list()
     return jsonify(
-        vacancies=list_vacancies,
+        vacancies=vacancies_list,
     )
 
 
