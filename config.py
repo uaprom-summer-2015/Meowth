@@ -1,6 +1,7 @@
 import os
 import logging
 import logging.config
+import mimetypes
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -18,6 +19,16 @@ class Config:
     IMG_EXTENSIONS = {'gif', 'jpeg', 'jpg', 'png'}
     DOC_EXTENSIONS = {'txt', 'pdf', 'doc', 'docx'}
     ALLOWED_EXTENSIONS = IMG_EXTENSIONS | DOC_EXTENSIONS
+
+    IMG_MIMES = {
+        mimetypes.guess_type('a.%s' % (ext))[0]
+        for ext in IMG_EXTENSIONS
+    }
+    DOC_MIMES = {
+        mimetypes.guess_type('a.%s' % (ext))[0]
+        for ext in DOC_EXTENSIONS
+    }
+    ALLOWED_MIMES = IMG_MIMES | DOC_MIMES
 
     MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 
