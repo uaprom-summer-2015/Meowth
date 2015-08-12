@@ -9,7 +9,7 @@
 {% block content %}
     {% if entry.updated_at %}
         <p>Вакансия изменена: {{ entry.updated_at | strftime }}
-            {% if entry.user_id %}
+            {% if entry.who_updated %}
                 пользователем {{ entry.who_updated.name }}
             {% endif %}
         </p>
