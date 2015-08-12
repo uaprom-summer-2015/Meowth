@@ -1,6 +1,6 @@
 from flask import render_template, url_for, session, redirect
 from flask import request, current_app
-from project.admin.forms import AdminFormFactory as FormFactory
+from project.admin import forms
 from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
@@ -48,7 +48,7 @@ vacancy_list = VacancyList.as_view(
 
 vacancy_detail = EntryDetail.as_view(
     name='vacancy_detail',
-    create_form=FormFactory.make_VacancyForm(),
+    create_form=forms.VacancyForm,
     model=models.Vacancy,
     template="admin/vacancy.html",
     success_url="vacancy_list",
@@ -73,7 +73,7 @@ category_list = EntryList.as_view(
 
 category_detail = EntryDetail.as_view(
     name='category_detail',
-    create_form=FormFactory.make_CategoryForm(),
+    create_form=forms.CategoryForm,
     model=models.Category,
     success_url="category_list",
 )
@@ -96,7 +96,7 @@ city_list = EntryList.as_view(
 )
 city_view = EntryDetail.as_view(
     name='city_detail',
-    create_form=FormFactory.make_CityForm(),
+    create_form=forms.CityForm,
     model=models.City,
     success_url="city_list",
 )
@@ -192,7 +192,7 @@ pagechunk_list = EntryList.as_view(
 
 pagechunk_detail = EntryDetail.as_view(
     name='pagechunk_detail',
-    create_form=FormFactory.make_PageChunkForm(),
+    create_form=forms.PageChunkForm,
     model=models.PageChunk,
     template="admin/pagechunk.html",
     success_url="pagechunk_list",
@@ -217,7 +217,7 @@ mail_templates_list = EntryList.as_view(
 
 mail_template_detail = EntryDetail.as_view(
     name='mail_template_detail',
-    create_form=FormFactory.make_MailTemplateForm(),
+    create_form=forms.MailTemplateForm,
     model=models.MailTemplate,
     template="admin/mailtemplate.html",
     success_url="mail_templates_list",
@@ -251,7 +251,8 @@ def mainpage():
     methods=['GET', 'POST'],
 )
 def upload():
-    form = FormFactory.make_ImageUploadForm(config=current_app.config)()
+    clazz = forms.image_upload_form_factory(config=current_app.config)
+    form = clazz()
     if form.validate_on_submit():
         image = request.files['image']
         models.UploadedImage.bl.save_image(
