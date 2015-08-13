@@ -1,7 +1,8 @@
-from flask import render_template, url_for, session, redirect
+from flask import render_template, url_for, session, redirect, jsonify
 from flask import request, current_app
 from project.admin import forms
 from project.blueprints import admin_app
+from project.lib.admin import get_vacancies_list
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
 from project.admin.utils import EntryDetail, EntryList, VacancyList
@@ -263,6 +264,14 @@ def upload():
         )
         return redirect(url_for('admin.mainpage'))
     return render_template("admin/image_upload.html", form=form)
+
+
+@admin_app.route('/vacancies/list/')
+def json_vacancies():
+    vacancies_list = get_vacancies_list()
+    return jsonify(
+        vacancies=vacancies_list,
+    )
 
 
 # noinspection PyUnusedLocal
