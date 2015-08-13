@@ -10,3 +10,6 @@ class MailTemplateBL(BaseBL):
 
     def update_user(self):
         self.model.user_id = session['user_id']
+
+    def get(self, type):
+        return self.model.query.filter(self.model.mail == type).one()

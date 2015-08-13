@@ -5,7 +5,7 @@
         {% for entry in entries %}
             <li class="list-group-item">
                 <a href="{{ url_for('admin.pagechunk_detail', entry_id=entry.id) }}">
-                  {{ entry.name }}
+                  {{ entry.title }}
                 </a>
             </li>
         {% endfor %}

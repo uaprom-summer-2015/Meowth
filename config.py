@@ -15,16 +15,34 @@ class Config:
     CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
     UPLOAD_FOLDER = os.path.join(BASEDIR, 'media')
-    ALLOWED_EXTENSIONS = {
-        'txt', 'pdf', 'png', 'jpg',
-        'jpeg', 'gif', 'doc', 'docx',
+
+    IMG_MIMES = {
+        'image/jpeg',
+        'image/png',
+        'image/gif',
     }
+    DOC_MIMES = {
+        'application/vnd.openxmlformats-officedocument'
+        '.wordprocessingml.document',  # .docx
+        'application/msword',  # .doc
+        'application/pdf',  # .pdf
+        'text/plain',  # .txt
+        'application/vnd.openxmlformats-officedocument'
+        '.presentationml.presentation',  # .pptx
+        'application/vnd.ms-powerpoint',  # .ppt
+        'application/rtf',  # .rtf
+    }
+    ALLOWED_MIMES = IMG_MIMES | DOC_MIMES
+
     MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 
     FIXTURES_DIR = os.path.join(BASEDIR, 'fixtures')
 
     # Celery
-    CELERY_IMPORTS = ("project.tasks.mail", )
+    CELERY_IMPORTS = (
+        "project.tasks.mail",
+        "project.tasks.uploads",
+    )
     CELERY_BROKER_URL = 'redis://localhost:6379/0'
     CELERY_BACKEND_URL = CELERY_BROKER_URL
 

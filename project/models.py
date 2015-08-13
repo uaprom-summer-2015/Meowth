@@ -2,7 +2,7 @@ from enum import IntEnum
 import datetime
 from project.bl.utils import Resource
 from project.extensions import db
-from project.lib.orm.types import TypeEnum
+from project.lib.orm.types import TypeEnum, GUID
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -23,6 +23,11 @@ class Vacancy(db.Model):
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'))
     city = db.relationship('City', backref=db.backref('vacancies'))
     hide = db.Column(db.Boolean, nullable=False, default=False)
+    deleted = db.Column(db.Boolean, nullable=False, default=False)
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.now,
+                           onupdate=datetime.datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    who_updated = db.relationship('User')
 
     bl = Resource("bl.vacancy")
 
@@ -107,7 +112,8 @@ class BlockPageAssociation(db.Model):
 class PageChunk(db.Model):
     __tablename__ = 'pagechunks'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, unique=True)
+    name = db.Column(db.Text, unique=True, nullable=False)  # use in template
+    title = db.Column(db.Text, unique=True, nullable=False)
     text = db.Column(db.Text)
 
     bl = Resource('bl.pagechunk')
@@ -152,9 +158,17 @@ class PageBlock(db.Model):
 class Page(db.Model):
     __tablename__ = 'pages'
 
+    #  noinspection PyTypeChecker
+    TYPE = IntEnum('Page_type', {
+        'PROJECTS': 1,
+        'ABOUT': 2,
+        'CONTACTS': 3,
+        'MAINPAGE': 4,
+    })
+
     id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(TypeEnum(TYPE), unique=True, nullable=False)
     title = db.Column(db.VARCHAR(128))
-    url = db.Column(db.Text)
     _blocks = db.relationship(
         "BlockPageAssociation",
         order_by='BlockPageAssociation.position',
@@ -187,9 +201,10 @@ class Token(db.Model):
 class MailTemplate(db.Model):
     __tablename__ = 'mailtemplates'
 
+    #  noinspection PyTypeChecker
     MAIL = IntEnum('Mail', {
         'CV': 0,
-        'reply_to_CV': 1,
+        'REPLY': 1,
     })
 
     id = db.Column(db.Integer, primary_key=True)
@@ -198,13 +213,46 @@ class MailTemplate(db.Model):
     subject = db.Column(db.String(79), nullable=False)
     html = db.Column(db.Text, nullable=False)
     help_msg = db.Column(db.Text)
-    updated_at = db.Column(db.Date, onupdate=datetime.datetime.now)
+    updated_at = db.Column(db.Date, onupdate=datetime.datetime.now,
+                           default=datetime.datetime.now)
     bl = Resource('bl.mailtemplate')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     who_updated = db.relationship('User')
 
     def __repr__(self):
         return str(self.title)
+
+
+class UploadedImage(db.Model):
+    __tablename__ = 'uploaded_images'
+
+    IMG_CATEGORY = IntEnum(
+        '',
+        {
+            'other': 0,
+            'gallery': 1,
+        },
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(GUID, nullable=False)
+    ext = db.Column(db.VARCHAR, nullable=False)
+    img_category = db.Column(
+        TypeEnum(IMG_CATEGORY),
+        default=IMG_CATEGORY.other,
+        nullable=False,
+    )
+    title = db.Column(db.VARCHAR(32))
+    description = db.Column(db.VARCHAR(128))
+    __table_args__ = (
+        db.UniqueConstraint(
+            'name',
+            'ext',
+            'img_category',
+        ),
+    )
+
+    bl = Resource('bl.uploadedimage')
 
 
 def init_db():

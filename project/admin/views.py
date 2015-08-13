@@ -1,11 +1,13 @@
 from flask import render_template, url_for, session, redirect
+from flask import request, current_app
 from project.admin import forms
 from project.blueprints import admin_app
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
-from project.admin.utils import EntryDetail, EntryList
+from project.admin.utils import EntryDetail, EntryList, VacancyList
 from project.auth.forms import RegisterForm
 from project import models
+
 
 SECTIONS = {}  # list_name: list_endpoint
 
@@ -38,7 +40,7 @@ def register_section(*, section_name, list_endpoint,
 
 
 # Vacancies
-vacancy_list = EntryList.as_view(
+vacancy_list = VacancyList.as_view(
     name='vacancy_list',
     model=models.Vacancy,
     template="admin/vacancies.html",
@@ -242,6 +244,26 @@ def mainpage():
         "admin/main.html",
         sections=sections.items(),
     )
+
+
+# gallery uploads
+@admin_app.route(
+    "/gallery/upload",
+    methods=['GET', 'POST'],
+)
+def upload():
+    clazz = forms.image_upload_form_factory(config=current_app.config)
+    form = clazz()
+    if form.validate_on_submit():
+        image = request.files['image']
+        models.UploadedImage.bl.save_image(
+            image=image,
+            img_category=models.UploadedImage.IMG_CATEGORY.gallery,
+            title=form.data['title'],
+            description=form.data['description'],
+        )
+        return redirect(url_for('admin.mainpage'))
+    return render_template("admin/image_upload.html", form=form)
 
 
 # noinspection PyUnusedLocal
