@@ -1,6 +1,7 @@
 from importlib import import_module
 from os import environ
 from flask import Flask
+from project.bl import init_resource_registry
 from project.lib.filters import datetime
 from project.utils import inject_pagechunks
 from project.extensions import mail, celery, csrf, db
@@ -25,6 +26,7 @@ def create_app():
     mail.init_app(app)
     celery.init_app(app)
     csrf.init_app(app)
+    init_resource_registry()
     app.template_context_processors[None].append(inject_pagechunks)
     app.jinja_env.filters['strftime'] = datetime
 
