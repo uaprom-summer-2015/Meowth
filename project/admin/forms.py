@@ -139,3 +139,7 @@ class EditImageForm(Form):
             )
         ],
     )
+    delete = BooleanField(
+        label='Удалить',
+        description='Эта картинка будет удалена навсегда (очень надолго!)',
+    )
