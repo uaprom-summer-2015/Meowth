@@ -88,7 +88,7 @@ class MailTemplateForm(Form):
     html = TextAreaField('Текст письма', validators=[DataRequired()])
 
 
-def image_upload_form_factory(config):
+def image_upload_form_factory(config, is_update=False):
     assert config is not None  # cause config=None can be passed
 
     class ImageUploadForm(Form):
@@ -110,11 +110,18 @@ def image_upload_form_factory(config):
                 )
             ],
         )
-        image = FileField(
-            label='Картинка',
-            validators=[
-                AllowedMime(config['IMG_MIMES']),
-                DataRequired(),
-            ]
-        )
+        if not is_update:
+            image = FileField(
+                label='Картинка',
+                validators=[
+                    AllowedMime(config['IMG_MIMES']),
+                    DataRequired(),
+                ]
+            )
+        else:
+            delete = BooleanField(
+                label='Удалить',
+                description='Эта картинка будет удалена навсегда'
+                            ' (очень надолго!)',
+            )
     return ImageUploadForm

@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th>Превью</th>
+                <th>Название</th>
+                <th>Описание</th>
+        </thead>
+        <tbody>
+        {% for entry in entries %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('admin.gallery_image_detail', entry_id=entry.id) }}">
+                        <img class="responsive-image" src="/media/{{ entry.img_category.name }}/thumb/{{ entry.name.hex }}.{{ entry.ext }}"/>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ url_for('admin.gallery_image_detail', entry_id=entry.id) }}">
+                        {{ entry.title }}
+                    </a>
+                </td>
+                <td>
+                    {{ entry.description }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('admin.gallery_image_detail') }}"
+       class="btn btn-primary">Загрузить еще картинку</a>
+{% endblock %}

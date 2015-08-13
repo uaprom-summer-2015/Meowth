@@ -1,6 +1,6 @@
 from flask import render_template
 from project.blueprints import pages_app
-from project.models import Page
+from project.models import Page, UploadedImage
 
 
 # All pages are hardcoded for now
@@ -8,7 +8,18 @@ from project.models import Page
 @pages_app.route("/")
 def mainpage():
     page = Page.bl.get(Page.TYPE.MAINPAGE)
-    return render_template('pages/mainpage.html', blocks=page.blocks)
+    images = (
+        UploadedImage.query
+        .filter(
+            UploadedImage.img_category == UploadedImage.IMG_CATEGORY.gallery
+        )
+        .all()
+    )
+    return render_template(
+        'pages/mainpage.html',
+        blocks=page.blocks,
+        images=images,
+    )
 
 
 @pages_app.route('/projects/')

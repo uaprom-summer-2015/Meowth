@@ -16,6 +16,13 @@
     </div>
 
     <div class="container" id="gallery">
+        {% for image in images %}
+        <a href="/media/{{ image.img_category.name }}/full/{{ image.name.hex }}.{{ image.ext }}"
+           title="{{ image.title }}">
+             <img src="/media/{{ image.img_category.name }}/thumb/{{ image.name.hex }}.{{ image.ext }}"
+                  alt="{{ image.description }}">
+        </a>
+        {% endfor %}
         <a href="https://farm1.static.flickr.com/304/19265407504_1b7a4422ed_b.jpg"
            title="Broken Chain">
             <img src="https://farm1.static.flickr.com/304/19265407504_1b7a4422ed_s.jpg">

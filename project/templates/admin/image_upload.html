@@ -2,16 +2,31 @@
 
 {% block content %}
     <form method="post" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        {% for field in form if field.widget.input_type != 'hidden' %}
+      {% if entry %}
+      <div class="row"><div class="col-md-7 col-sm-9">
+      {% endif %}
+        {{ entry_form.hidden_tag() }}
+        {% for field in entry_form if field.widget.input_type != 'hidden' %}
             {{ field.label }}
+            {% if field.description %}
+                <p style="font-style: italic">{{ field.description }}</p>
+            {% endif %}
             {% if field.errors %}
-                {{field.errors}}
+                <span style="color: red">{{field.errors[0]}}</span>
             {% endif %}
             <div class="form-group">
-                {{ field(class="form-control") }}
+                {% if field.widget.input_type != 'checkbox' %}
+                    {{ field(class="form-control") }}
+                {% else %}
+                    {{ field }}
+                {% endif %}
             </div>
         {% endfor %}
         <input type="submit" class="btn btn-default" value="Сохранить">
+      {% if entry %}
+    </div><div class="col-md-5 col-sm-3">
+          <img class="img-responsive" src="/media/{{ entry.img_category.name }}/full/{{ entry.name.hex }}.{{ entry.ext }}"/>
+      </div></div>
+      {% endif %}
     </form>
 {% endblock %}
