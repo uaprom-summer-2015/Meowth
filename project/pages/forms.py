@@ -1,7 +1,7 @@
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField, SelectField
+from wtforms import StringField, TextAreaField, SelectField, FieldList
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from wtforms.validators import Length  # , DataRequired
+from wtforms.validators import Length
 from project.models import PageBlock
 
 
@@ -52,33 +52,7 @@ class PageForm(Form):
             ),
         ],
     )
-    block_1 = QuerySelectField(
-        label='First block',
-        query_factory=lambda: PageBlock.query.all(),
-        allow_blank=True,
-        blank_text='None',
-    )
-    block_2 = QuerySelectField(
-        label='Second block',
-        query_factory=lambda: PageBlock.query.all(),
-        allow_blank=True,
-        blank_text='None',
-    )
-    block_3 = QuerySelectField(
-        label='Third block',
-        query_factory=lambda: PageBlock.query.all(),
-        allow_blank=True,
-        blank_text='None',
-    )
-    block_4 = QuerySelectField(
-        label='Fourth block',
-        query_factory=lambda: PageBlock.query.all(),
-        allow_blank=True,
-        blank_text='None',
-    )
-    block_5 = QuerySelectField(
-        label='Fifth block',
-        query_factory=lambda: PageBlock.query.all(),
-        allow_blank=True,
-        blank_text='None',
+    blocks = FieldList(
+        QuerySelectField(query_factory=lambda: PageBlock.query.all()),
+        min_entries=1,
     )
