@@ -2,8 +2,8 @@
 
 {% block content %}
     <form method="post" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        {% for field in form if field.widget.input_type != 'hidden' %}
+        {{ entry_form.hidden_tag() }}
+        {% for field in entry_form if field.widget.input_type != 'hidden' %}
             {{ field.label }}
             {% if field.errors %}
                 {{field.errors}}
