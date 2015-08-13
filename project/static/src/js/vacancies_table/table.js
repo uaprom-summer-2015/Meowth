@@ -62,6 +62,10 @@ var columnMeta = [
         'columnName': 'visits',
         'displayName': 'Количество посещений'
     },
+    {
+        'columnName': 'id',
+        'visible': false
+    },
 ];
 
 

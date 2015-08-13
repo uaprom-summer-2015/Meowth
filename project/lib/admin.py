@@ -1,3 +1,4 @@
+from sqlalchemy import false
 from sqlconstruct import Construct
 from project.extensions import db
 from project.models import Vacancy, City, Category, User
@@ -13,7 +14,8 @@ def get_vacancies_list():
         'salary': Vacancy.salary,
         'short_description': Vacancy.short_description,
         'updated_at': Vacancy.updated_at,
-        'visits': Vacancy.visits
+        'visits': Vacancy.visits,
+        'id': Vacancy.id,
     })
 
     vacancies = (
@@ -23,6 +25,7 @@ def get_vacancies_list():
             Vacancy.category,
             Vacancy.who_updated
         )
+        .filter(Vacancy.deleted == false())
         .all()
     )
     return vacancies
