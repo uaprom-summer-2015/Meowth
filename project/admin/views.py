@@ -2,6 +2,7 @@ from flask import render_template, url_for, session, redirect
 from flask import request, current_app
 from project.admin import forms
 from project.blueprints import admin_app
+from project.pages.admin import PageDetail
 from project.pages.forms import PageBlockForm, PageForm
 from project.admin.utils import EntryDetail, EntryList, VacancyList
 from project.auth.forms import RegisterForm
@@ -166,7 +167,7 @@ page_list = EntryList.as_view(
     template="admin/pages.html",
 )
 
-page_view = EntryDetail.as_view(
+page_view = PageDetail.as_view(
     name='page_detail',
     create_form=PageForm,
     model=models.Page,
