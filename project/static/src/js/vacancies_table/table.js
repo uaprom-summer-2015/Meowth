@@ -1,6 +1,6 @@
 var React = require('react');
 var Griddle = require('griddle-react');
-var $ = require('jquery');
+var $ = require('npm-zepto');
 var classNames=require('classnames');
 
 var LinkComponent = React.createClass({
