@@ -137,7 +137,7 @@ class GalleryImageDetail(EntryDetail):
             )
             form = form_class(obj=instance)
             if form.validate_on_submit():
-                if 'delete' in form.data:
+                if form.data.get('delete', False):
                     instance.bl.delete()
                 else:
                     instance.bl.update(form.data)
