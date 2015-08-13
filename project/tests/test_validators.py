@@ -1,9 +1,28 @@
-from project.lib.media.validators import allowed_file
-from project.tests.utils import ProjectTestCase
+from config import BASEDIR
+from os.path import join
+from project import app
+from project.lib.media.validators import AllowedMime
+from unittest import TestCase
 
 
-class TessValidators(ProjectTestCase):
+class TessValidators(TestCase):
 
-    def test_allowed_files(self):
-        self.assertTrue(allowed_file('spam.doc'))
-        self.assertFalse(allowed_file('spam.exe'))
+    def setUp(self):
+        self.mimes = app.config['IMG_MIMES']
+        self.datadir = join(BASEDIR, 'testdata', 'validators')
+
+    def test_positive(self):
+        with open(join(self.datadir, 'validimage.jpg')) as image:
+            buf = image.buffer.read()
+        self.assertTrue(AllowedMime.validate(
+            buf=buf,
+            mimes=self.mimes,
+        ))
+
+    def test_negative(self):
+        with open(join(self.datadir, 'textfile.jpg')) as image:
+            buf = image.buffer.read()
+        self.assertFalse(AllowedMime.validate(
+            buf=buf,
+            mimes=self.mimes,
+        ))

@@ -15,9 +15,24 @@ class Config:
     CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
     UPLOAD_FOLDER = os.path.join(BASEDIR, 'media')
-    IMG_EXTENSIONS = {'gif', 'jpeg', 'jpg', 'png'}
-    DOC_EXTENSIONS = {'txt', 'pdf', 'doc', 'docx'}
-    ALLOWED_EXTENSIONS = IMG_EXTENSIONS | DOC_EXTENSIONS
+
+    IMG_MIMES = {
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+    }
+    DOC_MIMES = {
+        'application/vnd.openxmlformats-officedocument'
+        '.wordprocessingml.document',  # .docx
+        'application/msword',  # .doc
+        'application/pdf',  # .pdf
+        'text/plain',  # .txt
+        'application/vnd.openxmlformats-officedocument'
+        '.presentationml.presentation',  # .pptx
+        'application/vnd.ms-powerpoint',  # .ppt
+        'application/rtf',  # .rtf
+    }
+    ALLOWED_MIMES = IMG_MIMES | DOC_MIMES
 
     MAX_CONTENT_LENGTH = 15 * 1024 * 1024
 
