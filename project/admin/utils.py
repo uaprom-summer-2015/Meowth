@@ -95,14 +95,18 @@ class GalleryImageDetail(EntryDetail):
         entry = None
         if entry_id is None:
             # Add a new entry
-            clazz = self.create_form(config=current_app.config)
-            entry_form = clazz()
+            form_class = self.create_form(config=current_app.config)
+            entry_form = form_class()
         else:
             # Update an old entry
             entry = self.model.bl.get(entry_id)
             if entry is None:
                 abort(404)
-            entry_form = self.update_form(obj=entry)
+            form_class = self.update_form(
+                config=current_app.config,
+                is_update=True,
+            )
+            entry_form = form_class(obj=entry)
 
         return self.render_response(
             entry_form=entry_form,
@@ -112,8 +116,8 @@ class GalleryImageDetail(EntryDetail):
     def post(self, entry_id):
         if entry_id is None:
             # Add a new entry
-            clazz = self.create_form(config=current_app.config)
-            form = clazz()
+            form_class = self.create_form(config=current_app.config)
+            form = form_class()
             if form.validate_on_submit():
                 image = request.files['image']
                 self.model.bl.save_image(
@@ -127,7 +131,11 @@ class GalleryImageDetail(EntryDetail):
         else:
             # Update an old entry
             instance = self.model.bl.get(entry_id)
-            form = self.update_form(obj=instance)
+            form_class = self.update_form(
+                config=current_app.config,
+                is_update=True,
+            )
+            form = form_class(obj=instance)
             if form.validate_on_submit():
                 if 'delete' in form.data:
                     instance.bl.delete()

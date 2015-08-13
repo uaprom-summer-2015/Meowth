@@ -244,7 +244,6 @@ gallery_images_list = EntryList.as_view(
 gallery_image_detail = GalleryImageDetail.as_view(
     name='gallery_image_detail',
     create_form=forms.image_upload_form_factory,
-    update_form=forms.EditImageForm,
     model=models.UploadedImage,
     success_url='gallery_images_list',
     template='admin/image_upload.html',
