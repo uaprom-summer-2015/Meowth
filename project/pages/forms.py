@@ -1,6 +1,5 @@
 from flask_wtf import Form
 from wtforms import StringField, TextAreaField, SelectField, FieldList
-from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import Length
 from project.models import PageBlock
 
@@ -53,6 +52,6 @@ class PageForm(Form):
         ],
     )
     blocks = FieldList(
-        QuerySelectField(query_factory=lambda: PageBlock.query.all()),
+        SelectField(),  # choices should be provided in view!
         min_entries=1,
     )
