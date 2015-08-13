@@ -2,7 +2,7 @@ var React = require('react'),
     navigate = require('react-mini-router').navigate,
     Select = require('react-select');
 
-var $ = require('jquery');
+var $ = require('npm-zepto');
 
 $.QueryString = (function(a) {
         if (a == "") return {};

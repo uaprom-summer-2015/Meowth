@@ -1,6 +1,7 @@
-from flask import render_template, url_for, session, redirect
+from flask import render_template, url_for, session, redirect, jsonify
 from project.admin import forms
 from project.blueprints import admin_app
+from project.lib.admin import get_vacancies_list
 from project.pages.forms import PageBlockForm, PageForm
 from project.pages.utils import PageDetail
 from project.admin.utils import (
@@ -268,6 +269,14 @@ def mainpage():
     return render_template(
         "admin/main.html",
         sections=sections.items(),
+    )
+
+
+@admin_app.route('/vacancies/list/')
+def json_vacancies():
+    vacancies_list = get_vacancies_list()
+    return jsonify(
+        vacancies=vacancies_list,
     )
 
 
