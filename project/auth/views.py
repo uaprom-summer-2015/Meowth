@@ -1,18 +1,9 @@
 from flask import render_template, flash, session, redirect, \
-    url_for, abort, g
+    url_for, abort
 from .forms import LoginForm, ResetForm, PasswordEditForm
 from .decorators import login_required
 from project.models import User
 from project.blueprints import auth_app
-
-
-@auth_app.before_app_request
-def add_login_to_g():
-    if 'user_id' in session:
-        user = User.query.get(session['user_id'])
-        g.user = user
-    else:
-        g.user = None
 
 
 @auth_app.route('/login', methods=['GET', 'POST'])
@@ -22,7 +13,7 @@ def login():
         user = User.bl.authenticate(**form.data)
         if user:
             session['user_id'] = user.id
-            g.user = user
+            session['user_login'] = user.login
             return redirect(url_for('admin.mainpage'))
         else:
             flash("Неправильный логин и/или пароль")
