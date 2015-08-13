@@ -1,5 +1,6 @@
-from flask import url_for, render_template, abort
+from flask import url_for, render_template, abort, request, current_app
 from flask.views import MethodView, View
+from project.models import UploadedImage
 from werkzeug.utils import redirect
 
 
@@ -54,14 +55,14 @@ class EntryDetail(MethodView):
             form = self.create_form()
             if form.validate_on_submit():
                 self.model.bl.create(form.data)
-                return redirect(url_for("admin."+self.success_url))
+                return redirect(url_for("admin." + self.success_url))
         else:
             # Update an old entry
             instance = self.model.bl.get(entry_id)
             form = self.update_form(obj=instance)
             if form.validate_on_submit():
                 instance.bl.update(form.data)
-                return redirect(url_for("admin."+self.success_url))
+                return redirect(url_for("admin." + self.success_url))
 
         return self.render_response(entry_form=form)
 
@@ -87,3 +88,52 @@ class VacancyList(EntryList):
             self.template,
             entries=self.model.bl.get_actual(),
         )
+
+
+class GalleryImageDetail(EntryDetail):
+
+    def get(self, entry_id):
+        entry = None
+        if entry_id is None:
+            # Add a new entry
+            clazz = self.create_form(config=current_app.config)
+            entry_form = clazz()
+        else:
+            # Update an old entry
+            entry = self.model.bl.get(entry_id)
+            if entry is None:
+                abort(404)
+            entry_form = self.update_form(obj=entry)
+
+        return self.render_response(
+            entry_form=entry_form,
+            entry=entry
+        )
+
+    def post(self, entry_id):
+        if entry_id is None:
+            # Add a new entry
+            clazz = self.create_form(config=current_app.config)
+            form = clazz()
+            if form.validate_on_submit():
+                image = request.files['image']
+                self.model.bl.save_image(
+                    image=image,
+                    img_category=UploadedImage.IMG_CATEGORY.gallery,
+                    title=form.data['title'],
+                    description=form.data['description'],
+                )
+                return redirect(url_for("admin." + self.success_url))
+
+        else:
+            # Update an old entry
+            instance = self.model.bl.get(entry_id)
+            form = self.update_form(obj=instance)
+            if form.validate_on_submit():
+                instance.bl.update(form.data)
+                return redirect(url_for("admin." + self.success_url))
+
+        return self.render_response(entry_form=form)
+
+    def render_response(self, **kwargs):
+        return render_template(self.template, **kwargs)
