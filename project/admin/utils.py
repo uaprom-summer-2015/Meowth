@@ -25,12 +25,6 @@ class EntryDetail(MethodView):
         self.template = template
         self.success_url = success_url
 
-    def _clean_data(self, data):
-
-        _data = {k: v for k, v in data.items() if k in self.model.__dict__}
-
-        return _data
-
     def get(self, entry_id):
         entry = None
         if entry_id is None:
