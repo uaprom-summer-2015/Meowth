@@ -118,3 +118,24 @@ def image_upload_form_factory(config):
             ]
         )
     return ImageUploadForm
+
+
+class EditImageForm(Form):
+    title = StringField(
+        label='Название',
+        validators=[
+            Length(
+                max=32,
+                message='Must not exceed 32 symbols',
+            )
+        ],
+    )
+    description = TextAreaField(
+        label='Описание (замещающий текст)',
+        validators=[
+            Length(
+                max=128,
+                message='Must not exceed 128 symbols',
+            )
+        ],
+    )
