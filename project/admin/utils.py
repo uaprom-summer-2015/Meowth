@@ -57,9 +57,9 @@ class EntryDetail(MethodView):
                 return redirect(url_for("admin."+self.success_url))
         else:
             # Update an old entry
-            instance = self.model.bl.get(entry_id)
-            form = self.update_form(obj=instance)
+            form = self.update_form()
             if form.validate_on_submit():
+                instance = self.model.bl.get(entry_id)
                 instance.bl.update(form.data)
                 return redirect(url_for("admin."+self.success_url))
 
