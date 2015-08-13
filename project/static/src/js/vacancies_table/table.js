@@ -27,55 +27,16 @@ var columnMeta = [
         'order': 1,
         'displayName': 'Название',
         'locked': true,
-        'visible': true,
         'customComponent': LinkComponent
     },
     {
         'columnName': 'short_description',
-        'visible': true,
         'displayName': 'Короткое описание'
     },
     {
         'columnName': 'hide',
-        'visible': true,
         'displayName': 'Видимая',
         'customComponent': BooleanComponent
-    },
-    {
-        'columnName': 'description',
-        'visible': false
-    },
-    {
-        'columnName': 'keywords',
-        'visible': false
-    },
-    {
-        'columnName': 'name_in_url',
-        'visible': false
-    },
-    {
-        'columnName': 'deleted',
-        'visible': false
-    },
-    {
-        'columnName': 'city_id',
-        'visible': false
-    },
-    {
-        'columnName': 'category_id',
-        'visible': false
-    },
-    {
-        'columnName': 'user_id',
-        'visible': false
-    },
-    {
-        'columnName': 'id',
-        'visible': false
-    },
-    {
-        'columnName': 'text',
-        'visible': false
     },
     {
         'columnName': 'salary',
@@ -101,7 +62,6 @@ var columnMeta = [
         'columnName': 'visits',
         'displayName': 'Количество посещений'
     },
-
 ];
 
 
