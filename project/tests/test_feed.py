@@ -4,6 +4,7 @@ from unittest.mock import patch
 from flask import url_for, jsonify
 from werkzeug.exceptions import NotFound
 from config import BASEDIR
+from project.lib.feed import get_visible_vacancies_list
 from project.models import Vacancy, City, Category
 from project.tests.utils import ProjectTestCase
 from project.feed.views import get_vacancy
@@ -87,7 +88,7 @@ class TestFeedView(ProjectTestCase):
         )
 
         # after json datetime repr as str
-        list_vacanies = [v.bl.as_dict() for v in Vacancy.bl.get_visible()]
+        list_vacanies = get_visible_vacancies_list()
         list_vacanies = loads(
             jsonify(data=list_vacanies).data.decode()
         )['data']

@@ -1,5 +1,6 @@
 from flask import render_template, jsonify, current_app, abort
 from project.blueprints import feed_app
+from project.lib.feed import get_visible_vacancies_list
 from project.models import Vacancy, Category, City
 from project.feed.forms import apply_form_factory
 from project.lib.mail import send_mail_from_form
@@ -24,7 +25,7 @@ def get_vacancy(name_in_url):
 
 @feed_app.route('/list')
 def json_vacancies():
-    list_vacancies = [v.bl.as_dict() for v in Vacancy.bl.get_visible()]
+    list_vacancies = get_visible_vacancies_list()
     list_categories = [c.bl.as_dict() for c in Category.query.all()]
     list_cities = [v.bl.as_dict() for v in City.query.all()]
     return jsonify(

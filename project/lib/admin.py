@@ -4,7 +4,7 @@ from project.extensions import db
 from project.models import Vacancy, City, Category, User
 
 
-def get_vacancies_list():
+def get_actual_vacancies_list():
     vacancies_struct = Construct({
         'title': Vacancy.title,
         'city': City.name,
@@ -25,7 +25,7 @@ def get_vacancies_list():
             Vacancy.category,
             Vacancy.who_updated
         )
-        .filter(Vacancy.is_deleted == false())
+        .filter(~Vacancy.condition_is_deleted)
         .all()
     )
     return vacancies
