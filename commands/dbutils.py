@@ -4,6 +4,7 @@ from flask.ext.migrate import Migrate, upgrade as migrate_upgrade
 
 from commands.utils import perform
 from project.fixtures import load_fixtures
+from sqlalchemy import inspect
 
 
 class _DBUtilsConfig(object):
@@ -32,8 +33,17 @@ class DBUtils(object):
 DBUtilsCommand = Manager(usage='Perform basic dev database operations')
 
 
-@DBUtilsCommand.command
-def drop():
+@DBUtilsCommand.option(
+    '-a', '--all',
+    dest='drop_all',
+    action='store_true',
+    default=False,
+    help='Drop ALL tables in database',
+)
+def drop(drop_all=False):
+    """ Drop tables in project database
+    """
+
     engine = current_app.extensions['meowth_dbutils'].db.engine
     if current_app.extensions['meowth_dbutils'].metadata.bind is None:
         current_app.extensions['meowth_dbutils'].metadata.bind = engine
@@ -49,6 +59,14 @@ def drop():
         fail='Error occured while dropping alembic table',
     ):
         engine.execute('drop table if exists alembic_version')
+    if drop_all:
+        with perform(
+            name='dbutils drop',
+            before='Dropping all other tables in database',
+            fail='Error occured while dropping other tables',
+        ):
+            current_app.extensions['meowth_dbutils'].db.reflect()
+            current_app.extensions['meowth_dbutils'].db.drop_all()
 
 
 @DBUtilsCommand.option(
@@ -64,8 +82,18 @@ def drop():
     default=None,
     help='Directory to search fixtures in',
 )
-def init(populate_after_init=False, directory=None):
-    drop()
+@DBUtilsCommand.option(
+    '--drop_all',
+    dest='drop_all',
+    action='store_true',
+    default=False,
+    help='Drop ALL tables in database',
+)
+def init(populate_after_init=False, directory=None, drop_all=False):
+    """ Create a new clean database
+    """
+
+    drop(drop_all=drop_all)
     with perform(
         name='dbutils init',
         before='initializing database to its latest version',
@@ -82,6 +110,9 @@ def init(populate_after_init=False, directory=None):
     help='Directory to search fixtures in',
 )
 def populate(directory=None):
+    """ Populate database with fixtures
+    """
+
     if directory is None:
         directory = current_app.config['FIXTURES_DIR']
     with perform(
