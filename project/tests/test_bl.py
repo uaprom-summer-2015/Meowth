@@ -1,6 +1,8 @@
 from unittest.mock import Mock, patch
 from werkzeug.security import check_password_hash
 from project.bl import UserBL
+from project.lib.admin import get_actual_vacancies_list
+from project.lib.feed import get_visible_vacancies_list
 from project.tests.utils import ProjectTestCase
 from project.models import User, Vacancy
 import re
@@ -210,42 +212,40 @@ class TestUserBL(ProjectTestCase):
 class TestVacancyBL(ProjectTestCase):
 
     def test_get_visible(self):
-        visible_list = Vacancy.bl.get_visible()
+        visible_list = get_visible_vacancies_list()
         vacancy_list = Vacancy.query.all()
-        actual_list = Vacancy.bl.get_actual()
 
-        for vacancy in visible_list:
-            self.assertTrue(
-                vacancy in vacancy_list,
-                msg='Vacancy returned by get_visible is not in all vacancies',
-            )
-            self.assertFalse(
-                vacancy.hide,
-                msg='Vacancy returned by get_visible is hidden',
-            )
-            self.assertFalse(
-                vacancy.deleted,
-                msg='Vacancy returned by get_visible but it is deleted',
-            )
-        for vacancy in actual_list:
-            self.assertTrue(
-                vacancy in vacancy_list,
-                msg='Vacancy returned by get_actual is not in all vacancies',
-            )
-            self.assertFalse(
-                vacancy.deleted,
-                msg='Vacancy returned by get_actual but it is deleted',
-            )
         for vacancy in vacancy_list:
-            if vacancy not in visible_list:
+            if vacancy.deleted:
                 self.assertTrue(
-                    vacancy.hide or vacancy.deleted,
-                    msg='There is a visible vacancy which is not returned'
-                        'with get_visible',
+                    vacancy.title not in (v['title'] for v in visible_list),
+                    msg='Vacancy returned by get_visible but it is deleted'
                 )
-            if vacancy not in actual_list:
+            elif vacancy.hide:
                 self.assertTrue(
-                    vacancy.deleted,
+                    vacancy.title not in (v['title'] for v in visible_list),
+                    msg='Vacancy returned by get_visible but it is hide'
+                )
+            else:
+                self.assertTrue(
+                    vacancy.title in (v['title'] for v in visible_list),
+                    msg='There is a visible vacancy which is not returned'
+                        'with get_visible'
+                )
+
+    def test_get_actual(self):
+        actual_list = get_actual_vacancies_list()
+        vacancy_list = Vacancy.query.all()
+
+        for vacancy in vacancy_list:
+            if vacancy.deleted:
+                self.assertTrue(
+                    vacancy.title not in (v['title'] for v in actual_list),
+                    msg='Vacancy returned by get_actual but it is deleted'
+                )
+            else:
+                self.assertTrue(
+                    vacancy.title in (v['title'] for v in actual_list),
                     msg='There is a visible vacancy which is not returned'
                         'with get_actual'
                 )

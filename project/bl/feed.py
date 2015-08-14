@@ -1,6 +1,5 @@
 from flask import session
 from project.bl.utils import BaseBL
-from sqlalchemy.sql.expression import false
 
 
 class CategoryBL(BaseBL):
@@ -8,20 +7,6 @@ class CategoryBL(BaseBL):
 
 
 class VacancyBL(BaseBL):
-    def get_visible(self):
-        return (
-            self.model.query
-            .filter(self.model.hide == false(),
-                    self.model.deleted == false())
-            .all()
-        )
-
-    def get_actual(self):
-        return (
-            self.model.query
-            .filter(self.model.deleted == false())
-            .all()
-        )
 
     def visit(self):
         self.model.visits += 1
