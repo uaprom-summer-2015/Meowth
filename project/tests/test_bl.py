@@ -220,11 +220,11 @@ class TestVacancyBL(ProjectTestCase):
                 msg='Vacancy returned by get_visible is not in all vacancies',
             )
             self.assertFalse(
-                vacancy.hide,
+                vacancy.is_hidden,
                 msg='Vacancy returned by get_visible is hidden',
             )
             self.assertFalse(
-                vacancy.deleted,
+                vacancy.is_deleted,
                 msg='Vacancy returned by get_visible but it is deleted',
             )
         for vacancy in actual_list:
@@ -233,19 +233,19 @@ class TestVacancyBL(ProjectTestCase):
                 msg='Vacancy returned by get_actual is not in all vacancies',
             )
             self.assertFalse(
-                vacancy.deleted,
+                vacancy.is_deleted,
                 msg='Vacancy returned by get_actual but it is deleted',
             )
         for vacancy in vacancy_list:
             if vacancy not in visible_list:
                 self.assertTrue(
-                    vacancy.hide or vacancy.deleted,
+                    vacancy.is_hidden or vacancy.is_deleted,
                     msg='There is a visible vacancy which is not returned'
                         'with get_visible',
                 )
             if vacancy not in actual_list:
                 self.assertTrue(
-                    vacancy.deleted,
+                    vacancy.is_deleted,
                     msg='There is a visible vacancy which is not returned'
                         'with get_actual'
                 )

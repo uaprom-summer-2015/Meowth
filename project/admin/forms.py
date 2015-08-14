@@ -56,8 +56,8 @@ class VacancyForm(Form):
         query_factory=lambda: City.query.all(),
         validators=[DataRequired('Required field')]
     )
-    hide = BooleanField(label='Не показывать вакансию')
-    deleted = BooleanField(label='Удалить')
+    is_hidden = BooleanField(label='Не показывать вакансию')
+    is_deleted = BooleanField(label='Удалить')
 
 
 class CategoryForm(Form):

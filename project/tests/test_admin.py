@@ -1,6 +1,5 @@
 from unittest.mock import Mock
 from flask import url_for
-from sqlalchemy import true
 from project.admin.utils import EntryList
 from project.admin.views import SECTIONS, mainpage, vacancy_detail
 from project.tests.utils import ProjectTestCase
@@ -18,7 +17,7 @@ expected_sections = dict([
     ('Страницы', '/admin/pages/'),
     ('Элементы страниц', '/admin/pagechunks/'),
     ('Шаблоны писем', '/admin/mail_templates/'),
-    ('Галлерея', '/admin/gallery_images/'),
+    ('Галерея', '/admin/gallery_images/'),
 ])
 
 
@@ -71,9 +70,6 @@ class SectionsTest(ProjectTestCase):
             )
 
 class VacancyAdminDeletionTest(ProjectTestCase):
-    def setUp(self):
-        self.view = vacancy_detail
-        self.pk = Vacancy.query.filter(Vacancy.deleted == true()).first().id
-
     def test_deleted_raises_404(self):
-        self.assertRaises(NotFound, self.view, self.pk)
+        pk = Vacancy.query.filter(Vacancy.condition_is_deleted).first().id
+        self.assertRaises(NotFound, vacancy_detail, pk)

@@ -98,13 +98,10 @@ class TestFeedView(ProjectTestCase):
 
 
 class VacancyHideDeletionTest(ProjectTestCase):
-    def setUp(self):
-        self.view = get_vacancy
-
     def test_deleted_raises_404(self):
-        pk = Vacancy.query.filter(Vacancy.deleted == true()).first().name_in_url
-        self.assertRaises(NotFound, self.view, pk)
+        pk = Vacancy.query.filter(Vacancy.condition_is_deleted).first().name_in_url
+        self.assertRaises(NotFound, get_vacancy, pk)
 
     def test_hidden_raises_404(self):
-        pk = Vacancy.query.filter(Vacancy.hide == true()).first().name_in_url
-        self.assertRaises(NotFound, self.view, pk)
+        pk = Vacancy.query.filter(Vacancy.condition_is_hidden).first().name_in_url
+        self.assertRaises(NotFound, get_vacancy, pk)

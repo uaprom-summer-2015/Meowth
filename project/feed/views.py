@@ -13,7 +13,7 @@ def vacancies():
 @feed_app.route('/<name_in_url>/')
 def get_vacancy(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
-    if vacancy.deleted or vacancy.hide:
+    if vacancy.condition_is_deleted or vacancy.condition_is_hidden:
         abort(404)
     vacancy.bl.visit()
     return render_template(

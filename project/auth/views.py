@@ -75,4 +75,5 @@ def change_password():
 @login_required
 def logout():
     session.pop('user_id', None)
+    session.pop('user_login', None)
     return redirect(url_for('auth.login'))

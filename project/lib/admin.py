@@ -10,7 +10,7 @@ def get_vacancies_list():
         'city': City.name,
         'category': Category.name,
         'username': User.name,
-        'hide': Vacancy.hide,
+        'hide': Vacancy.is_hidden,
         'salary': Vacancy.salary,
         'short_description': Vacancy.short_description,
         'updated_at': Vacancy.updated_at,
@@ -25,7 +25,7 @@ def get_vacancies_list():
             Vacancy.category,
             Vacancy.who_updated
         )
-        .filter(Vacancy.deleted == false())
+        .filter(Vacancy.is_deleted == false())
         .all()
     )
     return vacancies

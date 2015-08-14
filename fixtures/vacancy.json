@@ -9,8 +9,8 @@
       "name_in_url": "junior-python-developer",
       "city_id": 1,
       "salary": "$800",
-      "hide": false,
-      "deleted": false
+      "is_hidden": false,
+      "is_deleted": false
     }
   },
   {
@@ -23,8 +23,8 @@
       "name_in_url": "senior-android-developer",
       "city_id": 2,
       "salary": "$4000",
-      "hide": true,
-      "deleted": false
+      "is_hidden": true,
+      "is_deleted": false
     }
   },
   {
@@ -37,8 +37,8 @@
       "name_in_url": "junior-android-developer",
       "city_id": 2,
       "salary": "$700",
-      "hide": false,
-      "deleted": false
+      "is_hidden": false,
+      "is_deleted": false
     }
   },
   {
@@ -51,8 +51,8 @@
       "name_in_url": "dot-net-developer",
       "city_id": 1,
       "salary": "$1000",
-      "hide": false,
-      "deleted": false
+      "is_hidden": false,
+      "is_deleted": false
     }
   },
   {
@@ -65,8 +65,8 @@
       "name_in_url": "dot-net-idiot",
       "city_id": 1,
       "salary": "$2000",
-      "hide": true,
-      "deleted": false
+      "is_hidden": true,
+      "is_deleted": false
     }
   },
   {
@@ -79,8 +79,8 @@
       "name_in_url": "lorem-ipsum-dolor",
       "city_id": 3,
       "salary": "$2500",
-      "hide": false,
-      "deleted": true
+      "is_hidden": false,
+      "is_deleted": true
     }
   },
   {
@@ -93,8 +93,8 @@
       "name_in_url": "technopegasus",
       "city_id": 3,
       "salary": "$2500",
-      "hide": true,
-      "deleted": false
+      "is_hidden": true,
+      "is_deleted": false
     }
   }
 ]
