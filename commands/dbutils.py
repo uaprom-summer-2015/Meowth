@@ -4,7 +4,6 @@ from flask.ext.migrate import Migrate, upgrade as migrate_upgrade
 
 from commands.utils import perform
 from project.fixtures import load_fixtures
-from sqlalchemy import inspect
 
 
 class _DBUtilsConfig(object):
