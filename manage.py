@@ -6,7 +6,6 @@ from project.extensions import db
 from commands.dbutils import DBUtils, DBUtilsCommand
 from commands.static import StaticCommand, npm
 
-
 manager = Manager(app)
 
 devutils = DBUtils(app, db)

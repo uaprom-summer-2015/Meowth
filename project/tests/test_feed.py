@@ -2,9 +2,12 @@ from json import loads
 import os
 from unittest.mock import patch
 from flask import url_for, jsonify
+from werkzeug.exceptions import NotFound
 from config import BASEDIR
 from project.models import Vacancy, City, Category
 from project.tests.utils import ProjectTestCase
+from project.feed.views import get_vacancy
+from sqlalchemy import true
 from bs4 import BeautifulSoup
 
 
@@ -92,3 +95,16 @@ class TestFeedView(ProjectTestCase):
             vacancies,
             list_vacanies,
         )
+
+
+class VacancyHideDeletionTest(ProjectTestCase):
+    def setUp(self):
+        self.view = get_vacancy
+
+    def test_deleted_raises_404(self):
+        pk = Vacancy.query.filter(Vacancy.deleted == true()).first().name_in_url
+        self.assertRaises(NotFound, self.view, pk)
+
+    def test_hidden_raises_404(self):
+        pk = Vacancy.query.filter(Vacancy.hide == true()).first().name_in_url
+        self.assertRaises(NotFound, self.view, pk)

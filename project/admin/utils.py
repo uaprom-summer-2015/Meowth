@@ -41,7 +41,7 @@ class EntryDetail(MethodView):
             # Update an old entry
             entry = self.model.bl.get(entry_id)
 
-            if entry is None:
+            if entry is None or entry.bl.as_dict().get('deleted', None):
                 abort(404)
             entry_form = self.update_form(obj=entry)
 
