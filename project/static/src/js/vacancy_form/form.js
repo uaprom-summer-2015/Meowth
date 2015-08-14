@@ -45,7 +45,7 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
         if ( name.indexOf('.') != -1 ) {
             var lst = name.split('.');
             var ext = lst[lst.length - 1];
-            return ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx'].indexOf(ext) != -1;
+            return ['txt', 'pdf', 'doc', 'docx', 'pptx', 'ppt', 'rtf'].indexOf(ext) != -1;
         } else {
             return false;
         }

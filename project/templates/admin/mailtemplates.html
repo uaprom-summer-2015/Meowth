@@ -4,7 +4,7 @@
     <ul class="list-group">
         {% for entry in entries %}
             <li class="list-group-item">
-                <a href="{{ url_for('admin.mail_template_detail', entry_id=entry.id) }}">
+                <a href="{{ url_for('admin.mail_template_detail', entry_id=entry.mail.value) }}">
                   {{ entry.title }}
                 </a>
             </li>

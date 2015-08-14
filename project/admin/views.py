@@ -1,10 +1,12 @@
-from flask import render_template, url_for, session, redirect
-from flask import request, current_app
+from flask import render_template, url_for, session, redirect, jsonify
 from project.admin import forms
 from project.blueprints import admin_app
 from project.pages.admin import PageDetail
+from project.lib.admin import get_vacancies_list
 from project.pages.forms import PageBlockForm, PageForm
-from project.admin.utils import EntryDetail, EntryList, VacancyList
+from project.admin.utils import (
+    EntryDetail, EntryList, VacancyList, GalleryImageDetail
+)
 from project.auth.forms import RegisterForm
 from project import models
 
@@ -233,6 +235,30 @@ register_section(
     list_endpoint="mail_templates_list",
 )
 
+# Gallery Images
+gallery_images_list = EntryList.as_view(
+    name='gallery_images_list',
+    model=models.UploadedImage,
+    template="admin/gallery_images.html",
+)
+
+gallery_image_detail = GalleryImageDetail.as_view(
+    name='gallery_image_detail',
+    create_form=forms.image_upload_form_factory,
+    model=models.UploadedImage,
+    success_url='gallery_images_list',
+    template='admin/image_upload.html',
+)
+
+register_section(
+    section_name="Галлерея",
+    list_route="/gallery_images/",
+    detail_route="/gallery_image/",
+    list_view=gallery_images_list,
+    detail_view=gallery_image_detail,
+    list_endpoint="gallery_images_list",
+)
+
 
 @admin_app.route("/")
 def mainpage():
@@ -246,24 +272,12 @@ def mainpage():
     )
 
 
-# gallery uploads
-@admin_app.route(
-    "/gallery/upload",
-    methods=['GET', 'POST'],
-)
-def upload():
-    clazz = forms.image_upload_form_factory(config=current_app.config)
-    form = clazz()
-    if form.validate_on_submit():
-        image = request.files['image']
-        models.UploadedImage.bl.save_image(
-            image=image,
-            img_category=models.UploadedImage.IMG_CATEGORY.gallery,
-            title=form.data['title'],
-            description=form.data['description'],
-        )
-        return redirect(url_for('admin.mainpage'))
-    return render_template("admin/image_upload.html", form=form)
+@admin_app.route('/vacancies/list/')
+def json_vacancies():
+    vacancies_list = get_vacancies_list()
+    return jsonify(
+        vacancies=vacancies_list,
+    )
 
 
 # noinspection PyUnusedLocal

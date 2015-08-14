@@ -14,6 +14,7 @@ expected_sections = dict([
     ('Страницы', '/admin/pages/'),
     ('Элементы страниц', '/admin/pagechunks/'),
     ('Шаблоны писем', '/admin/mail_templates/'),
+    ('Галлерея', '/admin/gallery_images/'),
 ])
 
 
@@ -62,5 +63,5 @@ class SectionsTest(ProjectTestCase):
         for name in expected_sections:
             self.assertEqual(
                 expected_sections[name],
-                url_for("admin."+SECTIONS[name])
+                url_for("admin." + SECTIONS[name])
             )
