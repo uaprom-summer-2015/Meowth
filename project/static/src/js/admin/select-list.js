@@ -6,9 +6,7 @@ var SelectRow = React.createClass({
     displayName: "SelectRow",
 
     render: function () {
-        return React.createElement("div", {
-                className: "select-row"
-            },
+        return React.DOM.div({className: "select-row"},
             React.createElement(Select, {
                 name: this.props.name,
                 className: "select-element",
@@ -17,7 +15,7 @@ var SelectRow = React.createClass({
                 clearable: false,
                 onChange: this.props.selectOnChange
             }),
-            React.createElement("a", {
+            React.DOM.a({
                 className: "btn btn-default select-delete",
                 onClick: this.props.deleteOnClick
             }, "Удалить")
@@ -64,7 +62,7 @@ var SelectList = React.createClass(
         },
 
         render: function () {
-            return React.createElement("ul", null,
+            return React.DOM.ul( null,
                 this.state.currentChoices.map(function (selectedValue, i) {
                     return React.createElement(SelectRow, {
                         key: i,
@@ -75,7 +73,7 @@ var SelectList = React.createClass(
                         deleteOnClick: this.removeRow.bind(this, i)
                     })
                 }, this),
-                React.createElement("a", {
+                React.DOM.a({
                     className: "btn btn-default",
                     onClick: this.addRow
                 }, this.props.newRowTitle)
