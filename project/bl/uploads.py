@@ -37,7 +37,7 @@ class UploadedImageBL(BaseBL):
         celery_make_thumbnail.delay(
             path_to_original=str(fullsized_dir / name),
             destination=str(thumbnail_dir / name),
-            size=(75, 75),
+            size=(200, 200),
         )
 
         uploaded_image = self.model(

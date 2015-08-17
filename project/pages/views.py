@@ -4,6 +4,10 @@ from project.models import Page, UploadedImage
 
 
 # All pages are hardcoded for now
+def chunks(lst, n):
+    """Yield n-sized parts from lst"""
+    for i in range(0, len(lst), n):
+        yield lst[i:i+n]
 
 @pages_app.route("/")
 def mainpage():
@@ -18,7 +22,7 @@ def mainpage():
     return render_template(
         'pages/mainpage.html',
         blocks=page.blocks,
-        images=images,
+        images=chunks(images, 4),
     )
 
 
