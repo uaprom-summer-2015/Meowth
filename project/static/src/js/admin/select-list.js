@@ -1,6 +1,6 @@
 var React = require('react');
 var Select = require('react-select');
-
+var $ = require('npm-zepto');
 
 var SelectRow = React.createClass({
     displayName: "SelectRow",
@@ -17,8 +17,8 @@ var SelectRow = React.createClass({
                 clearable: false,
                 onChange: this.props.selectOnChange
             }),
-            React.createElement("button", {
-                className: "select-delete",
+            React.createElement("a", {
+                className: "btn btn-default select-delete",
                 onClick: this.props.deleteOnClick
             }, "Удалить")
         )
@@ -32,8 +32,17 @@ var SelectList = React.createClass(
         displayName: "SelectList",
 
         getInitialState: function () {
-            return {currentChoices: this.props.currentChoices}
+            return {currentChoices: []}
         },
+
+        componentDidMount: function () {
+            $.get(this.props.source, function (result) {
+                if (this.isMounted()) {
+                    this.setState({currentChoices: result.entries});
+                }
+            }.bind(this));
+        },
+
         addRow: function () {
             this.setState(function () {
                 return {currentChoices: this.state.currentChoices.concat(["1"])}
