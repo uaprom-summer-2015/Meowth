@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", (function () {
-    var $ = require('jquery');
+    var $ = require('npm-zepto');
     require('magnific-popup');
     $('#gallery').magnificPopup({
         delegate: 'a',
