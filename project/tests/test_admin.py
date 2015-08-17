@@ -134,4 +134,3 @@ class VacancyAuxilliarTest(ProjectTestCase):
                 encoding='utf8',
             )
             self.assertEqual(expected, response.data)
-

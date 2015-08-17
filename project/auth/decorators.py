@@ -11,6 +11,7 @@ def login_required(func):
         return func(*args, **kwargs)
     return wrapped
 
+
 def superuser_required(func):
     @wraps(func)
     def wrapped(*args, **kwargs):
@@ -22,5 +23,3 @@ def superuser_required(func):
             abort(403)
         return func(*args, **kwargs)
     return wrapped
-
-

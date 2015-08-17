@@ -8,7 +8,6 @@ from project.lib.feed import get_visible_vacancies_list
 from project.models import Vacancy, City, Category
 from project.tests.utils import ProjectTestCase
 from project.feed.views import get_vacancy
-from sqlalchemy import true
 from bs4 import BeautifulSoup
 
 
@@ -100,9 +99,17 @@ class TestFeedView(ProjectTestCase):
 
 class VacancyHideDeletionTest(ProjectTestCase):
     def test_deleted_raises_404(self):
-        pk = Vacancy.query.filter(Vacancy.condition_is_deleted).first().name_in_url
+        pk = (
+            Vacancy.query.filter(Vacancy.condition_is_deleted)
+            .first()
+            .name_in_url
+        )
         self.assertRaises(NotFound, get_vacancy, pk)
 
     def test_hidden_raises_404(self):
-        pk = Vacancy.query.filter(Vacancy.condition_is_hidden).first().name_in_url
+        pk = (
+            Vacancy.query.filter(Vacancy.condition_is_hidden)
+            .first()
+            .name_in_url
+        )
         self.assertRaises(NotFound, get_vacancy, pk)

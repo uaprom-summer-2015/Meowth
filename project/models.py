@@ -7,6 +7,7 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.ext.associationproxy import association_proxy
 from project.lib.orm.conditions import ConditionDeleted, ConditionHidden
 
+
 class Vacancy(db.Model):
     __tablename__ = 'vacancies'
 
@@ -37,7 +38,6 @@ class Vacancy(db.Model):
 
     def __repr__(self):
         return "[{}] {}".format(self.__class__.__name__, self.title)
-
 
 
 class Category(db.Model):

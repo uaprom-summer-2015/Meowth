@@ -1,4 +1,3 @@
-from sqlalchemy import false
 from sqlconstruct import Construct
 from project.extensions import db
 from project.models import Vacancy

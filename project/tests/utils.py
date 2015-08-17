@@ -4,7 +4,6 @@ from flask.ext.testing import TestCase
 from project import create_app as app_factory
 from project.extensions import db
 from project.fixtures import load_fixtures
-from project.models import User
 
 
 @contextmanager
