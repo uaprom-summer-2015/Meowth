@@ -1,6 +1,8 @@
 from flask import render_template, url_for, session, redirect, jsonify
+
 from project.admin import forms
 from project.blueprints import admin_app
+from project.models import PageBlock, Page
 from project.pages.admin import PageDetail
 from project.lib.admin import get_vacancies_list
 from project.pages.forms import PageBlockForm, PageForm
@@ -9,7 +11,6 @@ from project.admin.utils import (
 )
 from project.auth.forms import RegisterForm
 from project import models
-
 
 SECTIONS = {}  # list_name: list_endpoint
 
@@ -64,6 +65,14 @@ register_section(
     detail_view=vacancy_detail,
     list_endpoint="vacancy_list",
 )
+
+
+@admin_app.route('/vacancies/list/')
+def json_vacancies():
+    vacancies_list = get_vacancies_list()
+    return jsonify(
+        vacancies=vacancies_list,
+    )
 
 
 # Categories
@@ -186,6 +195,21 @@ register_section(
     list_endpoint="page_list",
 )
 
+
+@admin_app.route("/page/<int:entry_id>/block_list/")
+def block_list(entry_id):
+    page = Page.query.get(entry_id)
+    ids = [str(block.id) for block in page.blocks]
+    return jsonify(entries=ids)
+
+
+@admin_app.route("/pages/available_blocks/")
+def available_blocks():
+    blocks = [{"value": str(block.id), "label": str(block)}
+              for block in PageBlock.query.all()]
+    return jsonify(blocks=blocks)
+
+
 # Page chunks
 pagechunk_list = EntryList.as_view(
     name="pagechunk_list",
@@ -269,14 +293,6 @@ def mainpage():
     return render_template(
         "admin/main.html",
         sections=sections.items(),
-    )
-
-
-@admin_app.route('/vacancies/list/')
-def json_vacancies():
-    vacancies_list = get_vacancies_list()
-    return jsonify(
-        vacancies=vacancies_list,
     )
 
 
