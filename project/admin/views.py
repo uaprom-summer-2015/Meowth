@@ -1,9 +1,11 @@
 from flask import render_template, url_for, session, redirect, jsonify
+
 from project.admin import forms
 from project.blueprints import admin_app
 from project.lib.admin import get_actual_vacancies_list
+from project.models import PageBlock, Page
+from project.pages.admin import PageDetail
 from project.pages.forms import PageBlockForm, PageForm
-from project.pages.utils import PageDetail
 from project.admin.utils import (
     EntryDetail, EntryList, VacancyList, GalleryImageDetail
 )
@@ -11,7 +13,6 @@ from project.auth.forms import RegisterForm
 from project.auth.decorators import superuser_required
 from project import models
 from project.models import User
-
 
 SECTIONS = {}  # list_name: list_endpoint
 
@@ -67,6 +68,13 @@ register_section(
     list_endpoint="vacancy_list",
 )
 
+
+@admin_app.route('/vacancies/list/')
+def json_vacancies():
+    vacancies_list = get_actual_vacancies_list()
+    return jsonify(
+        vacancies=vacancies_list,
+    )
 
 # Categories
 category_list = EntryList.as_view(
@@ -176,6 +184,7 @@ page_view = PageDetail.as_view(
     create_form=PageForm,
     model=models.Page,
     success_url="page_list",
+    template="admin/page.html",
 )
 
 register_section(
@@ -186,6 +195,21 @@ register_section(
     detail_view=page_view,
     list_endpoint="page_list",
 )
+
+
+@admin_app.route("/page/<int:entry_id>/block_list/")
+def block_list(entry_id):
+    page = Page.query.get(entry_id)
+    ids = [str(block.id) for block in page.blocks]
+    return jsonify(entries=ids)
+
+
+@admin_app.route("/pages/available_blocks/")
+def available_blocks():
+    blocks = [{"value": str(block.id), "label": str(block)}
+              for block in PageBlock.query.all()]
+    return jsonify(blocks=blocks)
+
 
 # Page chunks
 pagechunk_list = EntryList.as_view(
@@ -274,14 +298,6 @@ def mainpage():
     return render_template(
         "admin/main.html",
         sections=sections.items(),
-    )
-
-
-@admin_app.route('/vacancies/list/')
-def json_vacancies():
-    vacancies_list = get_actual_vacancies_list()
-    return jsonify(
-        vacancies=vacancies_list,
     )
 
 

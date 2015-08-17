@@ -1,14 +1,12 @@
+import json
 from unittest.mock import Mock
 from flask import url_for
 from project.admin.utils import EntryList
-from project.admin.views import (
-    SECTIONS, mainpage, vacancy_detail,
-    user_list, user_detail,
-)
+from project.admin.views import vacancy_detail
+from project.admin.views import SECTIONS, mainpage
+from project.models import PageBlock, Page, Vacancy
 from project.tests.utils import ProjectTestCase
-from project.models import Vacancy
-from werkzeug.exceptions import NotFound, Forbidden
-
+from werkzeug.exceptions import NotFound
 
 
 expected_sections = dict([
@@ -55,7 +53,6 @@ class MainPageTest(ProjectTestCase):
     def setUp(self):
         self.view = mainpage
         self.view()
-        # self.response = self.client.get("/admin/")
 
     def test_view_uses_correct_template(self):
         self.assertTemplateUsed("admin/main.html")
@@ -72,10 +69,12 @@ class SectionsTest(ProjectTestCase):
                 url_for("admin." + SECTIONS[name])
             )
 
+
 class VacancyAdminDeletionTest(ProjectTestCase):
     def test_deleted_raises_404(self):
         pk = Vacancy.query.filter(Vacancy.condition_is_deleted).first().id
         self.assertRaises(NotFound, vacancy_detail, pk)
+
 
 class PermissionsTest(ProjectTestCase):
     def test_userlist_returns_403(self):
@@ -109,4 +108,30 @@ class PermissionsTest(ProjectTestCase):
         self.log_in('cthulhu')
         self.client.get(url_for('admin.mainpage'))
         self.assert_context("sections", expected_sections.items())
+
+
+class VacancyAuxilliarTest(ProjectTestCase):
+    def test_avail_block_view_returns_correct_value(self):
+        self.log_in()
+        pageblocks = [{"label": str(block), "value": str(block.id)}
+                      for block in PageBlock.query.all()]
+        url = url_for('admin.available_blocks')
+        response = self.client.get(url, follow_redirects=True)
+        expected = bytes(
+            json.dumps({"blocks": pageblocks}, sort_keys=True),
+            encoding='utf8',
+        )
+        self.assertEqual(expected, response.data)
+
+    def test_chosen_block_view_returns_correct_value(self):
+        self.log_in()
+        for page in Page.query.all():
+            blocks = [str(block.id) for block in page.blocks]
+            url = url_for('admin.block_list', entry_id=page.id)
+            response = self.client.get(url, follow_redirects=True)
+            expected = bytes(
+                json.dumps({"entries": blocks}, sort_keys=True),
+                encoding='utf8',
+            )
+            self.assertEqual(expected, response.data)
 
