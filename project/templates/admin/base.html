@@ -14,7 +14,7 @@
                 </ul>
 
                 <p class="navbar-text navbar-right">
-                    Привет, {{ g.user.login }}.
+                    Привет, {{ session.user_login }}.
                     <a href="{{ url_for('auth.logout') }}">Выйти?</a>
                 </p>
 

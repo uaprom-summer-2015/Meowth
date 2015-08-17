@@ -138,4 +138,3 @@ class TestingConfig(Config):
 
 
 logging.config.dictConfig(Config.LOG_CONFIG)
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)

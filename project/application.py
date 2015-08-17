@@ -1,4 +1,5 @@
 from importlib import import_module
+import logging
 from os import environ
 from flask import Flask
 from project.lib.filters import datetime
@@ -13,6 +14,10 @@ def create_app():
     app.config.from_object(
         environ.get('APP_SETTINGS', 'config.DevelopmentConfig')
     )
+    if (environ.get('APP_SETTINGS', 'config.DevelopmentConfig')
+            == 'config.DevelopmentConfig'):
+        logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
     with app.app_context():
         for module in app.config.get('DB_MODELS_IMPORT', list()):
             import_module(module)

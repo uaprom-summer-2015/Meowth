@@ -1,7 +1,7 @@
 from wtforms.validators import Regexp, ValidationError
 from project.models import User
 from werkzeug.security import check_password_hash
-from flask import g
+from flask import session
 
 # alphanumeric and special chars (-_.)
 # Can not start with a digit, underscore or special character
@@ -25,7 +25,8 @@ class PasswordCorrect(object):
         self.message = message or 'Неверный пароль'
 
     def __call__(self, _, field):
-        if not check_password_hash(g.user.password, field.data):
+        user = User.query.get(session.get('user_id')).one()
+        if not check_password_hash(user.password, field.data):
             raise ValidationError(self.message)
 
 

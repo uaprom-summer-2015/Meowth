@@ -2,12 +2,12 @@ from flask import render_template, url_for, session, redirect, jsonify
 
 from project.admin import forms
 from project.blueprints import admin_app
+from project.lib.admin import get_actual_vacancies_list
 from project.models import PageBlock, Page
 from project.pages.admin import PageDetail
-from project.lib.admin import get_vacancies_list
 from project.pages.forms import PageBlockForm, PageForm
 from project.admin.utils import (
-    EntryDetail, EntryList, VacancyList, GalleryImageDetail
+    EntryDetail, EntryList, VacancyList, GalleryImageDetail, PageDetail
 )
 from project.auth.forms import RegisterForm
 from project import models
@@ -69,11 +69,10 @@ register_section(
 
 @admin_app.route('/vacancies/list/')
 def json_vacancies():
-    vacancies_list = get_vacancies_list()
+    vacancies_list = get_actual_vacancies_list()
     return jsonify(
         vacancies=vacancies_list,
     )
-
 
 # Categories
 category_list = EntryList.as_view(
