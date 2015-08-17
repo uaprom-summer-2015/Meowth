@@ -43,6 +43,12 @@ class PageBlockForm(Form):
 
 
 class PageForm(Form):
+    def __init__(self, *args, **kwargs):
+        super(PageForm, self).__init__(*args, **kwargs)
+        pageblocks = PageBlock.query.all()
+        for block in self.blocks:
+            block.query = pageblocks
+
     title = StringField(
         label='Title',
         validators=[
@@ -53,6 +59,6 @@ class PageForm(Form):
         ],
     )
     blocks = FieldList(
-        QuerySelectField(),  # query should be provided in view
+        QuerySelectField(),
         min_entries=1,
     )
