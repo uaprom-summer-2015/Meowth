@@ -40,12 +40,11 @@ class EntryDetail(MethodView):
         else:
             # Update an old entry
             entry = self.model.bl.get(entry_id)
-            print(entry.__dict__)
 
             if entry is None:
                 abort(404)
 
-            if 'condition_is_deleted' in self.model.__dict__:
+            if hasattr(entry, 'condition_is_deleted'):
                 if entry.condition_is_deleted:
                     abort(404)
 

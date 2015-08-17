@@ -8,7 +8,9 @@ from project.admin.utils import (
     EntryDetail, EntryList, VacancyList, GalleryImageDetail
 )
 from project.auth.forms import RegisterForm
+from project.auth.decorators import superuser_required
 from project import models
+from project.models import User
 
 
 SECTIONS = {}  # list_name: list_endpoint
@@ -114,18 +116,18 @@ register_section(
 
 
 # Users
-user_list = EntryList.as_view(
+user_list = superuser_required(EntryList.as_view(
     name="user_list",
     model=models.User,
     template="admin/users.html",
-)
+))
 
-user_detail = EntryDetail.as_view(
+user_detail = superuser_required(EntryDetail.as_view(
     name='user_detail',
     create_form=RegisterForm,
     model=models.User,
     success_url="user_list",
-)
+))
 
 register_section(
     section_name="Пользователи",
@@ -250,7 +252,7 @@ gallery_image_detail = GalleryImageDetail.as_view(
 )
 
 register_section(
-    section_name="Галлерея",
+    section_name="Галерея",
     list_route="/gallery_images/",
     detail_route="/gallery_image/",
     list_view=gallery_images_list,
@@ -264,7 +266,11 @@ def mainpage():
     sections = {}
     for name, endpoint in SECTIONS.items():
         sections[name] = url_for("admin." + endpoint)
-
+    pk = session.get('user_id')
+    if pk:
+        u = User.query.get(pk)
+        if not u.is_superuser():
+            del sections['Пользователи']
     return render_template(
         "admin/main.html",
         sections=sections.items(),
