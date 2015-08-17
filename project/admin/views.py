@@ -7,7 +7,7 @@ from project.models import PageBlock, Page
 from project.pages.admin import PageDetail
 from project.pages.forms import PageBlockForm, PageForm
 from project.admin.utils import (
-    EntryDetail, EntryList, VacancyList, GalleryImageDetail, PageDetail
+    EntryDetail, EntryList, VacancyList, GalleryImageDetail
 )
 from project.auth.forms import RegisterForm
 from project import models
