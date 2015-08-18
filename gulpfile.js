@@ -81,13 +81,17 @@ gulp.task('build:scripts:vendor:ckeditor', function () {
 
 
 gulp.task('build:styles', function () {
-    gulp.src(pkginfo.assets.styles.entries).pipe(stylus({
-        compress: true,
-        'include css': true,
-        include: pkginfo.stylus.includes
-    }))
-        .pipe(rename('bundle.css'))
-        .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.styles));
+    pkginfo.assets.styles.entries.map(function (file) {
+        gulp.src(file).pipe(stylus({
+            compress: true,
+            'include css': true,
+            include: pkginfo.stylus.includes
+        }))
+          .pipe(rename({
+              extname: ".bundle.css"
+          }))
+          .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.styles));
+    });
 });
 
 
