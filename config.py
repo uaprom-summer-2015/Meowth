@@ -106,7 +106,13 @@ class Config:
 
 class ProductionConfig(Config):
     # Database
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', None)
+    SQLALCHEMY_DATABASE_URI = \
+        "postgresql://{name}:{password}@{address}:{port}/hrportal".format(
+            name=os.environ.get('POSTGRES_ENV_POSTGRES_USER'),
+            password=os.environ.get('POSTGRES_ENV_POSTGRES_PASSWORD'),
+            address=os.environ.get('POSTGRES_PORT_5432_TCP_ADDR'),
+            port=os.environ.get('POSTGRES_PORT_5432_TCP_PORT'),
+        )
 
     # Celery
     CELERY_BROKER_URL = os.environ.get('REDIS_URL', None)
