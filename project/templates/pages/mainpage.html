@@ -8,6 +8,7 @@
 
 {% block gallery %}
 <div class="container" id="gallery">
+        <div class="column border borderleft"></div>
         {% for column in images %}
         <div class="column">
         {% for image in column %}
@@ -19,6 +20,7 @@
         {% endfor %}
         </div>
         {% endfor %}
+        <div class="column border borderright"></div>
 </div>
 {% endblock %}
 

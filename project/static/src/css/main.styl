@@ -19,6 +19,20 @@
   height 0
   display inline-block
 
+.border
+  position absolute
+  display hidden
+  z-index 10
+
+body
+  overflow-x hidden
+
+.borderleft
+  left 0
+
+.borderright
+  right 0
+
 .thumb
   position relative
   width 100%
@@ -27,7 +41,7 @@
 #gallery
   width 100%
   white-space nowrap
-  overflow hidden
+  overflow scroll
   padding 60px 0 0
   font-size 0
 
@@ -55,3 +69,8 @@
   .column
     width 10%
     padding-bottom 40%
+
+#gallery::-webkit-scrollbar {
+    display none
+}
+
