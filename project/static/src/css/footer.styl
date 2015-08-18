@@ -1,5 +1,8 @@
 @import mixins
 
+$font-color = #231f20
+$font-color-lighter = #3c3637
+
 footer
   display table
   margin 0px auto
@@ -23,9 +26,8 @@ footer
     width 940px
 
 .container-footer
-  color #231f20
+  color $font-color
   display table-cell
-  font-family "Arial", "Tahoma", "Verdana"
   font-size 14px
   height 325px
   position relative
@@ -42,7 +44,18 @@ footer
 
 .footer-el
   display block
+  line-height 24px
   margin 19px auto
+  a
+    color $font-color
+    text-decoration none
+    &:hover
+      color $font-color-lighter
+      text-decoration underline
+
+.footer-center a
+  display inline-block
+  margin 0px 7px
 
 @media(min-width: 768px)
   .footer-el
