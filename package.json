@@ -52,8 +52,8 @@
     },
     "styles": {
       "entries": [
-        "./project/static/src/css/main.styl",
-        "./project/static/src/css/main-client.styl"
+        "./project/static/src/css/admin.styl",
+        "./project/static/src/css/client.styl"
       ],
       "watches": [
         "./project/static/src/css/**/*.styl"
