@@ -1,0 +1,38 @@
+db:
+  image: postgres
+
+redis:
+  image: redis
+
+worker:
+  build: .
+  links:
+    - redis
+  volumes:
+    - .:/hrportal:ro
+  command: ./run_celery.sh
+
+hrportal:
+  build: .
+  command: ./run_hrportal.sh
+  volumes_from:
+    - staticdata
+  volumes:
+    - .:/hrportal:ro
+  links:
+    - db:postgres
+    - redis
+
+staticdata:
+  image: ubuntu
+  volumes:
+    - /staticdata
+
+nginx:
+  image: nginx
+  links:
+    - hrportal
+  volumes_from:
+    - staticdata
+  ports:
+    - "80:80"
