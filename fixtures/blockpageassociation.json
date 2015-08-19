@@ -50,14 +50,6 @@
   {
     "model": "project.models.BlockPageAssociation",
     "fields": {
-      "page_id": 4,
-      "block_id": 4,
-      "position": 1
-    }
-  },
-  {
-    "model": "project.models.BlockPageAssociation",
-    "fields": {
       "page_id": 3,
       "block_id": 7,
       "position": 0
