@@ -16,6 +16,8 @@ var debug = gutil.env.type !== 'production';
 
 var npmPackages = Object.keys(pkginfo.dependencies) || [];
 
+var dist_path = debug ? pkginfo.dist.path : process.env.STATIC_DIST;
+
 gulp.task('default', ['build:scripts', 'build:styles']);
 
 gulp.task('build:scripts', ['build:scripts:app', 'build:scripts:vendor']);
@@ -42,7 +44,7 @@ gulp.task('build:scripts:app', function (done) {
                 }))
                 .pipe(buffer())
                 .pipe(debug ? gutil.noop() : uglify())
-                .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.js));
+                .pipe(gulp.dest(dist_path + pkginfo.dist.js));
         });
         es.merge(tasks).on('end', done);
     });
@@ -64,11 +66,11 @@ gulp.task('build:scripts:vendor:common', function (done) {
         .pipe(source('common.vendor.js'))
         .pipe(buffer())
         .pipe(debug ? gutil.noop() : uglify())
-        .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.js));
+        .pipe(gulp.dest(dist_path + pkginfo.dist.js));
 
 
     var bs_fonts = gulp.src([pkginfo.assets.node + '/bootstrap/fonts/**/*'])
-        .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.fonts));
+        .pipe(gulp.dest(dist_path + pkginfo.dist.fonts));
 
 
     es.merge([bundle, bs_fonts]).on('end', done);
@@ -76,7 +78,7 @@ gulp.task('build:scripts:vendor:common', function (done) {
 
 gulp.task('build:scripts:vendor:ckeditor', function () {
     gulp.src([pkginfo.assets.bower + '/**/*'])
-        .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.js));
+        .pipe(gulp.dest(dist_path + pkginfo.dist.js));
 });
 
 
@@ -90,7 +92,7 @@ gulp.task('build:styles', function () {
           .pipe(rename({
               extname: ".bundle.css"
           }))
-          .pipe(gulp.dest(pkginfo.dist.path + pkginfo.dist.styles));
+          .pipe(gulp.dest(dist_path + pkginfo.dist.styles));
     });
 });
 
@@ -102,6 +104,6 @@ gulp.task('watch', ['default'], function () {
 
 
 gulp.task('clean', function (callback) {
-    glob = pkginfo.dist.path + '/*';
+    glob = dist_path + '/*';
     del([glob, '!.gitignore'], callback);
 });

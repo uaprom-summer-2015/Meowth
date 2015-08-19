@@ -108,19 +108,21 @@ class Config:
 
 class ProductionConfig(Config):
     # Database
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', None)
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+
+    UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER")
 
     # Celery
-    CELERY_BROKER_URL = os.environ.get('REDIS_URL', None)
+    CELERY_BROKER_URL = os.environ.get('REDIS_URL')
     CELERY_BACKEND_URL = CELERY_BROKER_URL
 
     # Email
-    MAIL_SERVER = os.environ.get("MAILGUN_SMTP_SERVER", None)
-    MAIL_PORT = os.environ.get("MAILGUN_SMTP_PORT", None)
+    MAIL_SERVER = os.environ.get("MAIL_SMTP_SERVER")
+    MAIL_PORT = os.environ.get("MAIL_SMTP_PORT")
     MAIL_USE_SSL = False
-    MAIL_USERNAME = os.environ.get("MAILGUN_SMTP_LOGIN", None)
-    MAIL_PASSWORD = os.environ.get("MAILGUN_SMTP_PASSWORD", None)
-    MAIL_DEFAULT_SENDER = 'hrportal@hruaprom.herokuapp.com'
+    MAIL_USERNAME = os.environ.get("MAIL_SMTP_LOGIN")
+    MAIL_PASSWORD = os.environ.get("MAIL_SMTP_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
 
 
 class DevelopmentConfig(Config):
