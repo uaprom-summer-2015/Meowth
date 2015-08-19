@@ -1,4 +1,4 @@
-"""new conditions logic
+"""new_conditions_logic
 Revision ID: 18d21075187
 Revises: ca4cb8bb7b
 Create Date: 2015-08-14 15:02:30.883782
@@ -10,7 +10,7 @@ revision = '18d21075187'
 down_revision = 'ca4cb8bb7b'
 
 from alembic import op
-import sqlalchemy as sa
+import sqlalchemy as saco
 
 
 def upgrade():
