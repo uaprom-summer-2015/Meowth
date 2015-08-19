@@ -3,7 +3,7 @@
     var nav = document.getElementById('nav-collapsable');
     nav.style.maxHeight = "0px";
 
-    var toggle_nav = function() {
+    function toggle_nav() {
         if (nav.style.maxHeight === "0px") {
             nav.style.maxHeight = "400px";
         } else {
