@@ -119,8 +119,6 @@ class GalleryImageDetail(EntryDetail):
             form = form_class()
             if form.validate_on_submit():
                 image = request.files['image']
-                print(request.files)
-                print(request.files['image'])
                 self.model.bl.save_image(
                     image=image,
                     img_category=UploadedImage.IMG_CATEGORY.gallery,

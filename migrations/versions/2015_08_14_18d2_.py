@@ -1,5 +1,4 @@
-"""empty message
-
+"""new conditions logic
 Revision ID: 18d21075187
 Revises: ca4cb8bb7b
 Create Date: 2015-08-14 15:02:30.883782
