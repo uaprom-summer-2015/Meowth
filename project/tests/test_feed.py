@@ -2,10 +2,12 @@ from json import loads
 import os
 from unittest.mock import patch
 from flask import url_for, jsonify
+from werkzeug.exceptions import NotFound
 from config import BASEDIR
 from project.lib.feed import get_visible_vacancies_list
 from project.models import Vacancy, City, Category
 from project.tests.utils import ProjectTestCase
+from project.feed.views import get_vacancy
 from bs4 import BeautifulSoup
 
 
@@ -93,3 +95,21 @@ class TestFeedView(ProjectTestCase):
             vacancies,
             list_vacanies,
         )
+
+
+class VacancyHideDeletionTest(ProjectTestCase):
+    def test_deleted_raises_404(self):
+        pk = (
+            Vacancy.query.filter(Vacancy.condition_is_deleted)
+            .first()
+            .name_in_url
+        )
+        self.assertRaises(NotFound, get_vacancy, pk)
+
+    def test_hidden_raises_404(self):
+        pk = (
+            Vacancy.query.filter(Vacancy.condition_is_hidden)
+            .first()
+            .name_in_url
+        )
+        self.assertRaises(NotFound, get_vacancy, pk)

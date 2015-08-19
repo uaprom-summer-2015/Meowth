@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Вакансии - {% endblock %}
 {% block content %}
-    <div class="row">
-            <div class=" col-md-6 col-md-offset-3" id="vacancies"></div>
-    </div>
+    <div id="vacancies" class="container"></div>
+
     <div class="row">
 
         <div class="jumbotron">
@@ -14,4 +13,8 @@
 <script src="{{ url_for('static', filename='dist/js/feed.bundle.js') }}"
         type="text/javascript"></script>
 
+{% endblock %}
+{% block meta %}
+    {{ super() }}
+    <style> .nav li:nth-child(1) a {color: #2e2a2c; }</style>
 {% endblock %}

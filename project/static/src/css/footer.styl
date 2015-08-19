@@ -1,0 +1,70 @@
+@import mixins
+
+$font-color = #231f20
+$font-color-lighter = #3c3637
+
+footer
+  display table
+  margin 0px auto
+  -transition 0.3s
+  width 270px
+
+@media (min-width: 480px)
+  footer
+    width 430px
+
+@media (min-width: 480px)
+  footer
+    width 430px
+
+@media (min-width: 768px)
+  footer
+    width 660px
+
+@media (min-width: 1024px)
+  footer
+    width 940px
+
+.container-footer
+  color $font-color
+  display table-cell
+  font-size 14px
+  height 325px
+  position relative
+  text-align center
+  vertical-align middle
+
+@media (min-width: 768px)
+  .container-footer
+    height 205px
+
+@media (min-width: 1024px)
+  .container-footer
+    height 190px
+
+.footer-el
+  display block
+  line-height 24px
+  margin 19px auto
+  a
+    color $font-color
+    text-decoration none
+    &:hover
+      color $font-color-lighter
+      text-decoration underline
+
+.footer-center a
+  display inline-block
+  margin 0px 7px
+
+@media(min-width: 768px)
+  .footer-el
+    display inline-block
+  .footer-left
+    left 0px
+    position absolute
+    text-align left
+  .footer-right
+    position absolute
+    right 0px
+    text-align right

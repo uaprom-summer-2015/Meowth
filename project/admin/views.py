@@ -1,30 +1,31 @@
-from flask import render_template, url_for, session, redirect, jsonify
+from flask import render_template, url_for, jsonify
+
 from project.admin import forms
 from project.blueprints import admin_app
 from project.lib.admin import get_actual_vacancies_list
+from project.models import PageBlock, Page
+from project.pages.admin import PageDetail
 from project.pages.forms import PageBlockForm, PageForm
-from project.pages.utils import PageDetail
 from project.admin.utils import (
     EntryDetail, EntryList, VacancyList, GalleryImageDetail
 )
 from project.auth.forms import RegisterForm
+from project.auth.decorators import login_required
 from project import models
+from project.lib.auth import get_user_from_session
 
+from collections import namedtuple
 
+Endpoint = namedtuple('Endpoint', ['ep', 'su_only'])
 SECTIONS = {}  # list_name: list_endpoint
-
-
-@admin_app.before_request
-def check_user_logged_in():
-    if 'user_id' in session:
-        return
-
-    return redirect(url_for("auth.login"))
 
 
 def register_section(*, section_name, list_endpoint,
                      list_route, detail_route,
-                     list_view, detail_view):
+                     list_view, detail_view, su_only=False):
+    list_view = login_required(su_only=su_only)(list_view)
+    detail_view = login_required(su_only=su_only)(detail_view)
+
     admin_app.add_url_rule(list_route, view_func=list_view)
 
     admin_app.add_url_rule(
@@ -38,7 +39,7 @@ def register_section(*, section_name, list_endpoint,
         view_func=detail_view,
     )
 
-    SECTIONS[section_name] = list_endpoint
+    SECTIONS[section_name] = Endpoint(list_endpoint, su_only)
 
 
 # Vacancies
@@ -65,6 +66,14 @@ register_section(
     list_endpoint="vacancy_list",
 )
 
+
+@admin_app.route('/vacancies/list/')
+@login_required()
+def json_vacancies():
+    vacancies_list = get_actual_vacancies_list()
+    return jsonify(
+        vacancies=vacancies_list,
+    )
 
 # Categories
 category_list = EntryList.as_view(
@@ -134,6 +143,7 @@ register_section(
     list_view=user_list,
     detail_view=user_detail,
     list_endpoint="user_list",
+    su_only=True,
 )
 
 
@@ -174,6 +184,7 @@ page_view = PageDetail.as_view(
     create_form=PageForm,
     model=models.Page,
     success_url="page_list",
+    template="admin/page.html",
 )
 
 register_section(
@@ -184,6 +195,23 @@ register_section(
     detail_view=page_view,
     list_endpoint="page_list",
 )
+
+
+@admin_app.route("/page/<int:entry_id>/block_list/")
+@login_required()
+def block_list(entry_id):
+    page = Page.query.get(entry_id)
+    ids = [str(block.id) for block in page.blocks]
+    return jsonify(entries=ids)
+
+
+@admin_app.route("/pages/available_blocks/")
+@login_required()
+def available_blocks():
+    blocks = [{"value": str(block.id), "label": str(block)}
+              for block in PageBlock.query.all()]
+    return jsonify(blocks=blocks)
+
 
 # Page chunks
 pagechunk_list = EntryList.as_view(
@@ -250,7 +278,7 @@ gallery_image_detail = GalleryImageDetail.as_view(
 )
 
 register_section(
-    section_name="Галлерея",
+    section_name="Галерея",
     list_route="/gallery_images/",
     detail_route="/gallery_image/",
     list_view=gallery_images_list,
@@ -260,22 +288,16 @@ register_section(
 
 
 @admin_app.route("/")
+@login_required()
 def mainpage():
     sections = {}
+    u = get_user_from_session()
     for name, endpoint in SECTIONS.items():
-        sections[name] = url_for("admin." + endpoint)
-
+        if not endpoint.su_only or u.is_superuser():
+            sections[name] = url_for("admin." + endpoint.ep)
     return render_template(
         "admin/main.html",
         sections=sections.items(),
-    )
-
-
-@admin_app.route('/vacancies/list/')
-def json_vacancies():
-    vacancies_list = get_actual_vacancies_list()
-    return jsonify(
-        vacancies=vacancies_list,
     )
 
 

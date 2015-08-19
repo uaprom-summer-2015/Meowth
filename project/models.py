@@ -5,10 +5,12 @@ from project.extensions import db
 from project.lib.orm.types import TypeEnum, GUID
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.ext.associationproxy import association_proxy
+from project.lib.orm.conditions import ConditionDeleted, ConditionHidden
 
 
 class Vacancy(db.Model):
     __tablename__ = 'vacancies'
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     short_description = db.Column(db.String(300), nullable=False)
@@ -22,12 +24,15 @@ class Vacancy(db.Model):
     keywords = db.Column(db.String(1000))
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'))
     city = db.relationship('City', backref=db.backref('vacancies'))
-    hide = db.Column(db.Boolean, nullable=False, default=False)
-    deleted = db.Column(db.Boolean, nullable=False, default=False)
+    is_hidden = db.Column(db.Boolean, nullable=False, default=False)
+    is_deleted = db.Column(db.Boolean, nullable=False, default=False)
     updated_at = db.Column(db.DateTime, default=datetime.datetime.now,
                            onupdate=datetime.datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     who_updated = db.relationship('User')
+
+    condition_is_hidden = ConditionHidden()
+    condition_is_deleted = ConditionDeleted()
 
     bl = Resource("bl.vacancy")
 

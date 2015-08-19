@@ -1,40 +1,40 @@
 {% extends "base.html" %}
 {% from "pages/macros.html" import list_blocks %}
+
 {% block meta %}
-    <script src="{{ url_for('static', filename="dist/js/gallery.bundle.js") }}"
+    <script src="{{ url_for('static', filename='dist/js/gallery.bundle.js') }}"
             type="text/javascript"></script>
 {% endblock %}
 
+{% block gallery %}
+<div id="gallery">
+        <div class="column border borderleft"></div>
+        {% for column in images %}
+            <div class="column">
+            {% for image in column %}
+                <a href="/media/{{ image.img_category.name }}/full/{{ image.name.hex }}.{{ image.ext }}"
+                   title="{{ image.title }}">
+                     <img class="thumb" src="/media/{{ image.img_category.name }}/thumb/{{ image.name.hex }}.{{ image.ext }}"
+                          alt="{{ image.description }}">
+                </a>
+            {% endfor %}
+            </div>
+        {% endfor %}
+        <div class="column border borderright"></div>
+</div>
+{% endblock %}
 
 {% block content %}
-    <div class="jumbotron">
-        {{ pagechunks.jumbotron_mainpage|safe }}
+    <div class="container">
+        <div class="promo-banner">
+            <div class="promo-banner-text">
+                {{ pagechunks.jumbotron_mainpage|safe }}
+            </div>
+        </div>
     </div>
 
     <div class="container">
         {{ list_blocks(blocks, img_size='large') }}
-    </div>
-
-    <div class="container" id="gallery">
-        {% for image in images %}
-        <a href="/media/{{ image.img_category.name }}/full/{{ image.name.hex }}.{{ image.ext }}"
-           title="{{ image.title }}">
-             <img src="/media/{{ image.img_category.name }}/thumb/{{ image.name.hex }}.{{ image.ext }}"
-                  alt="{{ image.description }}">
-        </a>
-        {% endfor %}
-        <a href="https://farm1.static.flickr.com/304/19265407504_1b7a4422ed_b.jpg"
-           title="Broken Chain">
-            <img src="https://farm1.static.flickr.com/304/19265407504_1b7a4422ed_s.jpg">
-        </a>
-        <a href="https://farm1.static.flickr.com/313/19870634432_39e917af38_b.jpg"
-           title=".... You Make My Heart Sing ....">
-            <img src="https://farm1.static.flickr.com/313/19870634432_39e917af38_s.jpg">
-        </a>
-        <a href="https://farm1.static.flickr.com/315/19902238331_42110e4579_b.jpg"
-           title="Wood Stork Chick">
-            <img src="https://farm1.static.flickr.com/315/19902238331_42110e4579_s.jpg">
-        </a>
     </div>
 
 {% endblock %}

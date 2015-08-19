@@ -7,7 +7,6 @@ class CategoryBL(BaseBL):
 
 
 class VacancyBL(BaseBL):
-
     def visit(self):
         self.model.visits += 1
         self.save()

@@ -1,4 +1,3 @@
-from sqlalchemy import false
 from sqlconstruct import Construct
 from project.extensions import db
 from project.models import Vacancy
@@ -18,8 +17,8 @@ def get_visible_vacancies_list():
     vacancies = (
         db.session.query(vacancies_struct)
         .filter(
-            Vacancy.deleted == false(),
-            Vacancy.hide == false())
-        .all()
+            ~Vacancy.condition_is_deleted,
+            ~Vacancy.condition_is_hidden,
+        ).all()
     )
     return vacancies

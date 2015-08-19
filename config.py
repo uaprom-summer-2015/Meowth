@@ -14,6 +14,8 @@ class Config:
     CSRF = True
     CSRF_SECRET = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
 
+    JSONIFY_PRETTYPRINT_REGULAR = False
+
     UPLOAD_FOLDER = os.path.join(BASEDIR, 'media')
 
     IMG_MIMES = {

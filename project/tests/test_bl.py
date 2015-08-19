@@ -216,12 +216,12 @@ class TestVacancyBL(ProjectTestCase):
         vacancy_list = Vacancy.query.all()
 
         for vacancy in vacancy_list:
-            if vacancy.deleted:
+            if vacancy.condition_is_deleted:
                 self.assertTrue(
                     vacancy.title not in (v['title'] for v in visible_list),
                     msg='Vacancy returned by get_visible but it is deleted'
                 )
-            elif vacancy.hide:
+            elif vacancy.condition_is_hidden:
                 self.assertTrue(
                     vacancy.title not in (v['title'] for v in visible_list),
                     msg='Vacancy returned by get_visible but it is hide'
@@ -238,7 +238,7 @@ class TestVacancyBL(ProjectTestCase):
         vacancy_list = Vacancy.query.all()
 
         for vacancy in vacancy_list:
-            if vacancy.deleted:
+            if vacancy.condition_is_deleted:
                 self.assertTrue(
                     vacancy.title not in (v['title'] for v in actual_list),
                     msg='Vacancy returned by get_actual but it is deleted'

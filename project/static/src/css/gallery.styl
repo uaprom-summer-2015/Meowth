@@ -1,0 +1,58 @@
+.column
+  height 0
+  display inline-block
+
+.border
+  position absolute
+  display hidden
+  z-index 10
+
+body
+  overflow-x hidden
+
+.borderleft
+  left 0
+
+.borderright
+  right 0
+
+.thumb
+  position relative
+  width 100%
+  float left
+
+#gallery
+  width 100%
+  white-space nowrap
+  overflow scroll
+  padding 60px 0 0
+  font-size 0
+
+@media (min-width: 320px)
+  .column
+    width 33%
+    padding-bottom 133%
+
+@media (min-width: 480px)
+  .column
+    width 25%
+    padding-bottom 100%
+
+@media (min-width: 768px)
+  .column
+    width 16.66%
+    padding-bottom 66.66%
+
+@media (min-width: 1024px)
+  .column
+    width 12.5%
+    padding-bottom 50%
+
+@media (min-width: 1200px)
+  .column
+    width 10%
+    padding-bottom 40%
+
+#gallery::-webkit-scrollbar {
+    display none
+}

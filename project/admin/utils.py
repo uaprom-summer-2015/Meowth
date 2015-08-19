@@ -26,12 +26,6 @@ class EntryDetail(MethodView):
         self.template = template
         self.success_url = success_url
 
-    def _clean_data(self, data):
-
-        _data = {k: v for k, v in data.items() if k in self.model.__dict__}
-
-        return _data
-
     def get(self, entry_id):
         entry = None
         if entry_id is None:
@@ -43,6 +37,11 @@ class EntryDetail(MethodView):
 
             if entry is None:
                 abort(404)
+
+            if hasattr(entry, 'condition_is_deleted'):
+                if entry.condition_is_deleted:
+                    abort(404)
+
             entry_form = self.update_form(obj=entry)
 
         return self.render_response(
@@ -58,9 +57,9 @@ class EntryDetail(MethodView):
                 return redirect(url_for("admin." + self.success_url))
         else:
             # Update an old entry
-            instance = self.model.bl.get(entry_id)
-            form = self.update_form(obj=instance)
+            form = self.update_form()
             if form.validate_on_submit():
+                instance = self.model.bl.get(entry_id)
                 instance.bl.update(form.data)
                 return redirect(url_for("admin." + self.success_url))
 

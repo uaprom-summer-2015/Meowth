@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageOps
 import io
 from project.extensions import celery
 
@@ -9,5 +9,5 @@ def celery_make_thumbnail(path_to_original, destination, size):
     file_bytes = image.read()
     image.close()
     thumb = Image.open(io.BytesIO(file_bytes))
-    thumb.thumbnail(size, Image.LANCZOS)
+    thumb = ImageOps.fit(thumb, size, Image.ANTIALIAS)
     thumb.save(destination)
