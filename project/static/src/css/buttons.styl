@@ -1,0 +1,70 @@
+@import mixins
+
+$color-main = #12c0f3
+$color-shadow = #0c98c1
+$height = 45px
+
+.btn
+  background-color rgba(255, 255, 255, 0)
+  border 2px solid $color-main
+  -border-radius 4px
+  height $height
+  &:focus
+    outline none
+
+.btn-hamburger
+  $width = 50px
+  $line-height = 2px
+  $line-width = 20px
+  appearance none
+  cursor pointer
+  font-size 0
+  margin 0
+  overflow hidden
+  padding 0
+  position relative
+  text-indent -9999px
+  -transition background 0.3s
+  width $width
+  & span
+    background $color-main
+    display block
+    height $line-height
+    left (($width - $line-width - 4px) / 2)
+    position absolute
+    right @left
+    top (($height - $line-height - 4px) / 2)
+    -transition transform 0.3s, background 0.3s
+    &:before, &:after
+      position absolute
+      display block
+      left 0
+      width 100%
+      height $line-height
+      background-color $color-main
+      content ""
+    &:before
+      top -8px
+    &:after
+      bottom -8px
+  &.is-active, &:active
+    background-color $color-main
+    span
+      background-color white
+      &:before, &:after
+        background-color white
+  &:hover
+    span
+      -transform rotate(180deg)
+
+.btn-action-colored
+  background-color $color-main
+  -box-shadow 0px 4px $color-shadow
+  color: #ffffff
+  font-size 16px
+  line-height 20px
+  padding 0px 30px
+  -transition box-shadow 0.3s
+  white-space nowrap
+  &:active
+    -box-shadow 0px 2px $color-shadow
