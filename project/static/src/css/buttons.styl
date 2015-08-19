@@ -16,7 +16,6 @@ $height = 45px
   $width = 50px
   $line-height = 2px
   $line-width = 20px
-  appearance none
   cursor pointer
   font-size 0
   margin 0
@@ -36,13 +35,14 @@ $height = 45px
     top (($height - $line-height - 4px) / 2)
     -transition transform 0.3s, background 0.3s
     &:before, &:after
-      position absolute
-      display block
-      left 0
-      width 100%
-      height $line-height
       background-color $color-main
       content ""
+      display block
+      height $line-height
+      left 0
+      position absolute
+      -transition background 0.3s
+      width 100%
     &:before
       top -8px
     &:after
