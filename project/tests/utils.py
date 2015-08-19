@@ -4,7 +4,6 @@ from flask.ext.testing import TestCase
 from project import create_app as app_factory
 from project.extensions import db
 from project.fixtures import load_fixtures
-from project.models import User
 
 
 @contextmanager
@@ -18,10 +17,9 @@ class ProjectTestCase(TestCase):
     """
     Base class for all tests in project
     """
-    def log_in(self):
-        user = User.query.get(1)
+    def log_in(self, login='cthulhu'):
         # assume that login is equal to password
-        credentials = {"login": user.login, "password": user.login}
+        credentials = {"login": login, "password": login}
         with disable_csrf(self.app):
             self.client.post(url_for("auth.login"), data=credentials)
 

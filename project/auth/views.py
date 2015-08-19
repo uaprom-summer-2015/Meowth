@@ -56,7 +56,7 @@ def confirm_reset(token):
 
 
 @auth_app.route('/password_change', methods=['GET', 'POST'])
-@login_required
+@login_required()
 def change_password():
     form = PasswordEditForm()
     if form.validate_on_submit():
@@ -72,7 +72,8 @@ def change_password():
 
 
 @auth_app.route('/logout', methods=['GET'])
-@login_required
+@login_required()
 def logout():
     session.pop('user_id', None)
+    session.pop('user_login', None)
     return redirect(url_for('auth.login'))

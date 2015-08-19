@@ -37,6 +37,11 @@ class EntryDetail(MethodView):
 
             if entry is None:
                 abort(404)
+
+            if hasattr(entry, 'condition_is_deleted'):
+                if entry.condition_is_deleted:
+                    abort(404)
+
             entry_form = self.update_form(obj=entry)
 
         return self.render_response(

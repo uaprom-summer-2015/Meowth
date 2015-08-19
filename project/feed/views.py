@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, current_app
+from flask import render_template, jsonify, current_app, abort
 from project.blueprints import feed_app
 from project.lib.feed import get_visible_vacancies_list
 from project.models import Vacancy, Category, City
@@ -14,6 +14,8 @@ def vacancies():
 @feed_app.route('/<name_in_url>/')
 def get_vacancy(name_in_url):
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
+    if vacancy.condition_is_deleted or vacancy.condition_is_hidden:
+        abort(404)
     vacancy.bl.visit()
     return render_template(
         'feed/reactvacancy.html',

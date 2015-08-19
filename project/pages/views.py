@@ -3,7 +3,12 @@ from project.blueprints import pages_app
 from project.models import Page, UploadedImage
 
 
-# All pages are hardcoded for now
+def chunks(lst, n):
+    """Yield n-sized parts from lst
+    ([0,1,2,3,4,5,6,7,8], 3) -> [[0,1,2],[3,4,5],[6,7,8]]"""
+    for i in range(0, len(lst), n):
+        yield lst[i:i+n]
+
 
 @pages_app.route("/")
 def mainpage():
@@ -18,7 +23,7 @@ def mainpage():
     return render_template(
         'pages/mainpage.html',
         blocks=page.blocks,
-        images=images,
+        images=chunks(images, 4),
     )
 
 
