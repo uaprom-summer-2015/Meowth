@@ -31,7 +31,6 @@ StaticCommand = Manager(usage='Commands to build static')
     default=False,
     help='Do not ask user anything',
 )
-
 def npm(noinput=False):
     """ Run npm install script """
     with perform(

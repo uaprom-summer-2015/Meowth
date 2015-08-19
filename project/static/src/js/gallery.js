@@ -1,16 +1,5 @@
 var $ = require('npm-zepto');
 
-function isElementInViewport(el) {
-    el = el[0]
-    var rect = el.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
-
 $.fn.scrollToLeft = function(duration) {
     var $el = this;
     var el  = $el[0];
@@ -52,8 +41,6 @@ $.fn.scrollToRight = function(duration) {
     }
     scroll();
 };
-
-
 
 
 document.addEventListener("DOMContentLoaded", (function () {
