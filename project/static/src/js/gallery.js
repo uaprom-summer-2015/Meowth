@@ -60,21 +60,21 @@ document.addEventListener("DOMContentLoaded", (function () {
         }
     });
 
-    $('.border').on('mouseenter', function(e) {
-        console.dir(e.target);
-        if (e.target.classList.contains('borderright')) {
+    gal = document.getElementById('gallery');
+    gal.addEventListener('mousemove', function(e) {
+        if (e.screenX > window.innerWidth*0.6) {
+            $('#gallery').removeClass('playleft');
             $('#gallery').addClass('playright');
             $('#gallery').scrollToLeft(30000);
-        } else {
+        }
+        if (e.screenX < window.innerWidth*0.4) {
+            $('#gallery').removeClass('playright');
             $('#gallery').addClass('playleft');
             $('#gallery').scrollToRight(30000);
         }
-    }).on('mouseleave', function(e) {
-        if (e.target.classList.contains('borderright')) {
-            $('#gallery').removeClass('playright');
-        } else {
-            $('#gallery').removeClass('playleft');
-        }
+    });
+    gal.addEventListener('mouseleave', function(e) {
+        $('#gallery').removeClass('playright playleft');
     });
 
 }));
