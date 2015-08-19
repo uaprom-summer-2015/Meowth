@@ -10,3 +10,7 @@
         <iframe src="{{ pagechunks.map_url }}" class="center-block" width="640" height="480"></iframe>
     </div>
 {% endblock %}
+{% block meta %}
+    {{ super() }}
+    <style> .nav li:nth-child(4) a {color: #2e2a2c; }</style>
+{% endblock %}
