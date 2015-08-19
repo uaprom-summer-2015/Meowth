@@ -59,6 +59,8 @@ class UploadedImageBL(BaseBL):
         )
         thumbnail = category_dir / 'thumb' / name
         fullsized = category_dir / 'full' / name
-        thumbnail.unlink()
-        fullsized.unlink()
+        if thumbnail.exists():
+            thumbnail.unlink()
+        if fullsized.exists():
+            fullsized.unlink()
         super().delete()
