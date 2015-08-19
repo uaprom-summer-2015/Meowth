@@ -1,0 +1,123 @@
+@import mixins
+
+$color-grey = #3c3939
+$color-separator = #eeeeee
+$color-main = #12c0f3
+$color-a-hover = #2e2a2c
+$color-nav-shadow = #f2f2f2
+
+header
+  display table
+  height 140px
+  .logo
+    background-image url('/static/img/hr-main-logo.png')
+    background-size 100% 100%
+    border 0 none
+    float left
+    height 70px
+    padding 0
+    position relative
+    width 160px
+    > span
+      bottom 0
+      color $color-grey
+      font-size 14px
+      left 34px
+      position absolute
+  .nav-horizontal, .nav-horizontal li
+    display none
+  .navbar
+    margin-left 30px
+    button
+      display inline-block
+      &.btn-hamburger
+        float right
+  .btn-action-colored
+    display none
+  & .container-header:nth-child(2)
+    width 100%
+
+@media(min-width: 768px)
+  header button
+    &.btn-action-colored
+      display inline-block
+      float right
+  .navbar
+    float left
+
+@media(min-width: 1024px)
+  header .navbar
+    margin-left 60px
+    margin-right 60px
+    width calc(100% - 120px)
+    .btn-hamburger
+      display none
+    .nav-horizontal
+      display inline-block
+      padding-left 0
+      width 100%
+      li
+        display inline-block
+        text-align center
+        width 24%
+
+.container-header
+  display table-cell
+  vertical-align middle
+
+.nav
+  a
+    color $color-main
+    text-decoration none
+    -transition color 0.3s
+    &:hover
+      color $color-a-hover
+    &.is-active
+      color $color-a-hover
+
+nav
+  height auto
+  border-bottom 4px solid $color-nav-shadow
+  overflow hidden
+  padding 0
+  margin 0
+  width 100%
+  .nav-vertical
+    list-style none
+    margin-bottom 0
+    padding-left 0
+    li
+      border-bottom 1px solid $color-separator
+      height 60px
+      text-align center
+      -transition 0.3s
+      vertical-align middle
+      &:first-child
+        border-top 1px solid $color-separator
+      &:before
+        content ""
+        display inline-block
+        height 100%
+        vertical-align middle
+      &:last-child
+        height 115px
+        outline-bottom 4px solid #f2f2f2
+        .btn-action-colored
+          width 270px
+
+@media(min-width: 480px)
+  nav .nav-vertical li:last-child .btn-action-colored
+    width 430px
+
+@media(min-width: 768px)
+  nav .nav-vertical li
+    a
+      display inline-block
+      text-align left
+      width 660px
+    &:last-child
+      display none
+
+@media(min-width: 1024px)
+  nav
+    display none
