@@ -15,3 +15,7 @@
         type="text/javascript"></script>
 
 {% endblock %}
+{% block meta %}
+    {{ super() }}
+    <style> .nav li:nth-child(1) a {color: #2e2a2c; }</style>
+{% endblock %}
