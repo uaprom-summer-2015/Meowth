@@ -2,47 +2,109 @@
   font-size 20px
   font-weight bold
 
-.vacancyTitle, .vacancySalary, .vacancyCity
-  margin 0 0 7px
-
-.vacancyCity
-  font-size 16px
-
 .Select
   margin-bottom 15px
+  display inline-block
+  width 100%
+
+.categoryDropdown
+  margin-right 10px
 
 .Select-control
-  box-shadow 2px 3.464px 0px 0px rgb( 242, 242, 242 )
+  box-shadow 0 4px 0px 0px rgb( 242, 242, 242 )
 
 .vacancyButton
   display none
+  position absolute
+  background url('/static/img/grey-arrow-down.png') no-repeat
+  width 30px
+  height 19px
+  left -46px
+  top 38px
+  border none 0
+  &:focus
+    outline none
+  &.pressed
+    -transform rotate(180deg)
+  &:hover
+    -filter brightness(80%)
 
-.vacancyNodeCompressed
+.vacancyNodeCompressed, .vacancyNodeExpanded
+  clear both
   padding 35px 0
   border-bottom solid 2px rgb(238,238,238)
+  position relative
+
+.vacancyDescr
+  clear both
+  padding-top 1px
+
+.vacancyDescr p
+  margin-top 0
+  line-height 25px
 
 .vacancyList div:nth-last-child(2)
   border-bottom none 0
 
-.vacancy-hr
-  margin-top 40px
-  border none
-  color rgb(238,238,238)
-  background-color rgb(238,238,238)
-  height 2px
+.goToVacancyButton
+  padding 13px 25px 15px
 
 .page
   padding 10px 19px
   display inline-block
-
-.page.selected
-  border solid 1px rgb(204,204,204)
-  border-radius 4px
-  box-shadow 2px 3.464px 0px 0px rgb( 242, 242, 242 )
-  color rgb(42, 42, 42)
+  cursor pointer
+  &.selected
+    border solid 1px rgb(204,204,204)
+    border-radius 4px
+    box-shadow 0 4px 0px 0px rgb( 242, 242, 242 )
+    color rgb(42, 42, 42)
+    cursor default
 
 .paginator
+  clear both
   font-size 20px
   width 100%
   text-align center
   margin 10px 0 40px
+
+
+@media (min-width 480px)
+
+  .Select
+    width 210px
+
+  .vacancyNodeCompressed, .vacancyNodeExpanded
+    margin-left 45px
+    width 385px
+    float left
+
+  .vacancyTitle-City
+    float left
+
+  .vacancySalary
+    float right
+
+  .vacancyButton
+    display block
+
+
+@media (min-width 768px)
+
+  .vacancyBox
+    width 525px
+    margin-left auto
+    margin-right auto
+
+  .vacancyNodeCompressed, .vacancyNodeExpanded
+    width 480px
+    margin-left 30px
+
+  .categoryDropdown
+    margin-left 30px
+
+  .Select
+    width 235px
+
+  .paginator
+    text-align left
+    margin-left 30px

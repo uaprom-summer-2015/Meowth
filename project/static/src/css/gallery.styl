@@ -7,9 +7,6 @@
   display hidden
   z-index 10
 
-body
-  overflow-x hidden
-
 .borderleft
   left 0
 
@@ -24,9 +21,11 @@ body
 #gallery
   width 100%
   white-space nowrap
-  overflow scroll
-  padding 60px 0 0
+  overflow-x scroll
+  padding 15px 0 15px
+  margin-top 60px
   font-size 0
+
 
 @media (min-width: 320px)
   .column
@@ -53,6 +52,9 @@ body
     width 10%
     padding-bottom 40%
 
-#gallery::-webkit-scrollbar {
-    display none
-}
+#gallery::-webkit-scrollbar
+  display none
+
+.thumb:hover
+  outline 15px solid #12c0f3
+  z-index 10

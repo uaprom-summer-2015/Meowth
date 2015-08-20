@@ -4,6 +4,9 @@ $color-main = #12c0f3
 $color-shadow = #0c98c1
 $height = 45px
 
+button
+  cursor pointer
+
 .btn
   background-color rgba(255, 255, 255, 0)
   border 2px solid $color-main
@@ -11,12 +14,13 @@ $height = 45px
   height $height
   &:focus
     outline none
+  &.blue
+    color $color-main
 
 .btn-hamburger
   $width = 50px
   $line-height = 2px
   $line-width = 20px
-  cursor pointer
   font-size 0
   margin 0
   overflow hidden
