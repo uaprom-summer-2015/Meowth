@@ -107,6 +107,7 @@ var VacancyNodeCompressed = React.createClass({displayName: "VacancyNodeCompress
             return n.name;
         });
         return (
+            // FIXME: fix class names (vacancyCity -> vacancy-city)
             React.DOM.div({className: "vacancyNodeCompressed"},
                 React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}),
                 React.DOM.div({className: 'vacancyTitle-City'},
