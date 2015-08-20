@@ -89,7 +89,27 @@ def drop(drop_all=False):
     default=False,
     help='Drop ALL tables in database',
 )
-def init(populate_after_init=False, directory=None, drop_all=False):
+@DBUtilsCommand.option(
+    '--load-images',
+    dest="load_gallery_images",
+    action='store_true',
+    default=False,
+    help='Load dummy images to gallery',
+)
+@DBUtilsCommand.option(
+    '--image-count',
+    dest="image_count",
+    default=100,
+    help='Number of images to be loaded into gallery',
+    type=int,
+)
+def init(
+    populate_after_init=False,
+    directory=None,
+    drop_all=False,
+    load_gallery_images=False,
+    image_count=100,
+):
     """ Create a new clean database
     """
 
@@ -101,6 +121,8 @@ def init(populate_after_init=False, directory=None, drop_all=False):
         migrate_upgrade()
     if populate_after_init:
         populate(directory)
+    if load_gallery_images:
+        load_images(image_count)
 
 
 @DBUtilsCommand.option(
