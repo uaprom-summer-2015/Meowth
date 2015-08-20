@@ -1,9 +1,11 @@
 from flask import current_app
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, upgrade as migrate_upgrade
+from werkzeug.datastructures import FileStorage
 
 from commands.utils import perform
 from project.fixtures import load_fixtures
+from project.models import UploadedImage
 
 
 class _DBUtilsConfig(object):
@@ -88,7 +90,27 @@ def drop(drop_all=False):
     default=False,
     help='Drop ALL tables in database',
 )
-def init(populate_after_init=False, directory=None, drop_all=False):
+@DBUtilsCommand.option(
+    '--dummy_images',
+    dest='load_dummy_images',
+    action='store_true',
+    default=False,
+    help='Load dummy images',
+)
+@DBUtilsCommand.option(
+    '-c', '--count',
+    dest='image_count',
+    default=100,
+    help='Number of dummy images to be loaded',
+    type=int,
+)
+def init(
+    populate_after_init=False,
+    directory=None,
+    drop_all=False,
+    load_dummy_images=False,
+    image_count=100,
+):
     """ Create a new clean database
     """
 
@@ -100,6 +122,8 @@ def init(populate_after_init=False, directory=None, drop_all=False):
         migrate_upgrade()
     if populate_after_init:
         populate(directory)
+    if load_dummy_images:
+        load_images(image_count)
 
 
 @DBUtilsCommand.option(
@@ -120,3 +144,27 @@ def populate(directory=None):
         fail='Error occured while loading fixtures',
     ):
         load_fixtures(directory)
+
+
+@DBUtilsCommand.option(
+    '-c', '--count',
+    dest='count',
+    default=100,
+    help='Count of images to upload',
+    type=int,
+)
+def load_images(count=100):
+    """ Load images to database and save them in filesystem
+    """
+    with perform(
+        name='dbutils load_images',
+        before='Loading %d dummy images' % count,
+        fail='Error occured while loading images',
+    ):
+        for _ in range(count):
+            with open('testdata/images/face-2.jpg', 'rb') as fp:
+                file = FileStorage(fp)
+                UploadedImage.bl.save_image(
+                    image=file,
+                    img_category=UploadedImage.IMG_CATEGORY.gallery,
+                )
