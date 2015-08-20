@@ -1,6 +1,5 @@
 from werkzeug.datastructures import FileStorage
 from project.models import UploadedImage
-from unittest.mock import patch
 
 
 def load_images(count=100):
