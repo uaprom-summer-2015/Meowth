@@ -1,9 +1,9 @@
-from project import app
 from werkzeug.datastructures import FileStorage
 from project.models import UploadedImage
 
-with app.app_context():
-    for _ in range(100):
+
+def load_images(count=100):
+    for _ in range(count):
         with open('testdata/face-2.jpg', 'rb') as fp:
             file = FileStorage(fp)
             UploadedImage.bl.save_image(
