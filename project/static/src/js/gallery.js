@@ -15,7 +15,7 @@ $.fn.scrollToLeft = function(duration) {
         el.scrollLeft = delta * fraction + startPosition;
 
         if (fraction < 1 && $el.hasClass('playright'))  {
-            setTimeout(scroll, 10);
+            setTimeout(scroll, 15);
         }
     }
     scroll();
@@ -36,7 +36,7 @@ $.fn.scrollToRight = function(duration) {
         el.scrollLeft = startPosition - delta * fraction;
 
         if (fraction < 1 && $el.hasClass('playleft'))  {
-            setTimeout(scroll, 10);
+            setTimeout(scroll, 15);
         }
     }
     scroll();
@@ -59,22 +59,23 @@ document.addEventListener("DOMContentLoaded", (function () {
             preload: [1, 1]
         }
     });
-
-    $('.border').on('mouseenter', function(e) {
-        console.dir(e.target);
-        if (e.target.classList.contains('borderright')) {
-            $('#gallery').addClass('playright');
-            $('#gallery').scrollToLeft(30000);
-        } else {
-            $('#gallery').addClass('playleft');
-            $('#gallery').scrollToRight(30000);
-        }
-    }).on('mouseleave', function(e) {
-        if (e.target.classList.contains('borderright')) {
-            $('#gallery').removeClass('playright');
-        } else {
+    $("#gallery").css("overflow-x","hidden");
+    $("#gallery").css("overflow-y","hidden");
+    gal = document.getElementById('gallery');
+    gal.addEventListener('mousemove', function(e) {
+        if (e.screenX > window.innerWidth*0.6) {
             $('#gallery').removeClass('playleft');
+            $('#gallery').addClass('playright');
+            $('#gallery').scrollToLeft(15000);
         }
+        if (e.screenX < window.innerWidth*0.4) {
+            $('#gallery').removeClass('playright');
+            $('#gallery').addClass('playleft');
+            $('#gallery').scrollToRight(15000);
+        }
+    });
+    gal.addEventListener('mouseleave', function(e) {
+        $('#gallery').removeClass('playright playleft');
     });
 
 }));
