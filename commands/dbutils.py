@@ -4,6 +4,7 @@ from flask.ext.migrate import Migrate, upgrade as migrate_upgrade
 
 from commands.utils import perform
 from project.fixtures import load_fixtures
+from project.gallery import load_images as load_dummy_images
 
 
 class _DBUtilsConfig(object):
@@ -88,7 +89,27 @@ def drop(drop_all=False):
     default=False,
     help='Drop ALL tables in database',
 )
-def init(populate_after_init=False, directory=None, drop_all=False):
+@DBUtilsCommand.option(
+    '--load-images',
+    dest="load_gallery_images",
+    action='store_true',
+    default=False,
+    help='Load dummy images to gallery',
+)
+@DBUtilsCommand.option(
+    '--image-count',
+    dest="image_count",
+    default=100,
+    help='Number of images to be loaded into gallery',
+    type=int,
+)
+def init(
+    populate_after_init=False,
+    directory=None,
+    drop_all=False,
+    load_gallery_images=False,
+    image_count=100,
+):
     """ Create a new clean database
     """
 
@@ -100,6 +121,8 @@ def init(populate_after_init=False, directory=None, drop_all=False):
         migrate_upgrade()
     if populate_after_init:
         populate(directory)
+    if load_gallery_images:
+        load_images(image_count)
 
 
 @DBUtilsCommand.option(
@@ -120,3 +143,22 @@ def populate(directory=None):
         fail='Error occured while loading fixtures',
     ):
         load_fixtures(directory)
+
+
+@DBUtilsCommand.option(
+    '-c', '--count',
+    dest='count',
+    default=100,
+    help='Number of dummy images to be loaded',
+    type=int,
+)
+def load_images(count=100):
+    """ Load dummy images to populate gallery
+    """
+
+    with perform(
+        name='dbutils load_images',
+        before='Loading %d dummy images to gallery' % count,
+        fail='Error occured while loading images to gallery',
+    ):
+        load_dummy_images(count)

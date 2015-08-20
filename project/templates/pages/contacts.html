@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="container">
-        {{ list_blocks(blocks, img_size='small') }}
+        {{ list_blocks(blocks) }}
     </div>
 
     <div class="center-block row">
@@ -12,5 +12,6 @@
 {% endblock %}
 {% block meta %}
     {{ super() }}
+    {# FIXME: remove template inline styles #}
     <style> .nav li:nth-child(4) a {color: #2e2a2c; }</style>
 {% endblock %}
