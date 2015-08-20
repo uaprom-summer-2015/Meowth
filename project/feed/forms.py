@@ -31,4 +31,3 @@ def apply_form_factory(config):
             validators=[AllowedMime(config['DOC_MIMES'])]
         )
     return ApplyForm
-

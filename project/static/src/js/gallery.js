@@ -15,7 +15,7 @@ $.fn.scrollToLeft = function(duration) {
         el.scrollLeft = delta * fraction + startPosition;
 
         if (fraction < 1 && $el.hasClass('playright'))  {
-            setTimeout(scroll, 10);
+            setTimeout(scroll, 15);
         }
     }
     scroll();
@@ -36,7 +36,7 @@ $.fn.scrollToRight = function(duration) {
         el.scrollLeft = startPosition - delta * fraction;
 
         if (fraction < 1 && $el.hasClass('playleft'))  {
-            setTimeout(scroll, 8);
+            setTimeout(scroll, 15);
         }
     }
     scroll();
@@ -66,12 +66,12 @@ document.addEventListener("DOMContentLoaded", (function () {
         if (e.screenX > window.innerWidth*0.6) {
             $('#gallery').removeClass('playleft');
             $('#gallery').addClass('playright');
-            $('#gallery').scrollToLeft(30000);
+            $('#gallery').scrollToLeft(15000);
         }
         if (e.screenX < window.innerWidth*0.4) {
             $('#gallery').removeClass('playright');
             $('#gallery').addClass('playleft');
-            $('#gallery').scrollToRight(30000);
+            $('#gallery').scrollToRight(15000);
         }
     });
     gal.addEventListener('mouseleave', function(e) {
