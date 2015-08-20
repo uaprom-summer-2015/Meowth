@@ -4,7 +4,7 @@
             <img class="img-responsive" src="{{ block.image }}" alt="...">
         </div>
         <div class="pageblock-content">
-            <h4>{{ block.title }}</h4>
+            <h1>{{ block.title }}</h1>
             {{ block.text|safe }}
         </div>
     </div>
@@ -13,7 +13,7 @@
 {% macro block_with_image_right(block) -%}
     <div class="pageblock">
         <div class="pageblock-content">
-            <h4>{{ block.title }}</h4>
+            <h1>{{ block.title }}</h1>
             {{ block.text|safe }}
         </div><!--
         --><div class="pageblock-image">
@@ -25,7 +25,7 @@
 {% macro block_with_no_image(block) -%}
     <div class="pageblock">
         <div class="pageblock-content">
-            <h4>{{ block.title }}</h4>
+            <h1>{{ block.title }}</h1>
             {{ block.text|safe }}
         </div>
     </div>
