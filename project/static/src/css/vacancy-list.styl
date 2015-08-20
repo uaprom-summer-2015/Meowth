@@ -11,7 +11,7 @@
   margin-right 10px
 
 .Select-control
-  box-shadow 2px 3.464px 0px 0px rgb( 242, 242, 242 )
+  box-shadow 0 4px 0px 0px rgb( 242, 242, 242 )
 
 .vacancyButton
   display none
@@ -56,11 +56,12 @@
   &.selected
     border solid 1px rgb(204,204,204)
     border-radius 4px
-    box-shadow 2px 3.464px 0px 0px rgb( 242, 242, 242 )
+    box-shadow 0 4px 0px 0px rgb( 242, 242, 242 )
     color rgb(42, 42, 42)
     cursor default
 
 .paginator
+  clear both
   font-size 20px
   width 100%
   text-align center
@@ -90,4 +91,20 @@
 @media (min-width 768px)
 
   .vacancyBox
+    width 525px
+    margin-left auto
+    margin-right auto
+
+  .vacancyNodeCompressed, .vacancyNodeExpanded
     width 480px
+    margin-left 30px
+
+  .categoryDropdown
+    margin-left 30px
+
+  .Select
+    width 235px
+
+  .paginator
+    text-align left
+    margin-left 30px
