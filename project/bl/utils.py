@@ -49,7 +49,7 @@ class BaseBL:
 
     def create(self, data):
         model = self.model(**data)
-        self.save()
+        model.bl.save()
         return model
 
     def update(self, data):

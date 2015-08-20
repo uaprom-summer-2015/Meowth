@@ -4,8 +4,37 @@ from project.bl import UserBL
 from project.lib.admin import get_actual_vacancies_list
 from project.lib.feed import get_visible_vacancies_list
 from project.tests.utils import ProjectTestCase
-from project.models import User, Vacancy
+from project.models import Category, User, Vacancy
 import re
+from uuid import uuid4
+
+
+class TestBaseBL(ProjectTestCase):
+    """ Tests `create` and `update` methods of BaseBL
+        Using Category's BL for this as it is BaseBL
+    """
+
+    def test_create(self):
+        """ Actually the purpose of this test is to check if BL won't fail
+        """
+        data = {
+            'name': uuid4().hex,
+        }
+        result = Category.bl.create(data)
+        self.assertEqual(result.name, data['name'])
+        db_entry = Category.query.filter(Category.name == data['name']).one()
+        self.assertEqual(result, db_entry)
+
+    def test_update(self):
+        """ Actually the purpose of this test is to check if BL won't fail
+        """
+        data = {
+            'name': uuid4().hex,
+        }
+        result = Category.bl.create(data)
+        data['name'] = uuid4().hex
+        updated = result.bl.update(data)
+        self.assertEqual(updated.name, data['name'])
 
 
 class TestUserBlResetPassword(ProjectTestCase):
