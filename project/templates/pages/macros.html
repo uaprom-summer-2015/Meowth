@@ -1,81 +1,32 @@
-{% macro block_with_image_left(block, img_size='medium') -%}
-{% if img_size == 'small' %}
-    {% set img_size = 3 %}
-{% elif img_size == 'medium' %}
-    {% set img_size = 4 %}
-{% elif img_size == 'large' %}
-    {% set img_size = 6 %}
-{% else %}
-    {% set img_size = 4 %}
-{% endif %}
-    <div class="row">
-        <div class="col-md-{{ img_size }}">
-            <img class="img-responsive" src="{{ block.image }}" alt="...">
-        </div><!--
-        --><div class="col-md-{{ 12 - img_size }}">
-            <h4>{{ block.title }}</h4>
-            {{ block.text|safe }}
-        </div>
-    </div>
-{%- endmacro %}
+{% macro display_block(block) -%}
 
-{% macro block_with_image_right(block, img_size='medium') -%}
- {% if img_size == 'small' %}
-    {% set img_size = 3 %}
-{% elif img_size == 'medium' %}
-    {% set img_size = 4 %}
-{% elif img_size == 'large' %}
-    {% set img_size = 6 %}
+{% if block.block_type == block.TYPE.no_img %}
+    {% set image_type = 'pageblock-no-image' %}
+{% elif block.block_type == block.TYPE.img_left %}
+    {% set image_type = 'pageblock-image-left' %}
+{% elif block.block_type == block.TYPE.img_right %}
+    {% set image_type = "pageblock-image-right" %}
 {% else %}
-    {% set img_size = 4 %}
+    {% set image_type = "" %}
 {% endif %}
-    <div class="row">
-        <div class="col-md-{{ 12 - img_size }}">
-            <h4>{{ block.title }}</h4>
-            {{ block.text|safe }}
-        </div><!--
-        --><div class="col-md-{{ img_size }}">
+
+<div class="pageblock {{ image_type }}">
+    <div class="pageblock-content">
+        <h1>{{ block.title }}</h1>
+        {{ block.text|safe }}
+    </div>
+    {% if block.block_type != block.TYPE.no_img %}
+        <div class="pageblock-image">
             <img class="img-responsive" src="{{ block.image }}" alt="...">
         </div>
-    </div>
-{%- endmacro %}
-
-{% macro block_with_no_image(block) -%}
-{% if img_size == 'small' %}
-    {% set img_size = 3 %}
-{% elif img_size == 'medium' %}
-    {% set img_size = 4 %}
-{% elif img_size == 'large' %}
-    {% set img_size = 6 %}
-{% else %}
-    {% set img_size = 4 %}
-{% endif %}
-    <div class="row">
-        <div class="col-md-12">
-            <h4>{{ block.title }}</h4>
-            {{ block.text|safe }}
-        </div>
-    </div>
-{%- endmacro %}
-
-{% macro not_implemented_yet(block) -%}
-    <!--{{ block.block_type }} is not implemented yet-->
-{%- endmacro %}
-
-{% macro display_block(block, img_size='medium') -%}
-    {% if block.block_type == block.TYPE.no_img %}
-        {{ block_with_no_image(block) }}
-    {% elif block.block_type == block.TYPE.img_left %}
-        {{ block_with_image_left(block, img_size=img_size) }}
-    {% elif block.block_type == block.TYPE.img_right %}
-        {{ block_with_image_right(block, img_size=img_size) }}
-    {% else %}
-        {{ not_implemented_yet(block) }}
     {% endif %}
+</div>
+
+{{ another }}
 {%- endmacro %}
 
-{% macro list_blocks(blocks, img_size='medium') -%}
+{% macro list_blocks(blocks) -%}
     {% for block in blocks %}
-        {{ display_block(block, img_size=img_size) }}
+        {{ display_block(block) }}
     {% endfor %}
 {%- endmacro %}
