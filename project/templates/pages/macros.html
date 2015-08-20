@@ -1,26 +1,28 @@
 {% macro display_block(block) -%}
 
-    {% if block.block_type == block.TYPE.no_img %}
-        {% set image_type = 'pageblock-no-image' %}
-    {% elif block.block_type == block.TYPE.img_left %}
-        {% set image_type = 'pageblock-image-left' %}
-    {% elif block.block_type == block.TYPE.img_right %}
-        {% set image_type = "pageblock-image-right" %}
-    {% else %}
-        {% set image_type = "" %}
-    {% endif %}
+{% if block.block_type == block.TYPE.no_img %}
+    {% set image_type = 'pageblock-no-image' %}
+{% elif block.block_type == block.TYPE.img_left %}
+    {% set image_type = 'pageblock-image-left' %}
+{% elif block.block_type == block.TYPE.img_right %}
+    {% set image_type = "pageblock-image-right" %}
+{% else %}
+    {% set image_type = "" %}
+{% endif %}
 
-    <div class="pageblock {{ image_type }}">
-        <div class="pageblock-content">
-            <h1>{{ block.title }}</h1>
-            {{ block.text|safe }}
-        </div>
+<div class="pageblock {{ image_type }}">
+    <div class="pageblock-content">
+        <h1>{{ block.title }}</h1>
+        {{ block.text|safe }}
+    </div>
+    {% if block.block_type != block.TYPE.no_img %}
         <div class="pageblock-image">
             <img class="img-responsive" src="{{ block.image }}" alt="...">
         </div>
-    </div>
+    {% endif %}
+</div>
 
-    {{ another }}
+{{ another }}
 {%- endmacro %}
 
 {% macro list_blocks(blocks) -%}
