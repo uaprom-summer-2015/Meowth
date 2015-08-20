@@ -1,6 +1,7 @@
 var React = require('react'),
     navigate = require('react-mini-router').navigate,
-    Select = require('react-select');
+    Select = require('react-select'),
+    classNames = require('classnames');
 
 var $ = require('npm-zepto');
 
@@ -74,10 +75,12 @@ var ExpandButton = React.createClass({displayName: "ExpandButton",
         this.props.click(e);
     },
     render: function() {
-        return (React.DOM.button({type: "button", onClick: this.handleClick, className: "vacancyButton btn btn-info btn-circle", "aria-label": "Left Align"},
-                 React.DOM.span({className: this.props.expanded ? "glyphicon glyphicon-menu-up" : "glyphicon glyphicon-menu-down"}
-                 )
-                ));
+        className = classNames({
+            'vacancyButton': true,
+            'pressed': this.props.expanded
+        });
+        return (React.DOM.button({type: "button", onClick: this.handleClick,
+            className: className, "aria-label": "Left Align"}, null));
     }
 });
 
@@ -104,10 +107,13 @@ var VacancyNodeCompressed = React.createClass({displayName: "VacancyNodeCompress
             return n.name;
         });
         return (
-            React.DOM.div({className: "panel panel-default vacancyNodeCompressed"},
+            React.DOM.div({className: "vacancyNodeCompressed"},
                 React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}),
-                React.DOM.p({className: "vacancyTitle"}, " ", React.createElement("a", {href: this.state.data.name_in_url}, this.state.data.title)),
-                React.DOM.p({className: "vacancyCity"}, city), " ", React.createElement("p", {className: "vacancySalary"}, this.state.data.salary)
+                React.DOM.div({className: 'vacancyTitle-City'},
+                    React.DOM.a({href: this.state.data.name_in_url, className: "vacancyTitle"}, this.state.data.title),
+                    React.DOM.p({className: "vacancyCity"}, city)
+                ),
+                React.DOM.div({className: "vacancySalary"}, this.state.data.salary)
             )
         );
     }
@@ -140,12 +146,17 @@ var VacancyNodeExpanded = React.createClass({displayName: "VacancyNodeExpanded",
             return n.name;
         });
         return (
-            React.DOM.div({className: "panel panel-default vacancyNodeExpanded"},
-            React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}),
-            React.DOM.p({className: "vacancyTitle"}, " ", React.createElement("a", {href: this.state.data.name_in_url}, this.state.data.title)),
-            React.DOM.p({className: "vacancyCity"}, city), " ", React.createElement("p", {className: "vacancySalary"}, this.state.data.salary),
-            React.DOM.p({className: "vacancyDescr"}, this.state.data.short_description),
-            React.DOM.button({type: "button", onClick: this.handleToVacancyClick, className: "btn btn-info goToVacancyButton"}, "Перейти к вакансии")
+            React.DOM.div({className: "vacancyNodeExpanded"},
+                React.createElement(ExpandButton, {expanded: this.props.expanded, ref: "button", click: this.handleButtonClick}),
+                React.DOM.div({className: 'vacancyTitle-City'},
+                    React.DOM.a({className: "vacancyTitle", href: this.state.data.name_in_url}, this.state.data.title),
+                    React.DOM.p({className: "vacancyCity"}, city)
+                ),
+                React.DOM.div({className: "vacancySalary"}, this.state.data.salary),
+                React.DOM.div({className: "vacancyDescr"},
+                    React.DOM.p(null, this.state.data.short_description)
+                ),
+                React.DOM.button({type: "button", onClick: this.handleToVacancyClick, className: "btn blue goToVacancyButton"}, "Перейти к вакансии")
             )
         );
     }
