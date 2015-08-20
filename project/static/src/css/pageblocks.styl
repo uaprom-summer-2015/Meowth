@@ -16,11 +16,21 @@
 
 
 @media (min-width 768px)
-  .pageblock-image
+  .pageblock > div
+    width 45%
+
+  .pageblock-image-left > .pageblock-image
+    float left
+  .pageblock-image-left > .pageblock-content
+    float right
+
+  .pageblock-image-right > .pageblock-image
+    float right
+  .pageblock-image-right > .pageblock-content
     float left
 
-  .pageblock-content
-    float right
+  .pageblock-no-image > .pageblock-content
+    width 100%
 
   .pageblock-content h1
     margin-top 0
@@ -30,6 +40,3 @@
     clear both
     height 100%
     margin-bottom 3em
-
-  .pageblock > div
-    width 45%
