@@ -4,6 +4,7 @@ from flask.ext.migrate import Migrate, upgrade as migrate_upgrade
 
 from commands.utils import perform
 from project.fixtures import load_fixtures
+from project.gallery import load_images as load_dummy_images
 
 
 class _DBUtilsConfig(object):
@@ -120,3 +121,22 @@ def populate(directory=None):
         fail='Error occured while loading fixtures',
     ):
         load_fixtures(directory)
+
+
+@DBUtilsCommand.option(
+    '-c', '--count',
+    dest='count',
+    default=100,
+    help='Number of dummy images to be loaded',
+    type=int,
+)
+def load_images(count=100):
+    """ Load dummy images to populate gallery
+    """
+
+    with perform(
+        name='dbutils load_images',
+        before='Loading %d dummy images to gallery' % count,
+        fail='Error occured while loading images to gallery',
+    ):
+        load_dummy_images(count)
