@@ -36,7 +36,7 @@ $.fn.scrollToRight = function(duration) {
         el.scrollLeft = startPosition - delta * fraction;
 
         if (fraction < 1 && $el.hasClass('playleft'))  {
-            setTimeout(scroll, 10);
+            setTimeout(scroll, 8);
         }
     }
     scroll();
@@ -59,7 +59,8 @@ document.addEventListener("DOMContentLoaded", (function () {
             preload: [1, 1]
         }
     });
-
+    $("#gallery").css("overflow-x","hidden");
+    $("#gallery").css("overflow-y","hidden");
     gal = document.getElementById('gallery');
     gal.addEventListener('mousemove', function(e) {
         if (e.screenX > window.innerWidth*0.6) {
