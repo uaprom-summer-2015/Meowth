@@ -2,50 +2,44 @@
 
   "use strict";
 
-  $.fn.scrollToRight = function(duration) {
-    var $el = this;
-    var el  = $el[0];
-    var startPosition = el.scrollLeft
-    var delta = el.scrollWidth - $el.width() - startPosition;
-    var dur = duration * (delta / el.scrollWidth)
+  var DIRECTIONS = {
+    LEFT: -1,
+    NONE: 0,
+    RIGHT: 1,
+  }
 
+  $.fn.doScroll = function(duration, direction) {
+    var $elem = this;
+    var target = this[0];
+    var startPosition = target.scrollLeft;
+
+    var delta;
+    switch (direction) {
+      case DIRECTIONS.LEFT:
+        delta = -target.scrollLeft;
+        break;
+      case DIRECTIONS.RIGHT:
+        delta = target.scrollWidth - $elem.width() - startPosition;
+        break;
+      default:
+        return;
+    }
+    var dur = duration * (delta / target.scrollWidth);
     var startTime = Date.now();
 
-    function scroll() {
-      var fraction = Math.min(1, (Date.now() - startTime) / dur);
-      if (isNaN(fraction)) { return; }
+    function performScroll() {
+      var fraction = Math.min(1, Math.abs((Date.now() - startTime) / dur));
+      if (isNaN(fraction)) { return; } // prevent endless scrolling
 
-      el.scrollLeft = startPosition + delta * fraction;
+      target.scrollLeft = startPosition + delta * fraction;
 
-      if (fraction < 1 && $el.hasClass('playright'))  {
-        setTimeout(scroll, 15);
+      if (Math.abs(fraction) < 1 && ($elem.hasClass('playright') || $elem.hasClass('playleft'))) {
+        setTimeout(performScroll, 15);
       }
     }
-    scroll();
-  };
 
-  $.fn.scrollToLeft = function(duration) {
-    var $el = this;
-    var el  = $el[0];
-    var startPosition = el.scrollLeft
-    var delta = startPosition;
-    var dur = duration * (delta / el.scrollWidth)
-
-    var startTime = Date.now();
-
-    function scroll() {
-      var fraction = Math.min(1, (Date.now() - startTime) / dur);
-      if (isNaN(fraction)) { return; }
-
-      el.scrollLeft = startPosition - delta * fraction;
-
-      if (fraction < 1 && $el.hasClass('playleft'))  {
-        setTimeout(scroll, 15);
-      }
-    }
-    scroll();
-  };
-
+    performScroll();
+  }
 
   document.addEventListener("DOMContentLoaded", (function () {
     require('magnific-popup');
@@ -70,11 +64,11 @@
       if (e.screenX > window.innerWidth*0.66) {
         $('#gallery').removeClass('playleft');
         $('#gallery').addClass('playright');
-        $('#gallery').scrollToRight(15000);
+        $('#gallery').doScroll(15000, DIRECTIONS.RIGHT);
       } else if (e.screenX < window.innerWidth*0.33) {
         $('#gallery').removeClass('playright');
         $('#gallery').addClass('playleft');
-        $('#gallery').scrollToLeft(15000);
+        $('#gallery').doScroll(15000, DIRECTIONS.LEFT);
       } else {
         $('#gallery').removeClass('playright playleft');
       }
