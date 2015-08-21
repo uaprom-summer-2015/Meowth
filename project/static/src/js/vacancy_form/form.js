@@ -75,49 +75,51 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
         }
     },
     render: function() {
-        var nameClass = classNames("form-group", {'has-error': this.state.nameError});
-        var emailClass = classNames("form-group", {'has-error': this.state.emailError});
-        var phoneClass = classNames("form-group", {'has-error': this.state.phoneError});
+        var nameClass = classNames("form-name", {'has-error': this.state.nameError});
+        var emailClass = classNames("form-email", {'has-error': this.state.emailError});
+        var phoneClass = classNames("form-phone", {'has-error': this.state.phoneError});
         if (this.state.success == false) {
             return (
-                React.DOM.form({className: "form-horizontal", action: "form", name: "ApplyForm", id: "ApplyForm",
-                      onSubmit: this.handleSubmit, encType: "multipart/form-data", ref: "ApplyForm"}, 
+                React.DOM.form({className: "apply-form", name: "ApplyForm", id: "ApplyForm",
+                      onSubmit: this.handleSubmit, encType: "multipart/form-data", ref: "ApplyForm"},
 
                     React.DOM.input({type: "hidden", name: "csrf_token", value: this.props.csrf_token}),
 
                     React.DOM.div({className: nameClass},
-                        React.DOM.label({className: "control-label", htmlFor: "name"},  this.state.nameError),
-                        React.DOM.input({name: "name", type: "text", className: "form-control", id: "name",
-                               placeholder: "Имя", value: this.state.name, onChange: this.changeName})
+                        //React.DOM.label({className: "control-label", htmlFor: "name"},  this.state.nameError),
+                        React.DOM.label({htmlFor: "name"},  'Ваши имя и фамилия'),
+                        React.DOM.input({name: "name", type: "text", id: "name",
+                               placeholder: "Иван Иванович Иванов", value: this.state.name, onChange: this.changeName})
                     ), 
 
                     React.DOM.div({className: emailClass},
-                        React.DOM.label({className: "control-label", htmlFor: "email"},  this.state.emailError),
-                        React.DOM.input({name: "email", type: "email", className: "form-control", id: "email",
-                               placeholder: "Email", value: this.state.email, onChange: this.changeEmail})
+                        //React.DOM.label({className: "control-label", htmlFor: "email"},  this.state.emailError),
+                        React.DOM.label({htmlFor: "email"}, 'Email'),
+                        React.DOM.input({name: "email", type: "email", id: "email",
+                               placeholder: "example@gmail.com", value: this.state.email, onChange: this.changeEmail})
                     ), 
 
                     React.DOM.div({className: phoneClass},
-                        React.DOM.label({className: "control-label", htmlFor: "phone"},  this.state.phoneError),
-                        React.DOM.input({name: "phone", type: "text", className: "form-control", id: "phone",
-                               placeholder: "Телефон", value: this.state.phone, onChange: this.changePhone})
+                        //React.DOM.label({className: "control-label", htmlFor: "phone"},  this.state.phoneError),
+                        React.DOM.label({htmlFor: "phone"}, 'Контактный телефон'),
+                        React.DOM.input({name: "phone", type: "text", id: "phone",
+                               placeholder: "(044) 555-55-55", value: this.state.phone, onChange: this.changePhone})
                     ), 
 
-                    React.DOM.div({className: "form-group"},
-                        React.DOM.textarea({name: "comment", id: "comment", className: "form-control",
-                                  placeholder: "Коментарий"})
+                    React.DOM.div({className: "form-comment"},
+                        React.DOM.label({htmlFor: "comment"}, 'Сопроводительный текст'),
+                        React.DOM.textarea({name: "comment", id: "comment"})
                     ), 
 
-                    React.DOM.div({className: "form-group"},
-                        React.DOM.label({htmlFor: "inputFile"}, "Резюме"),
+                    React.DOM.div({className: "form-file btn btn-grey"},
                         React.DOM.input({type: "file", id: "attachment", name: "attachment",
-                               onChange: this.changeFile, multiple: true}),
-                        React.DOM.div({className: "has-error"},
-                            React.DOM.p({className: "help-block"}, this.state.fileError)
-                        )
-                    ), 
+                               onChange: this.changeFile, multiple: true, className: 'input-hidden'}),
+                        'Прикрепить файл резюме'
+                    //    //React.DOM.div({className: "has-error"},
+                    //    //    React.DOM.p({className: "help-block"}, this.state.fileError)
+                    ),
 
-                    React.DOM.input({type: "submit"})
+                    React.DOM.input({type: "submit", value: 'Отправить резюме', className: 'btn btn-action-colored'})
                 )
             );
         } else {
