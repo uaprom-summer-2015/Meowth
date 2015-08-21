@@ -11,12 +11,40 @@ var source = require('vinyl-source-stream');
 var stylus = require('gulp-stylus');
 var uglify = require('gulp-uglify');
 var pkginfo = require('./package.json');
+var fs = require('fs');
 
 var debug = gutil.env.type !== 'production';
 
 var npmPackages = Object.keys(pkginfo.dependencies) || [];
 
-var dist_path = debug ? pkginfo.dist.path : process.env.STATIC_DIST;
+var dist_path;
+
+if (debug === true){
+    dist_path = pkginfo.dist.path;
+} else {
+    var settingsFile = "production_settings.py";
+    var variable = "STATIC_DIST";
+
+    if (typeof String.prototype.startsWith != 'function') {
+        String.prototype.startsWith = function (str) {
+            return this.indexOf(str) === 0;
+        };
+    }
+
+    var data = fs.readFileSync(settingsFile, {encoding: 'utf-8'});
+
+    var rows = data.split('\n');
+    var row;
+    for (var i = 0; i < rows.length; i++) {
+        row = rows[i];
+        if(row.startsWith(variable)) {
+            var raw_path = row.split(' = ')[1];
+            // Remove ' and " symbols
+            dist_path = raw_path.replace(new RegExp('\"|\'', 'g'), "");
+        }
+    }
+    if (typeof dist_path === "undefined") throw "No " + variable + " in " + settingsFile;
+}
 
 gulp.task('default', ['build:scripts', 'build:styles']);
 
