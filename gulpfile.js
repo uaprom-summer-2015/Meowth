@@ -19,15 +19,16 @@ var npmPackages = Object.keys(pkginfo.dependencies) || [];
 
 var dist_path;
 
-if (debug === true){
+if (debug) {
     dist_path = pkginfo.dist.path;
 } else {
     var settingsFile = "production_settings.py";
     var variable = "STATIC_DIST";
 
-    if (typeof String.prototype.startsWith != 'function') {
-        String.prototype.startsWith = function (str) {
-            return this.indexOf(str) === 0;
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function (searchString, position) {
+            position = position || 0;
+            return this.indexOf(searchString, position) === position;
         };
     }
 
@@ -37,7 +38,7 @@ if (debug === true){
     var row;
     for (var i = 0; i < rows.length; i++) {
         row = rows[i];
-        if(row.startsWith(variable)) {
+        if (row.startsWith(variable)) {
             var raw_path = row.split(' = ')[1];
             // Remove ' and " symbols
             dist_path = raw_path.replace(new RegExp('\"|\'', 'g'), "");
@@ -117,10 +118,10 @@ gulp.task('build:styles', function () {
             'include css': true,
             include: pkginfo.stylus.includes
         }))
-          .pipe(rename({
-              extname: ".bundle.css"
-          }))
-          .pipe(gulp.dest(dist_path + pkginfo.dist.styles));
+            .pipe(rename({
+                extname: ".bundle.css"
+            }))
+            .pipe(gulp.dest(dist_path + pkginfo.dist.styles));
     });
 });
 
