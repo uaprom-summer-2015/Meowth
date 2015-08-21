@@ -37,22 +37,24 @@
     border-color $color-main
     outline 1px solid $color-main
 
-.apply-form div.has-error
+.has-error
   input[type='text']
   input[type='email']
     border-color $color-error
     border-width 2p
+  p
+    color $color-error
+    padding 0
+    margin-top 10px
 
 .apply-form input[type='submit']
+.form-file
   width 100%
 
-.form-file
-  height 35px
-  padding-top 15px
+.form-file-btn
   overflow hidden
   position relative
   cursor pointer
-  margin-bottom 40px
 
 .input-hidden
   cursor pointer
@@ -62,4 +64,7 @@
   right 0
   font-size 50px
   opacity 0
-  -moz-opacity 0
+
+.form-file
+  width 100%
+  margin-bottom 40px
