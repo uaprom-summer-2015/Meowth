@@ -43,7 +43,8 @@
 
   document.addEventListener("DOMContentLoaded", (function () {
     require('magnific-popup');
-    $('#gallery').magnificPopup({
+    var gallery = $('#gallery');
+    gallery.magnificPopup({
       delegate: 'a',
       type: 'image',
       closeOnContentClick: false,
@@ -57,25 +58,24 @@
         preload: [1, 1]
       }
     });
-    $("#gallery").css("overflow-x","hidden");
-    $("#gallery").css("overflow-y","hidden");
-    var gal = document.getElementById('gallery');
+    gallery.css("overflow-x","hidden");
+    gallery.css("overflow-y","hidden");
+    var gal = gallery[0];
     gal.addEventListener('mousemove', function(e) {
       if (e.screenX > window.innerWidth*0.66) {
-        $('#gallery').removeClass('playleft');
-        $('#gallery').addClass('playright');
-        $('#gallery').doScroll(15000, DIRECTIONS.RIGHT);
+        gallery.removeClass('playleft');
+        gallery.addClass('playright');
+        gallery.doScroll(15000, DIRECTIONS.RIGHT);
       } else if (e.screenX < window.innerWidth*0.33) {
-        $('#gallery').removeClass('playright');
-        $('#gallery').addClass('playleft');
-        $('#gallery').doScroll(15000, DIRECTIONS.LEFT);
+        gallery.removeClass('playright');
+        gallery.addClass('playleft');
+        gallery.doScroll(15000, DIRECTIONS.LEFT);
       } else {
-        $('#gallery').removeClass('playright playleft');
+        gallery.removeClass('playright playleft');
       }
     });
     gal.addEventListener('mouseleave', function(e) {
-      $('#gallery').removeClass('playright playleft');
+      gallery.removeClass('playright playleft');
     });
-
   }));
 })(require('npm-zepto'));
