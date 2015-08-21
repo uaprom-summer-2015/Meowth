@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="{{ url_for('static', filename="dist/js/common.vendor.js") }}" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="{{ url_for('static', filename='dist/js/common.vendor.js') }}" type="text/javascript"></script>
     {% block meta %}{% endblock%}
     {% block styles %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
@@ -18,16 +19,16 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="{{ url_for("feed.vacancies") }}">Вакансии</a>
+                        <a href="{{ url_for('feed.vacancies') }}">Вакансии</a>
                     </li>
                     <li>
-                        <a href="{{ url_for("pages.projects") }}">Проекты</a>
+                        <a href="{{ url_for('pages.projects') }}">Проекты</a>
                     </li>
                     <li>
-                        <a href="{{ url_for("pages.about") }}">О компании</a>
+                        <a href="{{ url_for('pages.about') }}">О компании</a>
                     </li>
                     <li>
-                        <a href="{{ url_for("pages.contacts") }}">Контакты</a>
+                        <a href="{{ url_for('pages.contacts') }}">Контакты</a>
                     </li>
                 </ul>
 
