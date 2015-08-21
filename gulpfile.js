@@ -41,7 +41,7 @@ if (debug) {
         if (row.startsWith(variable)) {
             var raw_path = row.split(' = ')[1];
             // Remove ' and " symbols
-            dist_path = raw_path.replace(new RegExp('\"|\'', 'g'), "");
+            dist_path = raw_path.replace(/["']/g, "");
         }
     }
     if (typeof dist_path === "undefined") throw "No " + variable + " in " + settingsFile;
