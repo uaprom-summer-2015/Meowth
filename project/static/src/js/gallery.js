@@ -2,6 +2,8 @@
 
   "use strict";
 
+  require("magnific-popup");
+
   var DIRECTIONS = {
     LEFT: -1,
     NONE: 0,
@@ -9,7 +11,6 @@
   }
 
   $.fn.doScroll = function(duration, direction) {
-    var $elem = this;
     var target = this[0];
     var startPosition = target.scrollLeft;
 
@@ -19,7 +20,7 @@
         delta = -target.scrollLeft;
         break;
       case DIRECTIONS.RIGHT:
-        delta = target.scrollWidth - $elem.width() - startPosition;
+        delta = target.scrollWidth - this.width() - startPosition;
         break;
       default:
         return;
@@ -27,22 +28,21 @@
     var dur = duration * (delta / target.scrollWidth);
     var startTime = Date.now();
 
-    function performScroll() {
+    var performScroll = (function () {
       var fraction = Math.min(1, Math.abs((Date.now() - startTime) / dur));
       if (isNaN(fraction)) { return; } // prevent endless scrolling
 
       target.scrollLeft = startPosition + delta * fraction;
 
-      if (fraction < 1 && ($elem.hasClass("play"))) {
+      if (fraction < 1 && (this.hasClass("play"))) {
         setTimeout(performScroll, 15);
       }
-    }
+    }).bind(this);
 
     performScroll();
   }
 
   document.addEventListener("DOMContentLoaded", (function () {
-    require("magnific-popup");
     var gallery = $("#gallery");
     gallery.magnificPopup({
       delegate: "a",
