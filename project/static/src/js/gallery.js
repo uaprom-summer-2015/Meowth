@@ -79,5 +79,19 @@
     gal.addEventListener("mouseleave", function(e) {
       gallery.removeClass("play");
     });
+
+    // Touches (a primitive crutch)
+    var touchX;
+    gal.addEventListener("touchstart", function(e) {
+      touchX = e.changedTouches[0].clientX;
+    });
+    gal.addEventListener("touchmove", function(e) {
+      var diff = touchX - e.changedTouches[0].clientX;
+      touchX = e.changedTouches[0].clientX;
+      gal.scrollLeft += diff;
+    });
+    gal.addEventListener("touchend", function(e) {
+      touchX = undefined;
+    });
   }));
 })(require("npm-zepto"));
