@@ -62,7 +62,7 @@ var UploadFileButton = React.createClass({
             'file-success-chosen': this.state.success});
         return (
             React.DOM.div({className: fileClass},
-                React.DOM.button({className: buttonClass},
+                React.DOM.div({className: buttonClass},
                     React.DOM.input({type: "file", id: "attachment", name: "attachment",
                            onChange: this.changeFile, multiple: true, className: 'input-hidden'}),
                            'Прикрепить файл резюме'),
@@ -140,21 +140,21 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
                         React.DOM.input({name: "name", type: "text", id: "name",
                                placeholder: "Иван Иванович Иванов", value: this.state.name, onChange: this.changeName}),
                         React.DOM.p(null, this.state.nameError)
-                    ), 
+                    ),
 
                     React.DOM.div({className: emailClass},
                         React.DOM.label({htmlFor: "email"}, 'Email'),
                         React.DOM.input({name: "email", type: "email", id: "email",
                                placeholder: "example@gmail.com", value: this.state.email, onChange: this.changeEmail}),
                         React.DOM.p(null, this.state.emailError)
-                    ), 
+                    ),
 
                     React.DOM.div({className: phoneClass},
                         React.DOM.label({htmlFor: "phone"}, 'Контактный телефон'),
                         React.DOM.input({name: "phone", type: "text", id: "phone",
                                placeholder: "(044) 555-55-55", value: this.state.phone, onChange: this.changePhone}),
                         React.DOM.p(null, this.state.phoneError)
-                    ), 
+                    ),
 
                     React.DOM.div({className: "form-comment"},
                         React.DOM.label({htmlFor: "comment"}, 'Сопроводительный текст'),
