@@ -33,7 +33,7 @@
 
       target.scrollLeft = startPosition + delta * fraction;
 
-      if (fraction < 1 && ($elem.hasClass('play'))) {
+      if (fraction < 1 && ($elem.hasClass("play"))) {
         setTimeout(performScroll, 15);
       }
     }
@@ -42,14 +42,14 @@
   }
 
   document.addEventListener("DOMContentLoaded", (function () {
-    require('magnific-popup');
-    var gallery = $('#gallery');
+    require("magnific-popup");
+    var gallery = $("#gallery");
     gallery.magnificPopup({
-      delegate: 'a',
-      type: 'image',
+      delegate: "a",
+      type: "image",
       closeOnContentClick: false,
       closeBtnInside: false,
-      mainClass: 'mfp-with-zoom mfp-img-mobile',
+      mainClass: "mfp-with-zoom mfp-img-mobile",
       image: {
         verticalFit: true
       },
@@ -61,19 +61,23 @@
     gallery.css("overflow-x","hidden");
     gallery.css("overflow-y","hidden");
     var gal = gallery[0];
-    gal.addEventListener('mousemove', function(e) {
+    gal.addEventListener("mousemove", function(e) {
       if (e.screenX > window.innerWidth*0.7) {
-        gallery.addClass('play');
-        gallery.doScroll(15000, DIRECTIONS.RIGHT);
+        if (! gallery.hasClass("play")) {
+          gallery.addClass("play");
+          gallery.doScroll(15000, DIRECTIONS.RIGHT);
+        }
       } else if (e.screenX < window.innerWidth*0.3) {
-        gallery.addClass('play');
-        gallery.doScroll(15000, DIRECTIONS.LEFT);
+        if (! gallery.hasClass("play")) {
+          gallery.addClass("play");
+          gallery.doScroll(15000, DIRECTIONS.LEFT);
+        }
       } else {
         gallery.mouseleave();
       }
     });
-    gal.addEventListener('mouseleave', function(e) {
-      gallery.removeClass('play');
+    gal.addEventListener("mouseleave", function(e) {
+      gallery.removeClass("play");
     });
   }));
-})(require('npm-zepto'));
+})(require("npm-zepto"));
