@@ -33,7 +33,7 @@
 
       target.scrollLeft = startPosition + delta * fraction;
 
-      if (Math.abs(fraction) < 1 && ($elem.hasClass('playright') || $elem.hasClass('playleft'))) {
+      if (fraction < 1 && ($elem.hasClass('play'))) {
         setTimeout(performScroll, 15);
       }
     }
@@ -62,20 +62,18 @@
     gallery.css("overflow-y","hidden");
     var gal = gallery[0];
     gal.addEventListener('mousemove', function(e) {
-      if (e.screenX > window.innerWidth*0.66) {
-        gallery.removeClass('playleft');
-        gallery.addClass('playright');
+      if (e.screenX > window.innerWidth*0.7) {
+        gallery.addClass('play');
         gallery.doScroll(15000, DIRECTIONS.RIGHT);
-      } else if (e.screenX < window.innerWidth*0.33) {
-        gallery.removeClass('playright');
-        gallery.addClass('playleft');
+      } else if (e.screenX < window.innerWidth*0.3) {
+        gallery.addClass('play');
         gallery.doScroll(15000, DIRECTIONS.LEFT);
       } else {
-        gallery.removeClass('playright playleft');
+        gallery.mouseleave();
       }
     });
     gal.addEventListener('mouseleave', function(e) {
-      gallery.removeClass('playright playleft');
+      gallery.removeClass('play');
     });
   }));
 })(require('npm-zepto'));
