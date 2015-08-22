@@ -83,6 +83,7 @@
     // Touches (a primitive crutch)
     var touchX;
     gal.addEventListener("touchstart", function(e) {
+      gallery.mouseleave();  // To avoid glitches when trying both swipe and mouse
       touchX = e.changedTouches[0].clientX;
     });
     gal.addEventListener("touchmove", function(e) {
