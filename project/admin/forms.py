@@ -2,8 +2,9 @@ from flask.ext.wtf import Form
 from wtforms import StringField, TextAreaField, BooleanField, FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
-from project.models import Category, City
+from project.models import Category, City, Vacancy
 from project.lib.media.validators import AllowedMime
+from project.lib.validators import Exists
 
 
 class VacancyForm(Form):
@@ -29,7 +30,8 @@ class VacancyForm(Form):
                 '^[\d\w\-]+$',
                 message='Should contain only \
                          latin characters and dashes'
-            )
+            ),
+            Exists(model=Vacancy),
         ]
     )
     short_description = StringField(
