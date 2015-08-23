@@ -49,6 +49,7 @@ class EntryDetail(MethodView):
             entry=entry)
 
     def post(self, entry_id):
+        entry = None
         if entry_id is None:
             # Add a new entry
             form = self.create_form()
@@ -57,13 +58,16 @@ class EntryDetail(MethodView):
                 return redirect(url_for("admin." + self.success_url))
         else:
             # Update an old entry
-            form = self.update_form()
+            entry = self.model.bl.get(entry_id)
+            form = self.update_form(obj=entry)  # кто это убрал??
             if form.validate_on_submit():
-                instance = self.model.bl.get(entry_id)
-                instance.bl.update(form.data)
+                entry.bl.update(form.data)
                 return redirect(url_for("admin." + self.success_url))
 
-        return self.render_response(entry_form=form)
+        return self.render_response(
+            entry_form=form,
+            entry=entry
+        )
 
     def render_response(self, **kwargs):
         return render_template(self.template, **kwargs)
