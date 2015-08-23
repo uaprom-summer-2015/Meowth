@@ -8,8 +8,7 @@ from werkzeug import secure_filename
 
 class UploadedImageBL(BaseBL):
 
-    def save_image(self, *, image, img_category, **kwargs):
-
+    def save_image(self, *, image, img_category, do_sync=False, **kwargs):
         def mkdir_ifn_exists(dirpath):
             if not dirpath.exists():
                 dirpath.mkdir(mode=0o751, parents=True)
@@ -18,6 +17,9 @@ class UploadedImageBL(BaseBL):
             return
         if 'title' not in kwargs:
             kwargs['title'] = secure_filename(image.filename)
+        make_thumbnail = (
+            celery_make_thumbnail if do_sync else celery_make_thumbnail.delay
+        )
 
         category_dir = Path(
             current_app.config['UPLOAD_FOLDER'],
@@ -34,7 +36,7 @@ class UploadedImageBL(BaseBL):
         name = "{}.{}".format(uid, ext)
         image.save(str(fullsized_dir / name))
 
-        celery_make_thumbnail.delay(
+        make_thumbnail(
             path_to_original=str(fullsized_dir / name),
             destination=str(thumbnail_dir / name),
             size=(200, 200),
@@ -59,6 +61,8 @@ class UploadedImageBL(BaseBL):
         )
         thumbnail = category_dir / 'thumb' / name
         fullsized = category_dir / 'full' / name
-        thumbnail.unlink()
-        fullsized.unlink()
+        if thumbnail.exists():
+            thumbnail.unlink()
+        if fullsized.exists():
+            fullsized.unlink()
         super().delete()

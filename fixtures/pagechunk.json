@@ -50,7 +50,7 @@
           "id": 6,
           "name": "didnt_find_vacancy",
           "title": "Не нашли вакансию",
-          "text": "Не нашли вакансию? Отправьте свое резюме сюда: <a href=\"mailto:hr@prom.ua\">hr@prom.ua</a>"
+          "text": "Не нашли вакансию?<br>Отправьте резюме на <a href=\"mailto:hr@prom.ua\">hr@prom.ua</a>"
      }
   }
 ]

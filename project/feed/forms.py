@@ -11,23 +11,26 @@ def apply_form_factory(config):
     class ApplyForm(Form):
         name = StringField(
             label='Имя',
-            validators=[DataRequired('Обязательное поле')]
+            validators=[DataRequired('Введите пожалуйста ваши имя и фамилию')]
         )
         email = StringField(
             label='Email',
             validators=[
                 Email('Неверный e-mail адрес'),
-                DataRequired('Обязательное поле')
+                DataRequired('Введите пожалуйста e-mail')
             ]
         )
         phone = PhoneNumberField(
             label='Телефон',
             country_code='UA',
-            validators=[DataRequired('Обязательное поле')]
+            validators=[DataRequired('Введите пожалуйста телефон')]
         )
         comment = TextAreaField(label='Коментарий')
         attachment = FileField(
             label='Резюме (макс. 15 Мб)',
-            validators=[AllowedMime(config['DOC_MIMES'])]
+            validators=[AllowedMime(
+                config['DOC_MIMES'],
+                message='Недопустимое расширение файла')
+            ]
         )
     return ApplyForm

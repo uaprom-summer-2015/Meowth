@@ -18,7 +18,7 @@ def get_vacancy(name_in_url):
         abort(404)
     vacancy.bl.visit()
     return render_template(
-        'feed/reactvacancy.html',
+        'feed/vacancy.html',
         vacancy=vacancy,
     )
 

@@ -1,0 +1,50 @@
+@import mixins
+
+$color-accent = #11c0f3
+
+.container-sad-smile
+  margin-bottom 10px
+  margin-top 60px
+  position relative
+  vertical-align middle
+  text-align center
+
+.sad-smile
+  display inline-block
+  margin 0 auto
+  text-align center
+  span
+    color $color-accent
+    display inline-block
+    font-size 108px
+    height 116px
+    line-height 96px
+    text-align center
+    -transform rotate(90deg)
+    -transition 0.3s
+    vertical-align middle
+    width 116px
+.sad-smile-text
+  display block
+  line-height 25px
+  text-align center
+
+@media (min-width: 480px)
+  .container-sad-smile
+    text-align left
+    .sad-smile
+      display inline-block
+      vertical-align middle
+      span
+        -transform rotate(0deg)
+    .sad-smile-text
+      display inline-block
+      text-align left
+      vertical-align middle
+      width calc(100% - 120px)
+
+@media (min-width: 768px)
+  .container-sad-smile
+    width 525px
+    margin-left auto
+    margin-right auto

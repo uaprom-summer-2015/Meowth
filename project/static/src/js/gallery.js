@@ -1,6 +1,6 @@
 var $ = require('npm-zepto');
 
-$.fn.scrollToLeft = function(duration) {
+$.fn.scrollToRight = function(duration) {
     var $el = this;
     var el  = $el[0];
     var startPosition = el.scrollLeft
@@ -11,17 +11,18 @@ $.fn.scrollToLeft = function(duration) {
 
     function scroll() {
         var fraction = Math.min(1, (Date.now() - startTime) / dur);
+        if (isNaN(fraction)) { return; }
 
-        el.scrollLeft = delta * fraction + startPosition;
+        el.scrollLeft = startPosition + delta * fraction;
 
         if (fraction < 1 && $el.hasClass('playright'))  {
-            setTimeout(scroll, 10);
+            setTimeout(scroll, 15);
         }
     }
     scroll();
 };
 
-$.fn.scrollToRight = function(duration) {
+$.fn.scrollToLeft = function(duration) {
     var $el = this;
     var el  = $el[0];
     var startPosition = el.scrollLeft
@@ -32,11 +33,12 @@ $.fn.scrollToRight = function(duration) {
 
     function scroll() {
         var fraction = Math.min(1, (Date.now() - startTime) / dur);
+        if (isNaN(fraction)) { return; }
 
         el.scrollLeft = startPosition - delta * fraction;
 
         if (fraction < 1 && $el.hasClass('playleft'))  {
-            setTimeout(scroll, 10);
+            setTimeout(scroll, 15);
         }
     }
     scroll();
@@ -59,20 +61,19 @@ document.addEventListener("DOMContentLoaded", (function () {
             preload: [1, 1]
         }
     });
-
+    $("#gallery").css("overflow-x","hidden");
+    $("#gallery").css("overflow-y","hidden");
     gal = document.getElementById('gallery');
     gal.addEventListener('mousemove', function(e) {
-        if (e.screenX > window.innerWidth*0.8 && !$('#gallery').hasClass('playright')) {
+        if (e.screenX > window.innerWidth*0.66) {
             $('#gallery').removeClass('playleft');
             $('#gallery').addClass('playright');
-            $('#gallery').scrollToLeft(20000);
-        }
-        if (e.screenX < window.innerWidth*0.2 && !$('#gallery').hasClass('playleft')) {
+            $('#gallery').scrollToRight(15000);
+        } else if (e.screenX < window.innerWidth*0.33) {
             $('#gallery').removeClass('playright');
             $('#gallery').addClass('playleft');
-            $('#gallery').scrollToRight(20000);
-        }
-        if (e.screenX > window.innerWidth*0.2 && e.screenX < window.innerWidth*0.8) {
+            $('#gallery').scrollToLeft(15000);
+        } else {
             $('#gallery').removeClass('playright playleft');
         }
     });
@@ -81,9 +82,3 @@ document.addEventListener("DOMContentLoaded", (function () {
     });
 
 }));
-
-
-
-
-
-

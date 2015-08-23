@@ -1,0 +1,47 @@
+.img-responsive
+  margin-left auto
+  margin-right auto
+
+  width 100%
+  height auto
+
+  display block
+
+.pageblock-image
+  margin-top 2em
+  margin-bottom 2em
+
+.pageblock
+  margin-bottom 4em
+
+
+@media (min-width 1024px)
+  .pageblock > div
+    width 45%
+
+  .pageblock-image
+    margin-top 0
+
+  .pageblock-image-left > .pageblock-image
+    float left
+  .pageblock-image-left > .pageblock-content
+    float right
+
+  .pageblock-image-right > .pageblock-image
+    float right
+  .pageblock-image-right > .pageblock-content
+    float left
+
+  .pageblock-no-image > .pageblock-content
+    width 100%
+
+  .pageblock-content h2
+    font-size 20px
+    margin-top 0
+    line-height 1.4em
+
+  .pageblock
+    float left
+    clear both
+    height 100%
+    margin-bottom 3em

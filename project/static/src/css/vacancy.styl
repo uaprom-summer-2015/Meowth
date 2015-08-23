@@ -1,0 +1,107 @@
+.vacancy h1
+  font-size 33px
+  margin: 10px 0 3px
+  line-height 1
+
+.vacancy-city
+  margin 0
+
+.vacancy-salary
+  color $color-main
+  font-size 31px
+  margin 15px 0
+
+.vacancy h3
+  font-size 20px
+
+.vacancy-text
+  margin-bottom 60px
+  line-height 25px
+
+.apply-form label
+  display block
+  margin 35px 0 12px
+  
+.apply-form textarea
+  margin-bottom 15px
+  resize none
+  height 110px
+
+.apply-form input[type='text'], .apply-form input[type='email'], .apply-form textarea
+  width calc(100% - 2px - 2 * 15px)
+  padding 14px 15px 11px
+  border-radius 4px
+  border 1px solid $color-separator-last
+  font-size 16px
+  -box-shadow inset 0 3px $color-nav-shadow
+  &:focus
+    border-color $color-main
+    outline 1px solid $color-main
+
+.has-error
+  input[type='text']
+  input[type='email']
+    border-color $color-error
+    border-width 2p
+  p
+    color $color-error
+    padding 0
+    margin-top 10px
+
+.apply-form input[type='submit']
+.form-file
+  width 100%
+
+.form-file-btn
+  overflow hidden
+  position relative
+  cursor pointer
+
+.input-hidden
+  cursor pointer
+  height 100%
+  position absolute
+  top 0
+  right 0
+  font-size 50px
+  opacity 0
+
+.form-file
+  width 100%
+  margin-bottom 40px
+
+.file-message
+  display none
+  margin-left 10px
+  vertical-align top
+  p
+    margin 0
+
+.file-success-chosen
+  background url('/static/img/file-success-chosen.png') no-repeat
+  width 39px
+  height 54px
+  border none 0
+  span
+    display none
+
+.upload-file-success
+  .file-message
+    display inline-block
+
+.file-name
+  color $color-text-btn-grey
+
+.file-size
+  color $color-light-grey
+
+@media (min-width 768px)
+  .form-file
+    width 250px
+  .apply-form input[type='submit']
+    width 280px
+
+@media (min-width 1024px)
+  .apply-form
+    width 620px
+
