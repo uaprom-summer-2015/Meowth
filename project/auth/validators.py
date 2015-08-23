@@ -28,5 +28,3 @@ class PasswordCorrect(object):
         user = User.query.get(session.get('user_id')).one()
         if not check_password_hash(user.password, field.data):
             raise ValidationError(self.message)
-
-

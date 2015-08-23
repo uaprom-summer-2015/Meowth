@@ -1,5 +1,6 @@
 from wtforms.validators import ValidationError
 
+
 class Exists(object):
     def __init__(self, model, message=None, reverse=False):
         self.model = model
