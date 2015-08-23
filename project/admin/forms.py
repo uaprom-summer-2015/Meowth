@@ -15,7 +15,7 @@ class VacancyForm(Form):
             Length(
                 max=100,
                 message='Must not exceed 100 symbols'
-            )
+            ),
         ]
     )
     name_in_url = StringField(
@@ -31,7 +31,7 @@ class VacancyForm(Form):
                 message='Should contain only \
                          latin characters and dashes'
             ),
-            Exists(model=Vacancy)
+            Exists(model=Vacancy),
         ]
     )
     short_description = StringField(
