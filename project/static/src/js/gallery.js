@@ -62,15 +62,18 @@ document.addEventListener("DOMContentLoaded", (function () {
 
     gal = document.getElementById('gallery');
     gal.addEventListener('mousemove', function(e) {
-        if (e.screenX > window.innerWidth*0.6) {
+        if (e.screenX > window.innerWidth*0.8 && !$('#gallery').hasClass('playright')) {
             $('#gallery').removeClass('playleft');
             $('#gallery').addClass('playright');
-            $('#gallery').scrollToLeft(30000);
+            $('#gallery').scrollToLeft(20000);
         }
-        if (e.screenX < window.innerWidth*0.4) {
+        if (e.screenX < window.innerWidth*0.2 && !$('#gallery').hasClass('playleft')) {
             $('#gallery').removeClass('playright');
             $('#gallery').addClass('playleft');
-            $('#gallery').scrollToRight(30000);
+            $('#gallery').scrollToRight(20000);
+        }
+        if (e.screenX > window.innerWidth*0.2 && e.screenX < window.innerWidth*0.8) {
+            $('#gallery').removeClass('playright playleft');
         }
     });
     gal.addEventListener('mouseleave', function(e) {
