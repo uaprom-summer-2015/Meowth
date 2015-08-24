@@ -21,7 +21,7 @@
 .apply-form label
   display block
   margin 35px 0 12px
-  
+
 .apply-form textarea
   margin-bottom 15px
   resize none
@@ -56,6 +56,11 @@
   overflow hidden
   position relative
   cursor pointer
+  &:before
+    display inline-block
+    content ""
+    height 100%
+    vertical-align middle
 
 .input-hidden
   cursor pointer
@@ -104,4 +109,3 @@
 @media (min-width 1024px)
   .apply-form
     width 620px
-
