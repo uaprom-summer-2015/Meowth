@@ -6,12 +6,16 @@
         {{ list_blocks(blocks) }}
     </div>
 
-    <div id="container-map">
-        <iframe src="{{ pagechunks.map_url }}" class="center-block" width="640" height="480"></iframe>
-    </div>
+    <div id="container-map" lat="" lng="" clat="" clng=""></div>
 {% endblock %}
 {% block meta %}
     {{ super() }}
     {# FIXME: remove template inline styles #}
     <style> .nav li:nth-child(4) a {color: #2e2a2c; }</style>
+{% endblock %}
+{% block postscripts %}
+    {{ super() }}
+    <!-- I dunno better way to include google map to the website -->
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="{{ url_for('static', filename='dist/js/map.bundle.js') }}"></script>
 {% endblock %}
