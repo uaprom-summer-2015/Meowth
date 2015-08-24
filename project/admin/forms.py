@@ -16,7 +16,6 @@ class VacancyForm(Form):
                 max=100,
                 message='Must not exceed 100 symbols'
             ),
-            Exists(model=Vacancy),
         ]
     )
     name_in_url = StringField(
@@ -31,7 +30,8 @@ class VacancyForm(Form):
                 '^[\d\w\-]+$',
                 message='Should contain only \
                          latin characters and dashes'
-            )
+            ),
+            Exists(model=Vacancy),
         ]
     )
     short_description = StringField(
