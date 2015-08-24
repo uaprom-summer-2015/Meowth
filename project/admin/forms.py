@@ -63,7 +63,13 @@ class VacancyForm(Form):
 
 
 class CategoryForm(Form):
-    name = StringField("Название категории", validators=[DataRequired()])
+    name = StringField(
+        "Название категории",
+        validators=[
+            DataRequired(),
+            Exists(model=Category),
+        ],
+    )
 
 
 class CityForm(Form):
