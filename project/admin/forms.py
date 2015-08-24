@@ -2,7 +2,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, TextAreaField, BooleanField, FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
-from project.models import Category, City, Vacancy
+from project.models import Category, City, Vacancy, PageChunk
 from project.lib.media.validators import AllowedMime
 from project.lib.validators import Exists
 
@@ -83,7 +83,13 @@ class CityForm(Form):
 
 
 class PageChunkForm(Form):
-    title = StringField('Название элемента', validators=[DataRequired()])
+    title = StringField(
+        'Название элемента',
+        validators=[
+            DataRequired(),
+            Exists(model=PageChunk),
+        ],
+    )
     text = TextAreaField('Текст элемента', validators=[DataRequired()])
 
 
