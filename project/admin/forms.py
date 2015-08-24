@@ -73,7 +73,13 @@ class CategoryForm(Form):
 
 
 class CityForm(Form):
-    name = StringField('Название города', validators=[DataRequired()])
+    name = StringField(
+        'Название города',
+        validators=[
+            DataRequired(),
+            Exists(model=City),
+        ],
+    )
 
 
 class PageChunkForm(Form):
