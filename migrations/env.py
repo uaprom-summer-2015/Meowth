@@ -64,6 +64,7 @@ def run_migrations_online():
     context.configure(
         connection=connection,
         target_metadata=target_metadata,
+        compare_type=True,
         **current_app.extensions['migrate'].configure_args
     )
 

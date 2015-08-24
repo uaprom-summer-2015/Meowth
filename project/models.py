@@ -68,7 +68,7 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(30))
     surname = db.Column(db.String(30))
-    email = db.Column(db.String(30), nullable=False, unique=True)
+    email = db.Column(db.String(320), nullable=False, unique=True)
     role = db.Column(TypeEnum(ROLE), nullable=False, default=ROLE.staff)
 
     bl = Resource('bl.user')
