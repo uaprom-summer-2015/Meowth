@@ -1,14 +1,16 @@
 from flask_wtf import Form
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, EqualTo, Email, Length
-from .validators import LoginFormat, PasswordFormat, Exists, PasswordCorrect
+from .validators import LoginFormat, PasswordFormat, PasswordCorrect
+from project.models import User
+from project.lib.validators import Exists
 
 
 class ResetForm(Form):
     email = StringField(
         'Email',
         validators=[
-            Exists(reverse=True),
+            Exists(model=User, reverse=True),
         ],
         filters=[
             lambda x: x.lower() if x else None,
@@ -37,7 +39,7 @@ class RegisterForm(Form):
                 16,
                 message='Логин должен быть от 6 до 16 символов в длину'
             ),
-            Exists(),
+            Exists(model=User),
         ]
     )
     email = StringField(
@@ -45,7 +47,7 @@ class RegisterForm(Form):
         validators=[
             Email('Неверный e-mail адрес'),
             DataRequired('Обязательное поле'),
-            Exists(),
+            Exists(model=User),
         ],
         filters=[
             lambda x: x.lower() if x else None,

@@ -1,6 +1,7 @@
 import os
 import logging
 import logging.config
+import production_settings
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -108,21 +109,21 @@ class Config:
 
 class ProductionConfig(Config):
     # Database
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = production_settings.SQLALCHEMY_DATABASE_URI
 
-    UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER")
+    UPLOAD_FOLDER = production_settings.UPLOAD_FOLDER
 
     # Celery
-    CELERY_BROKER_URL = os.environ.get('REDIS_URL')
-    CELERY_BACKEND_URL = CELERY_BROKER_URL
+    CELERY_BROKER_URL = production_settings.CELERY_BROKER_URL
+    CELERY_BACKEND_URL = production_settings.CELERY_BACKEND_URL
 
     # Email
-    MAIL_SERVER = os.environ.get("MAIL_SMTP_SERVER")
-    MAIL_PORT = os.environ.get("MAIL_SMTP_PORT")
-    MAIL_USE_SSL = False
-    MAIL_USERNAME = os.environ.get("MAIL_SMTP_LOGIN")
-    MAIL_PASSWORD = os.environ.get("MAIL_SMTP_PASSWORD")
-    MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
+    MAIL_SERVER = production_settings.MAIL_SERVER
+    MAIL_PORT = production_settings.MAIL_PORT
+    MAIL_USE_SSL = production_settings.MAIL_USE_SSL
+    MAIL_USERNAME = production_settings.MAIL_USERNAME
+    MAIL_PASSWORD = production_settings.MAIL_PASSWORD
+    MAIL_DEFAULT_SENDER = production_settings.MAIL_DEFAULT_SENDER
 
 
 class DevelopmentConfig(Config):

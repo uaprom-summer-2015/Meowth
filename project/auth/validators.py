@@ -28,27 +28,3 @@ class PasswordCorrect(object):
         user = User.query.get(session.get('user_id')).one()
         if not check_password_hash(user.password, field.data):
             raise ValidationError(self.message)
-
-
-class Exists(object):
-    def __init__(self, message=None, reverse=False):
-        if message:
-            self.message = message
-        self.reverse = reverse
-
-    def __call__(self, _, field):
-        if field.object_data == field.data:
-            return
-        if not hasattr(self, 'message'):
-            if not self.reverse:
-                self.message = 'Пользователь с таким {} уже существует'\
-                    .format(field.name)
-            else:
-                self.message = 'Пользователь с таким {} не существует'\
-                    .format(field.name)
-
-        u = True \
-            if list(User.query.filter(getattr(User, field.name) == field.data)) \
-            else False
-        if self.reverse ^ u:
-                raise ValidationError(self.message)
