@@ -28,6 +28,9 @@ def apply_form_factory(config):
         comment = TextAreaField(label='Коментарий')
         attachment = FileField(
             label='Резюме (макс. 15 Мб)',
-            validators=[AllowedMime(config['DOC_MIMES'], message='Недопустимое расширение файла')]
+            validators=[AllowedMime(
+                config['DOC_MIMES'],
+                message='Недопустимое расширение файла')
+            ]
         )
     return ApplyForm
