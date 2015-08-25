@@ -22,6 +22,7 @@ def get_vacancy(name_in_url):
         vacancy=vacancy,
     )
 
+
 @feed_app.route('/<name_in_url>/json')
 def get_vacancy_json(name_in_url):
     return jsonify(
