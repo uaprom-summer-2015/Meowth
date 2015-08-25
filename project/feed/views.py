@@ -1,6 +1,6 @@
 from flask import render_template, jsonify, current_app, abort
 from project.blueprints import feed_app
-from project.lib.feed import get_visible_vacancies_list
+from project.lib.feed import get_visible_vacancies_list, get_vacancy4json
 from project.models import Vacancy, Category, City
 from project.feed.forms import apply_form_factory
 from project.lib.mail import send_mail_from_form
@@ -20,6 +20,13 @@ def get_vacancy(name_in_url):
     return render_template(
         'feed/vacancy.html',
         vacancy=vacancy,
+    )
+
+
+@feed_app.route('/<name_in_url>/json')
+def get_vacancy_json(name_in_url):
+    return jsonify(
+        vacancy=get_vacancy4json(name_in_url)
     )
 
 
