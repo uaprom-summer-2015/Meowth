@@ -83,12 +83,16 @@ def createsuperuser(login=None, email=None, password=None):
                 print('Пожалуйста, ответьте y (yes) или n (no)')
 
     with disable_csrf(app):
-        form = HelperForm()
+        form = HelperForm(
+            name='dummy',
+            surname='dummy',
+            password=passwd,
+            confirmation=passwd,
+        )
         # dodge filling obj_data , just like browser form filling
         # (Existence validation comes false positive)
         form.login.data = login
         form.email.data = email
-        form.password.data = passwd
         if not form.validate():
             errors = [err for field in form.errors.values() for err in field]
             for error in errors:

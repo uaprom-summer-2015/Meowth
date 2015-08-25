@@ -83,49 +83,6 @@ class PasswordEditForm(Form):
             PasswordCorrect(),
         ]
     )
-
-    new_password = PasswordField(
-        label='Новый пароль',
-        validators=[
-            EqualTo(
-                'confirmation',
-                message='Пароли не совпадают'
-            ),
-            PasswordFormat,
-            Length(
-                6,
-                16,
-                message='Пароль должен быть от 6 до 16 символов в длину'
-            ),
-        ]
-    )
-    confirmation = PasswordField(label='Подтвердите пароль')
-
-
-class HelperForm(Form):
-    login = StringField(
-        label='Логин',
-        validators=[
-            LoginFormat,
-            Length(
-                4,
-                16,
-                message='Логин должен быть от 6 до 16 символов в длину'
-            ),
-            Exists(model=User),
-        ]
-    )
-    email = StringField(
-        label='Email',
-        validators=[
-            Email('Неверный e-mail адрес'),
-            DataRequired('Обязательное поле'),
-            Exists(model=User),
-        ],
-        filters=[
-            lambda x: x.lower() if x else None,
-        ]
-    )
     password = PasswordField(
         label='Новый пароль',
         validators=[
@@ -137,3 +94,16 @@ class HelperForm(Form):
             ),
         ]
     )
+    confirmation = PasswordField(
+        label='Подтвердите пароль',
+        validators=[
+            EqualTo(
+                'password',
+                message='Пароли не совпадают'
+            ),
+        ]
+    )
+
+
+class HelperForm(RegisterForm, PasswordEditForm):
+    old_password = StringField()
