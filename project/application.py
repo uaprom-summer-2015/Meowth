@@ -1,5 +1,6 @@
 from importlib import import_module
 import logging
+import logging.config
 from os import environ
 from flask import Flask
 from project.lib.filters import datetime
@@ -13,8 +14,6 @@ def create_app():
     app = Flask(__name__, static_url_path='/static')
     used_config = environ.get('APP_SETTINGS', 'config.ProductionConfig')
     app.config.from_object(used_config)
-    if (used_config == 'config.DevelopmentConfig'):
-        logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
     with app.app_context():
         for module in app.config.get('DB_MODELS_IMPORT', list()):
@@ -24,6 +23,7 @@ def create_app():
         import_module(bp.import_name)
         app.register_blueprint(bp)
 
+    logging.config.dictConfig(app.config["LOG_CONFIG"])
     db.init_app(app)
     mail.init_app(app)
     celery.init_app(app)
