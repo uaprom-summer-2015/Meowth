@@ -17,6 +17,8 @@ var UploadFileButton = React.createClass({
             error = 'Файл слишком большой, попробуйте загрузить до 15 Мб';
         } else if (!goodExtension) {
             error = 'Недопустимое расширение файла';
+        } else if (attachment.size == 0) {
+            error = 'Нельзя прикреплять пустой файл';
         } else {
             error = '';
         }
