@@ -1,7 +1,7 @@
 from flask import render_template
 from project.blueprints import pages_app
-from project.lib.regexp import contacts_map_coordinates
 from project.models import Page, UploadedImage, PageChunk
+from project.utils import contacts_map_coordinates
 
 
 def chunks(lst, n):
