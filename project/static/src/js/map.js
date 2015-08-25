@@ -2,10 +2,10 @@
   "use strict";
 
   var DEFAULT_PARAMS = {
-    clat: 0,
-    clng: 0,
-    mlat: 0,
-    mlng: 0,
+    clat: 0.0,
+    clng: 0.0,
+    mlat: 0.0,
+    mlng: 0.0,
     zoom: 0,
   }
 
