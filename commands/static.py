@@ -31,17 +31,14 @@ StaticCommand = Manager(usage='Commands to build static')
     default=False,
     help='Do not ask user anything',
 )
-def npm(noinput=False):
+def npm():
     """ Run npm install script """
     with perform(
         name='static npm',
         before='run npm install',
     ):
-        cmd = ["npm", "install"]
-        if noinput:
-            cmd.append("--noinput")
         alt_exec(
-            cmd=cmd,
+            cmd=["npm", "install"],
         )
 
 
@@ -59,14 +56,17 @@ def bower():
 
 
 @StaticCommand.command
-def gulp():
+def gulp(deploy_type=None):
     """ Run gulp build script """
     with perform(
         name='static gulp',
         before='run gulp',
     ):
+        cmd = ["gulp"]
+        if deploy_type is not None:
+            cmd.append("--type %s" % deploy_type)
         alt_exec(
-            cmd=["gulp"],
+            cmd=cmd,
             alt=["./node_modules/gulp/bin/gulp.js"],
         )
 
