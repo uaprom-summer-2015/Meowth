@@ -46,3 +46,13 @@ def apply_form(name_in_url):
         return jsonify(success=True)
     else:
         return jsonify(success=False, **form.errors)
+
+
+@feed_app.route('/offer-cv/')
+def offer_cv():
+    vacancy = Vacancy.query.get(0)
+    vacancy.bl.visit()
+    return render_template(
+        'feed/vacancy.html',
+        vacancy=vacancy,
+    )

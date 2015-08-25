@@ -2,6 +2,18 @@
   {
     "model": "project.models.Vacancy",
     "fields": {
+      "id": 0,
+      "title": "Предложите резюме",
+      "short_description": "Если вы не нашли нужную вакансию, но хотите у нас работать предложите нам ваше резюме и напишите чем можете быть полезны для компании Prom.ua",
+      "text": "<p>Если вы не нашли нужную вакансию, но хотите у нас работать предложите нам ваше резюме и напишите чем можете быть полезны для компании Prom.ua</p>",
+      "name_in_url": "offer-cv",
+      "is_hidden": true,
+      "is_deleted": true
+    }
+  },
+  {
+    "model": "project.models.Vacancy",
+    "fields": {
       "title": "Junior Python Developer",
       "short_description": "You will repair our toasters for the lowest salary ever",
       "text": "<p>We need python developer for the rescue!</p><p>There are a lot of broken toasters, but we have no person to fix them. You will fix them for the lowest salary ever. You will be our hero!</p>",
