@@ -1,6 +1,7 @@
 from flask import render_template
 from project.blueprints import pages_app
-from project.models import Page, UploadedImage
+from project.lib.regexp import contacts_map_coordinates
+from project.models import Page, UploadedImage, PageChunk
 
 
 def chunks(lst, n):
@@ -42,4 +43,15 @@ def about():
 @pages_app.route('/contacts/')
 def contacts():
     page = Page.bl.get(Page.TYPE.CONTACTS)
-    return render_template('pages/contacts.html', blocks=page.blocks)
+    map_link = PageChunk.query.filter_by(name="map_url").one()
+    parsed_map_url = contacts_map_coordinates.search(map_link.text)
+    position_coords = {
+        "lat": parsed_map_url.group("latitude"),
+        "lon": parsed_map_url.group("longitude"),
+        "zoom": parsed_map_url.group("zoom")
+    }
+    return render_template(
+        'pages/contacts.html',
+        blocks=page.blocks,
+        map_coordinates=position_coords,
+    )
