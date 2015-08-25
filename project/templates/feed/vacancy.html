@@ -13,18 +13,7 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-        <div class="vacancy">
-            <h1 class="vacancy-title">{{ vacancy.title }}</h1>
-            <p class="vacancy-city">{{ vacancy.city }}</p>
-            {% if vacancy.salary %}
-            <h2 class="vacancy-salary">{{ vacancy.salary }}</h2>
-            {% endif %}
-            <h3>Описание вакансии</h3>
-            <div class="vacancy-text">{{ vacancy.text|safe }}</div>
-        </div>
-
-        <h3>Отправить резюме</h3>
-        <div id="attached-form"></div>
+        <div id="vacancy-with-form"></div>
     </div>
 
 <script src="{{ url_for('static', filename='dist/js/vacancy.bundle.js') }}"
