@@ -1,4 +1,15 @@
-(function () {
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['lodash'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node/CommonJS
+        module.exports = factory(require('lodash'));
+    } else {
+        // Browser globals
+        factory(_);
+    }
+}(function (_) {
   "use strict";
 
   var DEFAULT_PARAMS = {
@@ -10,11 +21,11 @@
   }
 
   window.initializeMap = function() {
-    var mapCanvas = document.getElementById('container-map');
-    var params = {}
-    for (var key in DEFAULT_PARAMS) {
-      params[key] = parseFloat(mapCanvas.getAttribute(key)) || DEFAULT_PARAMS[key];
-    }
+    var mapCanvas = document.getElementById("container-map");
+    var params = _.transform(mapCanvas.dataset, function(result, value, key) {
+        result[key] = parseFloat(value);
+    });
+    params = _.defaults(params, DEFAULT_PARAMS);
     var mapOptions = {
       center: new google.maps.LatLng(params.clat, params.clng),
       zoom: params.zoom,
@@ -27,4 +38,4 @@
       map: map,
     });
   }
-})();
+}));
