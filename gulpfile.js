@@ -11,10 +11,14 @@ var source = require('vinyl-source-stream');
 var stylus = require('gulp-stylus');
 var uglify = require('gulp-uglify');
 var pkginfo = require('./package.json');
-var fs = require('fs');
 
-var debug = gutil.env.type !== 'production';
+var exec_sync = require('exec-sync');
 
+var settingsFile = "production_settings";
+var staticDistVariable = "STATIC_DIST";
+
+//var debug = gutil.env.type !== 'production';
+var debug = false;
 var npmPackages = Object.keys(pkginfo.dependencies) || [];
 
 var dist_path;
@@ -22,29 +26,12 @@ var dist_path;
 if (debug) {
     dist_path = pkginfo.dist.path;
 } else {
-    var settingsFile = "production_settings.py";
-    var variable = "STATIC_DIST";
-
-    if (!String.prototype.startsWith) {
-        String.prototype.startsWith = function (searchString, position) {
-            position = position || 0;
-            return this.indexOf(searchString, position) === position;
-        };
-    }
-
-    var data = fs.readFileSync(settingsFile, {encoding: 'utf-8'});
-
-    var rows = data.split('\n');
-    var row;
-    for (var i = 0; i < rows.length; i++) {
-        row = rows[i];
-        if (row.startsWith(variable)) {
-            var raw_path = row.split(' = ')[1];
-            // Remove ' and " symbols
-            dist_path = raw_path.replace(/["']/g, "");
-        }
-    }
-    if (typeof dist_path === "undefined") throw "No " + variable + " in " + settingsFile;
+    dist_path = exec_sync(
+        "python -c '" +
+        "from " + settingsFile + " import *;" +
+        "print(" + staticDistVariable + ")" +
+        "'"
+    );
 }
 
 gulp.task('default', ['build:scripts', 'build:styles']);
