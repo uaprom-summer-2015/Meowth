@@ -53,7 +53,7 @@
     performScroll();
   }
 
-  document.addEventListener("DOMContentLoaded", (function () {
+  $(document).on("DOMContentLoaded", (function () {
     var gallery = $("#gallery");
     gallery.magnificPopup({
       delegate: "a",
