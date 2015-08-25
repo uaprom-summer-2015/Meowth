@@ -23,14 +23,14 @@ def get_message(title, recipients, body=None, html=None, attachment_name=None,
     return msg
 
 
-def get_message_from_form(form, vacancy):
+def get_message_from_form(form, vacancy_title):
     recipients = current_app.config["MAILS_TO_SEND"]
     kwargs = {
         'name': form.name.data,
         'email': form.email.data,
         'phone': form.phone.data,
         'comment': form.comment.data,
-        'title': vacancy.title,
+        'title': vacancy_title,
     }
 
     mail_temp = MailTemplate.bl.get(MailTemplate.MAIL.CV)
@@ -51,9 +51,9 @@ def get_message_from_form(form, vacancy):
     )
 
 
-def send_mail_from_form(form, vacancy):
-    celery_send_mail.delay(get_message_from_form(form, vacancy))
-    celery_send_mail.delay(get_msg_for_reply(form, vacancy))
+def send_mail_from_form(form, vacancy_title):
+    celery_send_mail.delay(get_message_from_form(form, vacancy_title))
+    celery_send_mail.delay(get_msg_for_reply(form, vacancy_title))
 
 
 def send_mail(title, recipients, **kwargs):
@@ -61,10 +61,10 @@ def send_mail(title, recipients, **kwargs):
     celery_send_mail.delay(msg)
 
 
-def get_msg_for_reply(form, vacancy):
+def get_msg_for_reply(form, vacancy_title):
     kwargs = {
         'name': form.name.data,
-        'title': vacancy.title,
+        'title': vacancy_title,
     }
     mail_temp = MailTemplate.bl.get(MailTemplate.MAIL.REPLY)
 

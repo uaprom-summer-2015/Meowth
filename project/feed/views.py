@@ -42,7 +42,7 @@ def apply_form(name_in_url):
     if form.validate_on_submit():
         vacancy = Vacancy.query.filter(
             Vacancy.name_in_url == name_in_url).one()
-        send_mail_from_form(form, vacancy)
+        send_mail_from_form(form, vacancy.title)
         return jsonify(success=True)
     else:
         return jsonify(success=False, **form.errors)
@@ -50,9 +50,10 @@ def apply_form(name_in_url):
 
 @feed_app.route('/offer-cv/')
 def offer_cv():
-    vacancy = Vacancy.query.get(0)
-    vacancy.bl.visit()
+    ApplyForm = apply_form_factory(config=current_app.config)
+    form = ApplyForm()
+    if form.validate_on_submit():
+        send_mail_from_form(form, 'Предложить резюме')
     return render_template(
-        'feed/vacancy.html',
-        vacancy=vacancy,
+        'feed/offerCV.html',
     )
