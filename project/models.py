@@ -74,10 +74,10 @@ class User(db.Model):
     bl = Resource('bl.user')
 
     def __repr__(self):
-        return '<User {}>'.format(self.get_full_name())
+        return '{} ({})'.format(self.login, self.get_full_name())
 
     def get_full_name(self):
-        return '{} {}'.format(self.name, self.surname)
+        return '{} {}'.format(self.name or '', self.surname or '')
 
     def is_superuser(self):
         return self.role == self.ROLE.superuser

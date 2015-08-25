@@ -21,6 +21,7 @@ manager.add_command('db', MigrateCommand)
 
 manager.add_command('static', StaticCommand)
 
+
 def ask_input(message, *, hidden=False):
     input_func = getpass if hidden else input
     while True:
@@ -38,39 +39,64 @@ def run():
     """ Run application """
     app.run(debug=True)
 
-@manager.command
-def createsuperuser():
+
+@manager.option(
+    '-l', '--login',
+    dest='login',
+    action='store_true',
+    default=None,
+    help='Login'
+)
+@manager.option(
+    '-e', '--email',
+    dest='email',
+    action='store_true',
+    default=None,
+    help='E-mail'
+)
+@manager.option(
+    '-p', '--password',
+    dest='password',
+    action='store_true',
+    default=None,
+    help='Password'
+)
+def createsuperuser(login=None, email=None, password=None):
     """ Create user with admin rights"""
     print(
         '{RED}'
         'Внимание! Надежность пароля не проверяется. '
         'Пожалуйста, не злоупотребляйте этим\n'
-        '{END}'
+        '{END}'.format(**COLORS)
     )
-    login = ask_input('Введите логин')
-    email = ask_input('Введите адрес электронной почты')
-    password = ask_input('Введите пароль', hidden=True)
-    confirmation = ask_input('Подтвердите пароль', hidden=True)
+    login = login or ask_input('Введите логин')
+    email = email or ask_input('Введите адрес электронной почты')
+    password = password or ask_input('Введите пароль', hidden=True)
+    confirmation = password or ask_input('Подтвердите пароль', hidden=True)
     if password != confirmation:
         print('Пароли не совпадают!\n')
         return
     with disable_csrf(app):
         form = RegisterForm(
-            login=login,
-            email=email,
             name='dummy',
             surname='dummy',
         )
+        # dodge filling obj_data , just like browser form filling
+        # (Existence validation comes false positive)
+        form.login.data = login
+        form.email.data = email
         if not form.validate():
             errors = [err for field in form.errors.values() for err in field]
             for error in errors:
                 print(error)
+            return
         else:
-            User.bl.create_superuser(login, password, email)
+            with app.app_context():
+                User.bl.create_superuser(login, password, email)
             print(
                 '{GREEN}'
                 'Суперпользователь успешно создан\n'
-                '{END}'
+                '{END}'.format(**COLORS)
             )
 
 

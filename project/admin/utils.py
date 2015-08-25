@@ -138,7 +138,7 @@ class GalleryImageDetail(EntryDetail):
                 config=current_app.config,
                 is_update=True,
             )
-            form = form_class(obj=instncea)
+            form = form_class(obj=instance)
             if form.validate_on_submit():
                 if form.data.get('delete', False):
                     instance.bl.delete()
