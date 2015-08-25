@@ -168,7 +168,11 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
             );
         } else {
             return (
-                React.DOM.h2(null, "Success")
+                React.DOM.div(null,
+                    React.DOM.style(null, '.vacancy {display:none}'),
+                    React.DOM.h1(null, "Спасибо, Ваше резюме отправлено"),
+                    React.DOM.p(null, 'Мы ознакомимся с Вашим резюме и обязательно свяжемся в ближайшее время')
+                )
             );
         }
     }
