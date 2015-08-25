@@ -1,27 +1,14 @@
 var React = require('react');
-var $ = require('npm-zepto');
 var ApplyForm = require('./form.js');
 
 var VacancyDescription = React.createClass({
-    getInitialState: function() {
-        return { title: '', city: '', salary: '', text: ''}
-    },
-
-    componentDidMount: function() {
-        $.get('json', function(result) {
-            this.setState(result['vacancy']);
-        }.bind(this));
-    },
-
     render: function() {
         return (
             React.DOM.div({className: 'vacancy-desc'},
-                React.DOM.h1({className: 'vacancy-title'}, this.state.title),
-                React.DOM.p({className: 'vacancy-city'}, this.state.city),
-                React.DOM.h2({className: 'vacancy-salary'}, this.state.salary),
-                React.DOM.h3(null, 'Описание вакансии'),
-                React.DOM.div({className: 'vacancy-text', dangerouslySetInnerHTML: {__html: this.state.text}}),
-                React.DOM.h3(null, 'Отправить резюме')
+                React.DOM.h1({className: 'vacancy-title'}, 'Предложите резюме'),
+                React.DOM.div({className: 'vacancy-text'},
+                    React.DOM.p(null, 'Если вы не нашли нужную вакансию, но хотите у нас работать предложите нам ваше резюме и напишите чем можете быть полезны для компании Prom.ua')
+                )
             )
         );
     }
