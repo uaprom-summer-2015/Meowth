@@ -11,11 +11,9 @@ from project.blueprints import all_blueprints
 def create_app():
 
     app = Flask(__name__, static_url_path='/static')
-    app.config.from_object(
-        environ.get('APP_SETTINGS', 'config.DevelopmentConfig')
-    )
-    if (environ.get('APP_SETTINGS', 'config.DevelopmentConfig')
-            == 'config.DevelopmentConfig'):
+    used_config = environ.get('APP_SETTINGS', 'config.ProductionConfig')
+    app.config.from_object(used_config)
+    if (used_config == 'config.DevelopmentConfig'):
         logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
     with app.app_context():

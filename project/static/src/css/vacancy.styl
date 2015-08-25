@@ -21,7 +21,7 @@
 .apply-form label
   display block
   margin 35px 0 12px
-  
+
 .apply-form textarea
   margin-bottom 15px
   resize none
@@ -56,6 +56,11 @@
   overflow hidden
   position relative
   cursor pointer
+  &:before
+    display inline-block
+    content ""
+    height 100%
+    vertical-align middle
 
 .input-hidden
   cursor pointer
@@ -74,6 +79,7 @@
   display none
   margin-left 10px
   vertical-align top
+  width calc(100% - 50px)
   p
     margin 0
 
@@ -82,6 +88,7 @@
   width 39px
   height 54px
   border none 0
+  display inline-block
   span
     display none
 
@@ -91,6 +98,7 @@
 
 .file-name
   color $color-text-btn-grey
+  word-wrap break-word
 
 .file-size
   color $color-light-grey
@@ -98,10 +106,11 @@
 @media (min-width 768px)
   .form-file
     width 250px
+  .upload-file-success
+    width 100%
   .apply-form input[type='submit']
     width 280px
 
 @media (min-width 1024px)
   .apply-form
     width 620px
-

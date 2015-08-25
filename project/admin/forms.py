@@ -2,8 +2,9 @@ from flask.ext.wtf import Form
 from wtforms import StringField, TextAreaField, BooleanField, FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
-from project.models import Category, City
+from project.models import Category, City, Vacancy
 from project.lib.media.validators import AllowedMime
+from project.lib.validators import Exists
 
 
 class VacancyForm(Form):
@@ -15,6 +16,7 @@ class VacancyForm(Form):
                 max=100,
                 message='Must not exceed 100 symbols'
             ),
+            Exists(model=Vacancy),
         ]
     )
     name_in_url = StringField(
