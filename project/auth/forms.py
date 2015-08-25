@@ -101,6 +101,7 @@ class PasswordEditForm(Form):
     )
     confirmation = PasswordField(label='Подтвердите пароль')
 
+
 class HelperForm(Form):
     login = StringField(
         label='Логин',
