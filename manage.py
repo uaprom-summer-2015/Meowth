@@ -4,7 +4,7 @@ from flask.ext.migrate import Migrate, MigrateCommand
 from project import app
 from project.extensions import db
 from commands.dbutils import DBUtils, DBUtilsCommand
-from commands.static import StaticCommand, npm
+from commands.static import StaticCommand, npm, gulp, bower
 
 manager = Manager(app)
 
@@ -23,16 +23,12 @@ def run():
     app.run(debug=True)
 
 
-@manager.option(
-    '--noinput',
-    dest='noinput',
-    action='store_true',
-    default=False,
-    help='Do not ask user anything',
-)
-def collectstatic(noinput=False):
+@manager.command
+def collectstatic():
     """ Collect and build all static """
-    npm(noinput)
+    npm()
+    bower()
+    gulp(deploy_type="production")
 
 if __name__ == "__main__":
     manager.run()
