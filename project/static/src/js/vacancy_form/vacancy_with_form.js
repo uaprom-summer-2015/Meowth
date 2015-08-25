@@ -89,13 +89,7 @@ var VacancyDescription = React.createClass({
     componentDidMount: function() {
         $.get('json', function(result) {
             if (this.isMounted()) {
-                vacancy = result['vacancy']
-                this.setState({
-                    title: vacancy['title'],
-                    city: vacancy['city'],
-                    salary: vacancy['salary'],
-                    text: vacancy['text']
-                });
+                this.setState(result['vacancy']);
             }
         }.bind(this));
     },
