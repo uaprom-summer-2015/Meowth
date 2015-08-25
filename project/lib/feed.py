@@ -1,6 +1,6 @@
 from sqlconstruct import Construct
 from project.extensions import db
-from project.models import Vacancy
+from project.models import Vacancy, City
 
 
 def get_visible_vacancies_list():
@@ -22,3 +22,17 @@ def get_visible_vacancies_list():
         ).all()
     )
     return vacancies
+
+
+def get_vacancy4json(name_in_url):
+    vacancy_struct = Construct({
+        'title': Vacancy.title,
+        'city': City.name,
+        'salary': Vacancy.salary,
+        'text': Vacancy.text
+    })
+    vacancy = (db.session.query(vacancy_struct)
+               .outerjoin(Vacancy.city)
+               .filter(Vacancy.name_in_url == name_in_url).one()
+               )
+    return vacancy

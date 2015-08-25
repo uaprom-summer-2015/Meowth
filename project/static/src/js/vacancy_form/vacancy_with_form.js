@@ -1,5 +1,6 @@
 var React = require('react');
 var classNames = require('classnames');
+var $ = require('npm-zepto');
 
 var UploadFileButton = React.createClass({
 
@@ -14,13 +15,17 @@ var UploadFileButton = React.createClass({
         var goodExtension = this.validateExtension(attachment.name);
         if (largeSize) {
             error = 'Файл слишком большой, попробуйте загрузить до 15 Мб';
-            success = false;
         } else if (!goodExtension) {
             error = 'Недопустимое расширение файла';
-            success = false;
         } else {
             error = '';
+        }
+        if (error) {
+            success = false;
+            this.props.handleFileName('');
+        } else {
             success = true;
+            this.props.handleFileName(attachment.name);
             this.setFileSize(attachment.size);
         }
 
@@ -76,12 +81,44 @@ var UploadFileButton = React.createClass({
     }
 });
 
+var VacancyDescription = React.createClass({
+    getInitialState: function() {
+        return { title: '', city: '', salary: '', text: ''}
+    },
+
+    componentDidMount: function() {
+        $.get('json', function(result) {
+            if (this.isMounted()) {
+                vacancy = result['vacancy']
+                this.setState({
+                    title: vacancy['title'],
+                    city: vacancy['city'],
+                    salary: vacancy['salary'],
+                    text: vacancy['text']
+                });
+            }
+        }.bind(this));
+    },
+
+    render: function() {
+        return (
+            React.DOM.div({className: 'vacancy-desc'},
+                React.DOM.h1({className: 'vacancy-title'}, this.state.title),
+                React.DOM.p({className: 'vacancy-city'}, this.state.city),
+                React.DOM.h2({className: 'vacancy-salary'}, this.state.salary),
+                React.DOM.h3(null, 'Описание вакансии'),
+                React.DOM.div({className: 'vacancy-text', dangerouslySetInnerHTML: {__html: this.state.text}}),
+                React.DOM.h3(null, 'Отправить резюме')
+            )
+        );
+    }
+});
+
 var ApplyForm = React.createClass({displayName: "ApplyForm",
     getInitialState: function() {
         return { name: '', email: '', phone: '', comment: '',
-                 nameError: '', emailError: '', phoneError: '',
-                 largeSize: false, goodExtension: true, fileError: '',
-                 attachment: null, success: false, fileMessage: ''}
+                 nameError: '', emailError: '', phoneError: '', fileError: '',
+                 success: false, fileName: ''}
     },
     changeName: function(e) {
         this.setState({ name: e.target.value, nameError: '' });
@@ -95,13 +132,19 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
     changeComment: function(e) {
         this.setState({ comment: e.target.value });
     },
+    handleFileName: function(name) {
+        this.setState({fileName: name})
+    },
     handleLoad: function(resp) {
+        if (resp['success']) {
+            this.props.handleSuccess()
+        }
         this.setState({ success: resp['success'], nameError: resp['name'],
                                     emailError: resp['email'], phoneError: resp['phone'],
                                     fileError: resp['attachment']});
     },
     notFullForm: function() {
-        return (!this.state.name || !this. state.email || !this.state.phone
+        return (!this.state.name || !this. state.email || !this.state.phone || !this.state.fileName
             || this.state.nameError || this.state.emailError
             || this.state.phoneError || this.state.fileError)
     },
@@ -128,54 +171,73 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
         var emailClass = classNames("form-email", {'has-error': this.state.emailError});
         var phoneClass = classNames("form-phone", {'has-error': this.state.phoneError});
         var buttonClass = classNames('btn btn-action-colored', {'disabled': this.notFullForm()});
-        if (this.state.success == false) {
-            return (
-                React.DOM.form({className: "apply-form", name: "ApplyForm", id: "ApplyForm",
-                      onSubmit: this.handleSubmit, encType: "multipart/form-data", ref: "ApplyForm"},
+        return (
+            React.DOM.form({className: "apply-form", name: "ApplyForm", id: "ApplyForm",
+                onSubmit: this.handleSubmit, encType: "multipart/form-data", ref: "ApplyForm"},
 
-                    React.DOM.input({type: "hidden", name: "csrf_token", value: this.props.csrf_token}),
+                React.DOM.input({type: "hidden", name: "csrf_token", value: this.props.csrf_token}),
 
-                    React.DOM.div({className: nameClass},
-                        React.DOM.label({htmlFor: "name"},  'Ваши имя и фамилия'),
-                        React.DOM.input({name: "name", type: "text", id: "name",
-                               placeholder: "Иван Иванович Иванов", value: this.state.name, onChange: this.changeName}),
-                        React.DOM.p(null, this.state.nameError)
-                    ),
+                React.DOM.div({className: nameClass},
+                    React.DOM.label({htmlFor: "name"},  'Ваши имя и фамилия'),
+                    React.DOM.input({name: "name", type: "text", id: "name",
+                           placeholder: "Иван Иванович Иванов", value: this.state.name, onChange: this.changeName}),
+                    React.DOM.p(null, this.state.nameError)
+                ),
 
-                    React.DOM.div({className: emailClass},
-                        React.DOM.label({htmlFor: "email"}, 'Email'),
-                        React.DOM.input({name: "email", type: "email", id: "email",
-                               placeholder: "example@gmail.com", value: this.state.email, onChange: this.changeEmail}),
-                        React.DOM.p(null, this.state.emailError)
-                    ),
+                React.DOM.div({className: emailClass},
+                    React.DOM.label({htmlFor: "email"}, 'Email'),
+                    React.DOM.input({name: "email", type: "email", id: "email",
+                           placeholder: "example@gmail.com", value: this.state.email, onChange: this.changeEmail}),
+                    React.DOM.p(null, this.state.emailError)
+                ),
 
-                    React.DOM.div({className: phoneClass},
-                        React.DOM.label({htmlFor: "phone"}, 'Контактный телефон'),
-                        React.DOM.input({name: "phone", type: "text", id: "phone",
-                               placeholder: "(044) 555-55-55", value: this.state.phone, onChange: this.changePhone}),
-                        React.DOM.p(null, this.state.phoneError)
-                    ),
+                React.DOM.div({className: phoneClass},
+                    React.DOM.label({htmlFor: "phone"}, 'Контактный телефон'),
+                    React.DOM.input({name: "phone", type: "text", id: "phone",
+                           placeholder: "(044) 555-55-55", value: this.state.phone, onChange: this.changePhone}),
+                    React.DOM.p(null, this.state.phoneError)
+                ),
 
-                    React.DOM.div({className: "form-comment"},
-                        React.DOM.label({htmlFor: "comment"}, 'Сопроводительный текст'),
-                        React.DOM.textarea({name: "comment", id: "comment"})
-                    ),
+                React.DOM.div({className: "form-comment"},
+                    React.DOM.label({htmlFor: "comment"}, 'Сопроводительный текст'),
+                    React.DOM.textarea({name: "comment", id: "comment"})
+                ),
 
-                    React.createElement(UploadFileButton),
+                React.createElement(UploadFileButton, {handleFileName: this.handleFileName}),
 
-                    React.DOM.input({type: "submit", value: 'Отправить резюме', className: buttonClass})
-                )
-            );
-        } else {
+                React.DOM.input({type: "submit", value: 'Отправить резюме', className: buttonClass})
+            )
+        );
+
+    }
+});
+
+var Vacancy = React.createClass({
+    getInitialState: function() {
+        return {success: false}
+    },
+
+    handleSuccess: function () {
+        this.setState({success: true})
+    },
+
+    render: function() {
+        if (this.state.success) {
             return (
                 React.DOM.div(null,
-                    React.DOM.style(null, '.vacancy {display:none}'),
                     React.DOM.h1(null, "Спасибо, Ваше резюме отправлено"),
                     React.DOM.p(null, 'Мы ознакомимся с Вашим резюме и обязательно свяжемся в ближайшее время')
                 )
             );
+        } else {
+            return (
+                React.DOM.div({className: 'vacancy'},
+                    React.createElement(VacancyDescription),
+                    React.createElement(ApplyForm, {handleSuccess: this.handleSuccess, csrf_token: this.props.csrf_token})
+                )
+            )
         }
     }
 });
 
-module.exports = React.createFactory(ApplyForm);
+module.exports = React.createFactory(Vacancy);
