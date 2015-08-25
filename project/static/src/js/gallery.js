@@ -71,8 +71,7 @@
     });
     gallery.css("overflow-x","hidden");
     gallery.css("overflow-y","hidden");
-    var gal = gallery[0];
-    gal.addEventListener("mousemove", function(e) {
+    gallery.on("mousemove", function(e) {
       if (e.screenX > window.innerWidth*0.7) {
         if (! gallery.hasClass("play")) {
           gallery.addClass("play");
@@ -84,25 +83,25 @@
           gallery.doScroll(15000, DIRECTIONS.LEFT);
         }
       } else {
-        gallery.mouseleave();
+        gallery.triggerHandler("mouseleave");
       }
     });
-    gal.addEventListener("mouseleave", function(e) {
+    gallery.on("mouseleave", function(e) {
       gallery.removeClass("play");
     });
 
     // Touches (a primitive crutch)
     var touchX;
-    gal.addEventListener("touchstart", function(e) {
-      gallery.mouseleave();  // To avoid glitches when trying both swipe and mouse
+    gallery.on("touchstart", function(e) {
+      gallery.triggerHandler("mouseleave");  // To avoid glitches when trying both swipe and mouse
       touchX = e.changedTouches[0].clientX;
     });
-    gal.addEventListener("touchmove", function(e) {
+    gallery.on("touchmove", function(e) {
       var diff = touchX - e.changedTouches[0].clientX;
       touchX = e.changedTouches[0].clientX;
-      gal.scrollLeft += diff;
+      gallery.scrollLeft(gallery.scrollLeft() + diff);
     });
-    gal.addEventListener("touchend", function(e) {
+    gallery.on("touchend", function(e) {
       touchX = undefined;
     });
   }));
