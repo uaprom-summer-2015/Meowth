@@ -9,7 +9,7 @@
     zoom: 0,
   }
 
-  function initialize() {
+  window.initializeMap = function() {
     var mapCanvas = document.getElementById('container-map');
     var params = {}
     for (var key in DEFAULT_PARAMS) {
@@ -27,5 +27,4 @@
       map: map,
     });
   }
-  google.maps.event.addDomListener(window, 'load', initialize);
 })();
