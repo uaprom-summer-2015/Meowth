@@ -77,7 +77,7 @@ class User(db.Model):
         return '{} ({})'.format(self.login, self.get_full_name())
 
     def get_full_name(self):
-        return '{} {}'.format(self.name or '', self.surname or '')
+        return '{} {}'.format(self.name or '', self.surname or '').strip()
 
     def is_superuser(self):
         return self.role == self.ROLE.superuser

@@ -4,12 +4,13 @@ from flask.ext.migrate import Migrate, MigrateCommand
 from project import app
 from project.extensions import db
 from project.models import User
-from project.auth.forms import RegisterForm
+from project.auth.forms import HelperForm
 from project.lib.context_managers import disable_csrf
-from commands.utils import COLORS
+from commands.utils import perform
 from commands.dbutils import DBUtils, DBUtilsCommand
 from commands.static import StaticCommand, npm
 from getpass import getpass
+
 
 manager = Manager(app)
 
@@ -63,41 +64,44 @@ def run():
 )
 def createsuperuser(login=None, email=None, password=None):
     """ Create user with admin rights"""
-    print(
-        '{RED}'
-        'Внимание! Надежность пароля не проверяется. '
-        'Пожалуйста, не злоупотребляйте этим\n'
-        '{END}'.format(**COLORS)
-    )
     login = login or ask_input('Введите логин')
     email = email or ask_input('Введите адрес электронной почты')
-    password = password or ask_input('Введите пароль', hidden=True)
+    passwd = password or ask_input('Введите пароль', hidden=True)
     confirmation = password or ask_input('Подтвердите пароль', hidden=True)
-    if password != confirmation:
-        print('Пароли не совпадают!\n')
-        return
+
+    while passwd != confirmation:
+        print('Пароли не совпадают! Похоже, вы опечатались.')
+        while True:
+            choice = input('Повторить ввод? (y/n) ').lower()
+            if choice in 'yes':
+                passwd = ask_input('Введите пароль', hidden=True)
+                confirmation = ask_input('Подтвердите пароль', hidden=True)
+                break
+            elif choice in 'no':
+                return
+            else:
+                print('Пожалуйста, ответьте y (yes) или n (no)')
+
     with disable_csrf(app):
-        form = RegisterForm(
-            name='dummy',
-            surname='dummy',
-        )
+        form = HelperForm()
         # dodge filling obj_data , just like browser form filling
         # (Existence validation comes false positive)
         form.login.data = login
         form.email.data = email
+        form.password.data = passwd
         if not form.validate():
             errors = [err for field in form.errors.values() for err in field]
             for error in errors:
                 print(error)
             return
         else:
-            with app.app_context():
-                User.bl.create_superuser(login, password, email)
-            print(
-                '{GREEN}'
-                'Суперпользователь успешно создан\n'
-                '{END}'.format(**COLORS)
-            )
+            with app.app_context(), perform(
+                name='createsuperuser',
+                before='Creating user',
+                fail='Error occured while creating user',
+                after='Superuser has been succesfully created!',
+            ):
+                User.bl.create_superuser(login, passwd, email)
 
 
 @manager.option(
