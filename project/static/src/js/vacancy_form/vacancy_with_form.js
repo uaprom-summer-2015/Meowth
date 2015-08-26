@@ -23,6 +23,7 @@ var UploadFileButton = React.createClass({
             error = '';
         }
         if (error) {
+            $('#attachment').val('');
             success = false;
             this.props.handleFileName('');
         } else {
