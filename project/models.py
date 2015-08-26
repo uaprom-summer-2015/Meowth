@@ -231,13 +231,10 @@ class MailTemplate(db.Model):
 class UploadedImage(db.Model):
     __tablename__ = 'uploaded_images'
 
-    IMG_CATEGORY = IntEnum(
-        '',
-        {
-            'other': 0,
-            'gallery': 1,
-        },
-    )
+    IMG_CATEGORY = IntEnum('ImageCategory', {
+        'other': 0,
+        'gallery': 1,
+    })
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(GUID, nullable=False)
