@@ -263,27 +263,27 @@ register_section(
 )
 
 # Gallery Images
-gallery_images_list = EntryList.as_view(
-    name='gallery_images_list',
+images_list = EntryList.as_view(
+    name='images_list',
     model=models.UploadedImage,
-    template="admin/gallery_images.html",
+    template="admin/images.html",
 )
 
-gallery_image_detail = GalleryImageDetail.as_view(
-    name='gallery_image_detail',
+image_detail = GalleryImageDetail.as_view(
+    name='image_detail',
     create_form=forms.image_upload_form_factory,
     model=models.UploadedImage,
-    success_url='gallery_images_list',
-    template='admin/image_upload.html',
+    success_url='images_list',
+    template='admin/image.html',
 )
 
 register_section(
-    section_name="Галерея",
-    list_route="/gallery_images/",
-    detail_route="/gallery_image/",
-    list_view=gallery_images_list,
-    detail_view=gallery_image_detail,
-    list_endpoint="gallery_images_list",
+    section_name="Изображения",
+    list_route="/images/",
+    detail_route="/image/",
+    list_view=images_list,
+    detail_view=image_detail,
+    list_endpoint="images_list",
 )
 
 

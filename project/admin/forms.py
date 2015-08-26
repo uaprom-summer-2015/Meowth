@@ -1,8 +1,11 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, TextAreaField, BooleanField, FileField
+from wtforms import (
+    StringField, TextAreaField, BooleanField,
+    FileField, SelectField,
+)
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
-from project.models import Category, City, Vacancy, PageChunk
+from project.models import Category, City, Vacancy, PageChunk, UploadedImage
 from project.lib.media.validators import AllowedMime
 from project.lib.validators import Exists
 
@@ -112,6 +115,16 @@ def image_upload_form_factory(config, is_update=False):
     assert config is not None  # cause config=None can be passed
 
     class ImageUploadForm(Form):
+        if not is_update:
+            img_category = SelectField(
+                label='Категория',
+                choices=[
+                    (UploadedImage.IMG_CATEGORY.other.value, 'Разное'),
+                    (UploadedImage.IMG_CATEGORY.gallery.value, 'Галлерея'),
+                ],
+                coerce=lambda x: UploadedImage.IMG_CATEGORY(int(x)),
+                default=UploadedImage.IMG_CATEGORY.other,
+            )
         title = StringField(
             label='Название',
             validators=[
