@@ -71,12 +71,12 @@ class UserBL(BaseBL):
         token.bl.delete()
         return True
 
-    def create_superuser(self, login, password):
+    def create_superuser(self, login, password, email):
         model = self.model
         superuser = model.bl.create({
             'login': login,
             'password': password,
-            'email': 'admin@admin.com',
+            'email': email,
         })
         superuser.role = model.ROLE.superuser
         superuser.bl.save()

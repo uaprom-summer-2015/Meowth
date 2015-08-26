@@ -216,7 +216,8 @@ class TestUserBL(ProjectTestCase):
     def test_create_superuser(self):
         login = 'tirek'
         password = 'tirek'
-        u = User.bl.create_superuser(login, password)
+        email = 'tirek@gmail.com'
+        u = User.bl.create_superuser(login, password, email)
         self.assertIsNotNone(
             u,
             msg='created superuser is None',

@@ -60,7 +60,7 @@ def confirm_reset(token):
 def change_password():
     form = PasswordEditForm()
     if form.validate_on_submit():
-        User.bl.set_password(form.data['new_password'])
+        User.bl.set_password(form.data['password'])
         flash('Ваш пароль успешно изменён')
         return redirect(url_for('admin.mainpage'))
     return render_template(
