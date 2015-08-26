@@ -27,7 +27,7 @@ expected_sections = dict([
 class EntryListTests(ProjectTestCase):
 
     render_templates = False
-    template = "404.html"  # who cares what template we use?
+    template = "test.html"  # who cares what template we use?
     model = Mock()
 
     def setUp(self):
