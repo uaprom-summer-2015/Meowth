@@ -8,7 +8,7 @@ from project.auth.forms import HelperForm
 from project.lib.context_managers import disable_csrf
 from commands.utils import perform
 from commands.dbutils import DBUtils, DBUtilsCommand
-from commands.static import StaticCommand, npm
+from commands.static import StaticCommand
 from getpass import getpass
 
 
@@ -106,18 +106,6 @@ def createsuperuser(login=None, email=None, password=None):
                 after='Superuser has been succesfully created!',
             ):
                 User.bl.create_superuser(login, passwd, email)
-
-
-@manager.option(
-    '--noinput',
-    dest='noinput',
-    action='store_true',
-    default=False,
-    help='Do not ask user anything',
-)
-def collectstatic(noinput=False):
-    """ Collect and build all static """
-    npm(noinput)
 
 
 if __name__ == "__main__":
