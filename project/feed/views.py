@@ -17,7 +17,11 @@ def get_vacancy(name_in_url):
     if name_in_url == 'offer-cv':
         return render_template('feed/offerCV.html')
     try:
-        vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
+        vacancy = (
+            Vacancy.query
+            .filter(Vacancy.name_in_url == name_in_url)
+            .one()
+        )
     except NoResultFound:
         abort(404)
     if vacancy.condition_is_deleted or vacancy.condition_is_hidden:
