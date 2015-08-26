@@ -266,7 +266,7 @@ var SpecSelect = React.createClass({displayName: "SpecSelect",
         })[0];
 
         return (
-            React.createElement(Select, {onChange: this.handleChange, clearable: false, value: initial_value, options: options, placeholder: "Категория", className: "categoryDropdown"}
+            React.createElement(Select, {onChange: this.handleChange, clearable: false, value: initial_value, options: options, placeholder: "Категория", className: "categoryDropdown",  searchable: false}
             )
         );
     }
@@ -294,7 +294,7 @@ var CitySelect = React.createClass({displayName: "CitySelect",
         })[0];
 
         return (
-            React.createElement(Select, {onChange: this.handleChange, clearable: false, value: initial_value, options: options, placeholder: "Город", className: "cityDropdown"}
+            React.createElement(Select, {onChange: this.handleChange, clearable: false, value: initial_value, options: options, placeholder: "Город", className: "cityDropdown", searchable: false}
             )
         );
     }
