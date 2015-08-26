@@ -3,7 +3,7 @@ from project.blueprints import feed_app
 from project.lib.feed import get_visible_vacancies_list, get_vacancy4json
 from project.models import Vacancy, Category, City
 from project.feed.forms import apply_form_factory
-from project.lib.mail import send_mail_from_form
+from project.lib.mail import send_mail_from_form, offer_cv_send_mail
 
 
 @feed_app.route('/')
@@ -13,6 +13,8 @@ def vacancies():
 
 @feed_app.route('/<name_in_url>/')
 def get_vacancy(name_in_url):
+    if name_in_url == 'offer-cv':
+        return render_template('feed/offerCV.html')
     vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
     if vacancy.condition_is_deleted or vacancy.condition_is_hidden:
         abort(404)
@@ -48,8 +50,13 @@ def apply_form(name_in_url):
     form = ApplyForm()
     if form.validate_on_submit():
         vacancy = Vacancy.query.filter(
-            Vacancy.name_in_url == name_in_url).one()
-        send_mail_from_form(form, vacancy)
+            Vacancy.name_in_url == name_in_url).first()
+
+        if vacancy:
+            send_mail_from_form(form, vacancy.title)
+        else:
+            offer_cv_send_mail(form)
+
         return jsonify(success=True)
     else:
         return jsonify(success=False, **form.errors)
