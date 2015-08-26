@@ -1,5 +1,7 @@
 import os
-import project
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+PROJECT_DIR = os.path.join(BASE_DIR, "project")
 
 STATIC_DIST = './project/static/dist'
 
@@ -7,8 +9,8 @@ SQLALCHEMY_DATABASE_URI = \
     "postgres://postgres:postgres@127.0.0.1:5432/hrportal"
 
 UPLOAD_FOLDER = os.path.join(
-    os.path.dirname(project.__file__),
-    "../hrportal/upload",
+    BASE_DIR,
+    "hrportal/upload",
 )
 
 # Celery
