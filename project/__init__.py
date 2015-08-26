@@ -21,7 +21,7 @@ def request_entity_too_large(error):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template("404.html")
+    return render_template("errors/404.html")
 
 if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     logging.info(app.url_map)
