@@ -22,7 +22,7 @@ def login():
         return redirect(url_for('admin.mainpage'))
 
     return render_template(
-        'login.html',
+        'admin/login.html',
         title='Вход',
         submit='Войти',
         form=form,
@@ -37,7 +37,7 @@ def reset():
         flash("Вам на почту отправлено письмо с дальнейшими инструкциями")
         return redirect(url_for('auth.login'))
     return render_template(
-        'login.html',
+        'admin/login.html',
         title='Сброс пароля',
         submit='Сбросить',
         form=form,
@@ -64,7 +64,7 @@ def change_password():
         flash('Ваш пароль успешно изменён')
         return redirect(url_for('admin.mainpage'))
     return render_template(
-        'login.html',
+        'admin/login.html',
         title='Смена пароля',
         submit='Сменить',
         form=form,
