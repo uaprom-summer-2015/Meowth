@@ -4,6 +4,7 @@ from project.lib.feed import get_visible_vacancies_list, get_vacancy4json
 from project.models import Vacancy, Category, City
 from project.feed.forms import apply_form_factory
 from project.lib.mail import send_mail_from_form, offer_cv_send_mail
+from sqlalchemy.orm.exc import NoResultFound
 
 
 @feed_app.route('/')
@@ -15,7 +16,10 @@ def vacancies():
 def get_vacancy(name_in_url):
     if name_in_url == 'offer-cv':
         return render_template('feed/offerCV.html')
-    vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
+    try:
+        vacancy = Vacancy.query.filter(Vacancy.name_in_url == name_in_url).one()
+    except NoResultFound:
+        abort(404)
     if vacancy.condition_is_deleted or vacancy.condition_is_hidden:
         abort(404)
     vacancy.bl.visit()
