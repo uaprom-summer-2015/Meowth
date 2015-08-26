@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% from "pages/macros.html" import list_blocks %}
+{% extends "pages/base.html" %}
 {% block meta %}
     <script src="{{ url_for('static', filename='dist/js/gallery.bundle.js') }}"
             type="text/javascript"></script>
@@ -14,9 +13,7 @@
         </div>
     </div>
 
-    <div class="container container-pageblock">
-        {{ list_blocks(blocks) }}
-    </div>
+    {{ super() }}
 
     <div id="gallery">
         {% for column in images %}

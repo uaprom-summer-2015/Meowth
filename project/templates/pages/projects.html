@@ -1,13 +1,4 @@
 {% extends "base.html" %}
-{% from "pages/macros.html" import list_blocks %}
-
-{% block content %}
-
-    <div class="container container-pageblock">
-        {{ list_blocks(blocks) }}
-    </div>
-
-{% endblock %}
 {% block meta %}
     {{ super() }}
 
