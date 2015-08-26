@@ -167,7 +167,7 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
         var nameClass = classNames("form-name", {'has-error': this.state.nameError});
         var emailClass = classNames("form-email", {'has-error': this.state.emailError});
         var phoneClass = classNames("form-phone", {'has-error': this.state.phoneError});
-        var buttonClass = classNames('btn btn-action-colored', {'disabled': this.notFullForm()});
+        var buttonClass = classNames('btn btn-action-colored btn-apply-form', {'disabled': this.notFullForm()});
         return (
             React.DOM.form({className: "apply-form", name: "ApplyForm", id: "ApplyForm",
                 onSubmit: this.handleSubmit, encType: "multipart/form-data", ref: "ApplyForm"},
@@ -202,7 +202,7 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
 
                 React.createElement(UploadFileButton, {handleFileName: this.handleFileName}),
 
-                React.DOM.input({type: "submit", value: 'Отправить резюме', className: buttonClass})
+                React.DOM.button({className: buttonClass}, 'Отправить резюме')
             )
         );
 
