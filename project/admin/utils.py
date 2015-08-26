@@ -1,6 +1,5 @@
 from flask import url_for, render_template, abort, request, current_app
 from flask.views import MethodView, View
-from project.models import UploadedImage
 from werkzeug.utils import redirect
 
 
