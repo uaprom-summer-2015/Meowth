@@ -8,15 +8,11 @@ from werkzeug import secure_filename
 
 class UploadedImageBL(BaseBL):
 
-    def save_image(self, *, image, img_category, do_sync=False, **kwargs):
+    def save_image_file(self, *, image, img_category, do_sync=False, **kwargs):
         def mkdir_ifn_exists(dirpath):
             if not dirpath.exists():
                 dirpath.mkdir(mode=0o751, parents=True)
 
-        if image is None:
-            return
-        if 'title' not in kwargs:
-            kwargs['title'] = secure_filename(image.filename)
         make_thumbnail = (
             celery_make_thumbnail if do_sync else celery_make_thumbnail.delay
         )
@@ -41,15 +37,28 @@ class UploadedImageBL(BaseBL):
             destination=str(thumbnail_dir / name),
             size=(200, 200),
         )
+        return (uid, ext, img_category)
 
-        uploaded_image = self.model(
-            name=uid,
-            ext=ext,
+    def save_image(self, *, image, img_category, do_sync=False, **kwargs):
+        if image is None:
+            return
+        if 'title' not in kwargs:
+            kwargs['title'] = secure_filename(image.filename)
+
+        uid, ext, category = self.save_image_file(
+            image=image,
             img_category=img_category,
-            title=kwargs.get('title', None),
-            description=kwargs.get('description', None),
+            do_sync=do_sync,
         )
-        uploaded_image.bl.save()
+
+        uploaded_image = self.create({
+            'name': uid,
+            'ext': ext,
+            'img_category': img_category,
+            'title': kwargs.get('title', None),
+            'description': kwargs.get('description', None),
+        })
+        return uploaded_image
 
     def delete(self):
         instance = self.model
