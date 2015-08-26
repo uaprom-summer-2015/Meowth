@@ -9,20 +9,20 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    {% block header %}{% endblock %}
 
+    {% block header %}{% endblock %}
     {% block content %}{% endblock %}
-    {% block gallery %}
-    {% endblock %}
+
     {% block footer %}
-        <footer class="footer ">
-                <div class="container container-footer">
-                    <span class="footer-el footer-left"> {{ pagechunks.copyright|safe }} </span>
-                    <span class="footer-el footer-center"> {{ pagechunks.social_networks|safe }} </span>
-                    <span class="footer-el footer-right"> {{ pagechunks.contacts|safe }} </span>
-                </div>
-        </footer>
+    <footer class="footer ">
+        <div class="container container-footer">
+            <span class="footer-el footer-left"> {{ pagechunks.copyright|safe }} </span>
+            <span class="footer-el footer-center"> {{ pagechunks.social_networks|safe }} </span>
+            <span class="footer-el footer-right"> {{ pagechunks.contacts|safe }} </span>
+        </div>
+    </footer>
     {% endblock %}
+
     {% block postscripts %}{% endblock %}
 </body>
 </html>
