@@ -1,14 +1,6 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="container">
-    <div class="container container-sad-smile"><!--
-        --><div class="sad-smile"><span>:(</span></div><!--
-        --><div class="sad-smile-text">
-            <h2>Упс</h2>
-            <p>Такой страницы не существует.</p>
-            <p>Возможно Вы перешли по поломаной ссылке или допустили ошибку при наборе адреса страницы.</p>
-        </div><!--
-    --></div>
-</div>
-{% endblock content %}
+{% extends "errors/base.html" %}
+{% block errortext %}
+<h2>Упс</h2>
+<p>Такой страницы не существует.</p>
+<p>Возможно Вы перешли по поломаной ссылке или допустили ошибку при наборе адреса страницы.</p>
+{% endblock %}

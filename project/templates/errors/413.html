@@ -1,14 +1,7 @@
-{% extends "base.html" %}
+{% extends "errors/base.html" %}
 
-{% block content %}
-<div class="container">
-    <div class="container container-sad-smile"><!--
-        --><div class="sad-smile"><span>:(</span></div><!--
-        --><div class="sad-smile-text">
-            <h2>Упс</h2>
-            <p>Файл слишком большой</p>
-            <p>Вы попытались загрузить файл, но, увы, он слишком большой.</p>
-        </div><!--
-    --></div>
-</div>
-{% endblock content %}
+{% block errortext %}
+<h2>Упс</h2>
+<p>Файл слишком большой</p>
+<p>Вы попытались загрузить файл, но, увы, он слишком большой.</p>
+{% endblock %}
