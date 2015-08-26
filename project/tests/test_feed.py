@@ -15,11 +15,12 @@ class TestFeedView(ProjectTestCase):
 
     def test_vacancy(self):
         vacancy = Vacancy.query.first()
-        url = url_for('feed.get_vacancy', name_in_url=vacancy.name_in_url)
+        url = url_for('feed.get_vacancy_json', name_in_url=vacancy.name_in_url)
         with self.client as client:
             resp = client.get(url, follow_redirects=True)
-            self.assertIn(vacancy.title, resp.data.decode())
-            self.assertIn(vacancy.text, resp.data.decode())
+            vac = resp.json['vacancy']
+            self.assertEqual(vacancy.title, vac['title'])
+            self.assertEqual(vacancy.text, vac['text'])
 
     def get_vacancy_with_csrf(self):
         vacancy = Vacancy.query.first()

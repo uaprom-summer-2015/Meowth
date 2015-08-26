@@ -12,6 +12,7 @@ from commands.static import StaticCommand, npm
 from getpass import getpass
 
 
+
 manager = Manager(app)
 
 devutils = DBUtils(app, db)
@@ -118,6 +119,7 @@ def createsuperuser(login=None, email=None, password=None):
 def collectstatic(noinput=False):
     """ Collect and build all static """
     npm(noinput)
+
 
 if __name__ == "__main__":
     manager.run()
