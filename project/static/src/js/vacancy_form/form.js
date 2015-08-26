@@ -17,10 +17,13 @@ var UploadFileButton = React.createClass({
             error = 'Файл слишком большой, попробуйте загрузить до 15 Мб';
         } else if (!goodExtension) {
             error = 'Недопустимое расширение файла';
+        } else if (attachment.size == 0) {
+            error = 'Нельзя прикреплять пустой файл';
         } else {
             error = '';
         }
         if (error) {
+            $('#attachment').val('');
             success = false;
             this.props.handleFileName('');
         } else {
@@ -111,9 +114,9 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
                                     fileError: resp['attachment']});
     },
     notFullForm: function() {
-        return _.any([!this.state.name, !this. state.email, !this.state.phone, !this.state.fileName,
-            this.state.nameError, this.state.emailError,
-            this.state.phoneError, this.state.fileError])
+        return (!this.state.name || !this. state.email || !this.state.phone || !this.state.fileName
+            || this.state.nameError || this.state.emailError
+            || this.state.phoneError || this.state.fileError)
     },
     handleSubmit: function(e) {
         e.preventDefault();
@@ -137,10 +140,10 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
         var nameClass = classNames("form-name", {'has-error': this.state.nameError});
         var emailClass = classNames("form-email", {'has-error': this.state.emailError});
         var phoneClass = classNames("form-phone", {'has-error': this.state.phoneError});
-        var buttonClass = classNames('btn btn-action-colored', {'disabled': this.notFullForm()});
+        var buttonClass = classNames('btn btn-action-colored btn-apply-form', {'disabled': this.notFullForm()});
         return (
             React.DOM.form({className: "apply-form", name: "ApplyForm", id: "ApplyForm",
-                onSubmit: this.handleSubmit, encType: "multipart/form-data"},
+                onSubmit: this.handleSubmit, encType: "multipart/form-data", ref: "ApplyForm"},
 
                 React.DOM.input({type: "hidden", name: "csrf_token", value: this.props.csrf_token}),
 
@@ -172,7 +175,7 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
 
                 React.createElement(UploadFileButton, {handleFileName: this.handleFileName}),
 
-                React.DOM.input({type: "submit", value: 'Отправить резюме', className: buttonClass})
+                React.DOM.button({className: buttonClass}, 'Отправить резюме')
             )
         );
 
