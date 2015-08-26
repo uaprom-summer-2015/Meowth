@@ -2,11 +2,10 @@
 {% from "pages/macros.html" import list_blocks %}
 {% block content %}
 
-    <div class="container">
+    <div class="container container-pageblock">
         {{ list_blocks(blocks) }}
     </div>
 
-    <!-- TODO: parse given link and populate attributes with real values: -->
     <div id="container-map" data-mlat="{{ map_coordinates["lat"] }}" data-mlng="{{ map_coordinates["lon"] }}" data-clat="{{ map_coordinates["lat"] }}" data-clng="{{ map_coordinates["lon"] }}" data-zoom="{{ map_coordinates["zoom"] }}"></div>
 {% endblock %}
 {% block meta %}
