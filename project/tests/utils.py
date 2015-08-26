@@ -1,16 +1,9 @@
-from contextlib import contextmanager
 from flask import url_for
 from flask.ext.testing import TestCase
 from project import create_app as app_factory
 from project.extensions import db
 from project.fixtures import load_fixtures
-
-
-@contextmanager
-def disable_csrf(app):
-    app.config['WTF_CSRF_ENABLED'] = False
-    yield
-    app.config['WTF_CSRF_ENABLED'] = True
+from project.lib.context_managers import disable_csrf
 
 
 class ProjectTestCase(TestCase):
