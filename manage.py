@@ -12,7 +12,6 @@ from commands.static import StaticCommand, npm
 from getpass import getpass
 
 
-
 manager = Manager(app)
 
 devutils = DBUtils(app, db)
