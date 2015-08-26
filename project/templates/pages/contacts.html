@@ -7,7 +7,7 @@
     </div>
 
     <!-- TODO: parse given link and populate attributes with real values: -->
-    <div id="container-map" data-mlat="50.4049258" data-mlng="30.6798472" data-clat="50.4049258" data-clng="30.6798472" data-zoom="16"></div>
+    <div id="container-map" data-mlat="{{ map_coordinates["lat"] }}" data-mlng="{{ map_coordinates["lon"] }}" data-clat="{{ map_coordinates["lat"] }}" data-clng="{{ map_coordinates["lon"] }}" data-zoom="{{ map_coordinates["zoom"] }}"></div>
 {% endblock %}
 {% block meta %}
     {{ super() }}

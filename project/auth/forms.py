@@ -83,14 +83,9 @@ class PasswordEditForm(Form):
             PasswordCorrect(),
         ]
     )
-
-    new_password = PasswordField(
+    password = PasswordField(
         label='Новый пароль',
         validators=[
-            EqualTo(
-                'confirmation',
-                message='Пароли не совпадают'
-            ),
             PasswordFormat,
             Length(
                 6,
@@ -99,4 +94,16 @@ class PasswordEditForm(Form):
             ),
         ]
     )
-    confirmation = PasswordField(label='Подтвердите пароль')
+    confirmation = PasswordField(
+        label='Подтвердите пароль',
+        validators=[
+            EqualTo(
+                'password',
+                message='Пароли не совпадают'
+            ),
+        ]
+    )
+
+
+class HelperForm(RegisterForm, PasswordEditForm):
+    old_password = StringField()

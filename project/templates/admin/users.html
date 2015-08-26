@@ -5,7 +5,7 @@
         {% for user in entries %}
             <li class="list-group-item">
                 <a href="{{ url_for('admin.user_detail', entry_id=user.id) }}">
-                    {{ user.name }}
+                    {{ user }}
                 </a>
             </li>
         {% endfor %}
