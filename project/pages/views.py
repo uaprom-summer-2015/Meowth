@@ -24,22 +24,35 @@ def mainpage():
         'pages/mainpage.html',
         blocks=page.blocks,
         images=chunks(images, 4),
+        title=page.title,
     )
 
 
 @pages_app.route('/projects/')
 def projects():
     page = Page.bl.get(Page.TYPE.PROJECTS)
-    return render_template('pages/projects.html', blocks=page.blocks)
+    return render_template(
+        'pages/projects.html',
+        blocks=page.blocks,
+        title=page.title,
+    )
 
 
 @pages_app.route('/about/')
 def about():
     page = Page.bl.get(Page.TYPE.ABOUT)
-    return render_template('pages/about.html', blocks=page.blocks)
+    return render_template(
+        'pages/about.html',
+        blocks=page.blocks,
+        title=page.title,
+    )
 
 
 @pages_app.route('/contacts/')
 def contacts():
     page = Page.bl.get(Page.TYPE.CONTACTS)
-    return render_template('pages/contacts.html', blocks=page.blocks)
+    return render_template(
+        'pages/contacts.html',
+        blocks=page.blocks,
+        title=page.title,
+    )

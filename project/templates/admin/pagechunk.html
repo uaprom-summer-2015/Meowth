@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-
+{% block title %}{{entry.title}}{% endblock %}
 {% block meta %}
         <script src="{{ url_for('static', filename='dist/js/ckeditor/ckeditor.js') }}"></script>
         <script src="{{ url_for('static', filename='dist/js/ckeditor.pagechunk.bundle.js') }}"
