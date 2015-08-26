@@ -119,8 +119,8 @@ class ProductionConfig(Config):
     MAIL_SERVER = production_settings.MAIL_SERVER
     MAIL_PORT = production_settings.MAIL_PORT
     MAIL_USE_SSL = production_settings.MAIL_USE_SSL
-    MAIL_USERNAME = production_settings.MAIL_USERNAME
-    MAIL_PASSWORD = production_settings.MAIL_PASSWORD
+    MAIL_USERNAME = getattr(production_settings, "MAIL_USERNAME", None)
+    MAIL_PASSWORD = getattr(production_settings, "MAIL_PASSWORD", None)
     MAIL_DEFAULT_SENDER = production_settings.MAIL_DEFAULT_SENDER
 
 
