@@ -78,3 +78,7 @@ def get_msg_for_reply(form, vacancy_title):
         recipients=recipients,
         body=body,
     )
+
+
+def offer_cv_send_mail(form):
+    celery_send_mail.delay(get_message_from_form(form, 'Предложить резюме'))
