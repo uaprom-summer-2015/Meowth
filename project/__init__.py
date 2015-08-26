@@ -16,7 +16,7 @@ def get_file(path):
 # noinspection PyUnusedLocal
 @app.errorhandler(413)
 def request_entity_too_large(error):
-    return 'File Too Large', 413
+    return render_template("errors/413.html")
 
 
 @app.errorhandler(404)
