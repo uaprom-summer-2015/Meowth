@@ -6,7 +6,7 @@ var $ = require('npm-zepto');
 var UploadFileButton = React.createClass({
 
     getInitialState: function() {
-        return { fileName: '', fileSize: '', success: false, fileError: '' }
+        return { fileSize: '', success: false }
     },
 
     changeFile: function(e) {
@@ -33,8 +33,8 @@ var UploadFileButton = React.createClass({
             this.setFileSize(attachment.size);
         }
 
-        this.setState({ fileError: error, success: success,
-            fileName: attachment.name});
+        this.props.handleFileError(error);
+        this.setState({ success: success});
     },
 
     validateSize: function(size) {
@@ -65,7 +65,7 @@ var UploadFileButton = React.createClass({
     },
 
     render: function() {
-        var fileClass = classNames('form-file', {'has-error': this.state.fileError,
+        var fileClass = classNames('form-file', {'has-error': this.props.fileError,
             'upload-file-success': this.state.success});
         var buttonClass = classNames('form-file-btn', {'btn btn-grey': !this.state.success,
             'file-success-chosen': this.state.success});
@@ -76,10 +76,10 @@ var UploadFileButton = React.createClass({
                            onChange: this.changeFile, multiple: true, className: 'input-hidden'}),
                            'Прикрепить файл резюме'),
                 React.DOM.div({className: 'file-message'},
-                    React.DOM.p({className: 'file-name'}, this.state.fileName),
+                    React.DOM.p({className: 'file-name'}, this.props.fileName),
                     React.DOM.p({className: 'file-size'}, this.state.fileSize)
                 ),
-                React.DOM.p(null, this.state.fileError)
+                React.DOM.p(null, this.props.fileError)
             )
         )
     }
@@ -104,7 +104,10 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
         this.setState({ comment: e.target.value });
     },
     handleFileName: function(name) {
-        this.setState({fileName: name})
+        this.setState({fileName: name});
+    },
+    handleFileError: function (error) {
+        this.setState({fileError: error});
     },
     handleLoad: function(resp) {
         if (resp['success']) {
@@ -115,15 +118,13 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
                                     fileError: resp['attachment']});
     },
     notFullForm: function() {
-        return (!this.state.name || !this. state.email || !this.state.phone || !this.state.fileName
-            || this.state.nameError || this.state.emailError
-            || this.state.phoneError || this.state.fileError)
+        return _.any( [!this.state.name, !this. state.email, !this.state.phone, !this.state.fileName,
+            this.state.nameError, this.state.emailError,
+            this.state.phoneError, this.state.fileError] )
     },
     handleSubmit: function(e) {
         e.preventDefault();
-        if (this.state.nameError || this.state.emailError
-            || this.state.phoneError || this.state.fileError) {
-        } else {
+        if ( !this.notFullForm() ) {
             var form = React.findDOMNode(this);
             var formData = new FormData(form);
             var xhr = new XMLHttpRequest();
@@ -174,7 +175,9 @@ var ApplyForm = React.createClass({displayName: "ApplyForm",
                     React.DOM.textarea({name: "comment", id: "comment"})
                 ),
 
-                React.createElement(UploadFileButton, {handleFileName: this.handleFileName}),
+                React.createElement(UploadFileButton, {handleFileName: this.handleFileName,
+                    handleFileError: this.handleFileError, fileName: this.state.fileName,
+                    fileError: this.state.fileError}),
 
                 React.DOM.button({className: buttonClass}, 'Отправить резюме')
             )
