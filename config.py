@@ -1,6 +1,4 @@
 import os
-import logging
-import logging.config
 import production_settings
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
@@ -131,6 +129,8 @@ class DevelopmentConfig(Config):
     DEBUG = True
     DEVELOPMENT = True
 
+    SQLALCHEMY_ECHO = True
+
     # Database
     SQLALCHEMY_DATABASE_URI = 'postgresql://root:qwerty@localhost/hrportal'
 
@@ -138,6 +138,3 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
-
-
-logging.config.dictConfig(Config.LOG_CONFIG)

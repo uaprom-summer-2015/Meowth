@@ -2,7 +2,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, TextAreaField, BooleanField, FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Regexp
-from project.models import Category, City, Vacancy
+from project.models import Category, City, Vacancy, PageChunk
 from project.lib.media.validators import AllowedMime
 from project.lib.validators import Exists
 
@@ -16,7 +16,6 @@ class VacancyForm(Form):
                 max=100,
                 message='Must not exceed 100 symbols'
             ),
-            Exists(model=Vacancy),
         ]
     )
     name_in_url = StringField(
@@ -31,7 +30,8 @@ class VacancyForm(Form):
                 '^[\d\w\-]+$',
                 message='Should contain only \
                          latin characters and dashes'
-            )
+            ),
+            Exists(model=Vacancy),
         ]
     )
     short_description = StringField(
@@ -63,15 +63,33 @@ class VacancyForm(Form):
 
 
 class CategoryForm(Form):
-    name = StringField("Название категории", validators=[DataRequired()])
+    name = StringField(
+        "Название категории",
+        validators=[
+            DataRequired(),
+            Exists(model=Category),
+        ],
+    )
 
 
 class CityForm(Form):
-    name = StringField('Название города', validators=[DataRequired()])
+    name = StringField(
+        'Название города',
+        validators=[
+            DataRequired(),
+            Exists(model=City),
+        ],
+    )
 
 
 class PageChunkForm(Form):
-    title = StringField('Название элемента', validators=[DataRequired()])
+    title = StringField(
+        'Название элемента',
+        validators=[
+            DataRequired(),
+            Exists(model=PageChunk),
+        ],
+    )
     text = TextAreaField('Текст элемента', validators=[DataRequired()])
 
 

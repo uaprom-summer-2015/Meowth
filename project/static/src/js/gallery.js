@@ -72,12 +72,12 @@
     gallery.css("overflow-x","hidden");
     gallery.css("overflow-y","hidden");
     gallery.on("mousemove", function(e) {
-      if (e.screenX > window.innerWidth*0.7) {
+      if (e.clientX > window.innerWidth*0.7) {
         if (! gallery.hasClass("play")) {
           gallery.addClass("play");
           gallery.doScroll(15000, DIRECTIONS.RIGHT);
         }
-      } else if (e.screenX < window.innerWidth*0.3) {
+      } else if (e.clientX < window.innerWidth*0.3) {
         if (! gallery.hasClass("play")) {
           gallery.addClass("play");
           gallery.doScroll(15000, DIRECTIONS.LEFT);
