@@ -1,4 +1,4 @@
-from flask import send_from_directory
+from flask import send_from_directory, render_template
 import logging
 import os
 from project.application import create_app
@@ -17,6 +17,11 @@ def get_file(path):
 @app.errorhandler(413)
 def request_entity_too_large(error):
     return 'File Too Large', 413
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("404.html")
 
 if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     logging.info(app.url_map)
