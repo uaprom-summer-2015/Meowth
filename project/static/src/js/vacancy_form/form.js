@@ -1,6 +1,7 @@
 var React = require('react');
 var classNames = require('classnames');
 var _ = require('lodash');
+var $ = require('npm-zepto');
 
 var UploadFileButton = React.createClass({
 
