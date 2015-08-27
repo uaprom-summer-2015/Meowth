@@ -7,38 +7,39 @@ from project.models import PageBlock
 
 class PageBlockForm(Form):
     block_type = SelectField(
-        label='Select layout',
+        label='Тип блока',
         choices=[
-            (PageBlock.TYPE.img_left.value, 'Layout with image left'),
-            (PageBlock.TYPE.img_right.value, 'Layout with image right'),
-            (PageBlock.TYPE.no_img.value, 'Layout with no image'),
+            (PageBlock.TYPE.img_left.value, 'Блок с картинкой слева'),
+            (PageBlock.TYPE.img_right.value, 'Блок с картинкой справа'),
+            (PageBlock.TYPE.no_img.value, 'Блок без картинки'),
         ],
         coerce=lambda x: PageBlock.TYPE(int(x)),
         default=PageBlock.TYPE.img_left,
     )
     title = StringField(
-        label='Title',
+        label='Заголовок',
         validators=[
             Length(
                 max=128,
-                message='Must not exceed 128 symbols',
+                message='Не должен превышать 128 символов',
             ),
         ],
     )
     short_description = TextAreaField(
-        label='Short description (used to display pageblock in list)',
+        label='Короткое описание '
+              '(используется для отображения в списке в админке)',
         validators=[
             Length(
                 max=256,
-                message='Must not exceed 256 symbols',
+                message='Не должен превышать 256 символов',
             ),
         ],
     )
     text = TextAreaField(
-        label='Text',
+        label='Текст',
     )
     image = StringField(
-        label='Image (url for now)',
+        label='Картинка (на данный момент URL)',
     )
 
 
@@ -50,11 +51,11 @@ class PageForm(Form):
             block.query = pageblocks
 
     title = StringField(
-        label='Title',
+        label='Заголовок',
         validators=[
             Length(
                 max=128,
-                message='Must not exceed 128 symbols',
+                message='Не должен превышать 128 символов',
             ),
         ],
     )
