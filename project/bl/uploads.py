@@ -1,4 +1,4 @@
-from flask import current_app
+from flask import current_app, url_for
 from pathlib import Path
 from project.bl.utils import BaseBL
 from project.tasks.uploads import celery_make_thumbnail
@@ -75,3 +75,14 @@ class UploadedImageBL(BaseBL):
         if fullsized.exists():
             fullsized.unlink()
         super().delete()
+
+    def get_url(self, is_thumbnail=False):
+        model = self.model
+        img_type = 'thumb' if is_thumbnail else 'full'
+        filepath = '{}/{}/{}.{}'.format(
+            model.img_category.name,
+            img_type,
+            model.name.hex,
+            model.ext,
+        )
+        return url_for('get_file', path=filepath, _external=True)
