@@ -30,9 +30,13 @@
       center: new google.maps.LatLng(params.clat, params.clng),
       zoom: params.zoom,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      disableDefaultUI: true,
       scrollwheel: false,
       disableDoubleClickZoom: true,
+      zoomControl: true,
+      scaleControl: false,
+      panControl: false,
+      mapTypeControl: false,
+      streetViewControl: false,
     }
     var map = new google.maps.Map(mapCanvas, mapOptions);
     var marker = new google.maps.Marker({
