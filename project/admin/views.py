@@ -16,7 +16,7 @@ from project.lib.auth import get_user_from_session
 
 from collections import namedtuple
 
-Endpoint = namedtuple('Endpoint', ['ep', 'su_only'])
+Section = namedtuple('Section', ['endpoint', 'su_only'])
 SECTIONS = {}  # list_name: list_endpoint
 
 
@@ -39,7 +39,7 @@ def register_section(*, section_name, list_endpoint,
         view_func=detail_view,
     )
 
-    SECTIONS[section_name] = Endpoint(list_endpoint, su_only)
+    SECTIONS[section_name] = Section(list_endpoint, su_only)
 
 
 # Vacancies
@@ -113,7 +113,7 @@ city_view = EntryDetail.as_view(
 )
 
 register_section(
-    section_name="Города",
+    section_name="Города присутствия",
     list_route="/cities/",
     detail_route="/city/",
     list_view=city_list,
@@ -292,12 +292,12 @@ register_section(
 def mainpage():
     sections = {}
     u = get_user_from_session()
-    for name, endpoint in SECTIONS.items():
-        if not endpoint.su_only or u.is_superuser():
-            sections[name] = url_for("admin." + endpoint.ep)
+    for name, section in SECTIONS.items():
+        if not section.su_only or u.is_superuser():
+            sections[name] = url_for("admin." + section.endpoint)
     return render_template(
         "admin/main.html",
-        sections=sections.items(),
+        sections=sections,
     )
 
 
@@ -305,3 +305,14 @@ def mainpage():
 @admin_app.errorhandler(403)
 def handle_forbidden(error):
     return render_template('admin/errors/403.html'), 403
+
+
+# noinspection PyUnusedLocal
+@admin_app.errorhandler(413)
+def request_entity_too_large(error):
+    return render_template("admin/errors/413.html", error=error), 413
+
+
+@admin_app.errorhandler(404)
+def page_not_found(error):
+    return render_template("admin/errors/404.html", error=error), 404
