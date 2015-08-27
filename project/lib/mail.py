@@ -3,7 +3,6 @@ from flask import request, current_app, render_template
 from html2text import html2text
 from string import Template
 import magic
-from config import BASEDIR
 from project.tasks.mail import celery_send_mail
 from email.policy import EmailPolicy
 from project.models import MailTemplate
@@ -106,7 +105,7 @@ def jinja_render_template(text):
 
 
 def add_image(msg, img_name):
-    img_path = os.path.join(BASEDIR, 'project/static/img', img_name)
+    img_path = os.path.join(current_app.config["BASEDIR"], 'project/static/img', img_name)
     headers = [('Content-ID', '<{}>'.format(img_name))]
     with open(img_path, 'rb') as f:
         content_type = magic.from_file(img_path, mime=True).decode()

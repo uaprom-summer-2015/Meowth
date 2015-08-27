@@ -114,11 +114,9 @@ Session.vim
 *~
 
 # Frontend stuff:
-node_modules/
-bower_components/
+/node_modules/
+/bower_components/
 
-# frontend dist:
-project/static/dist/
-
-uploads/
-static
+/uploads/
+/static/
+/config/production.py

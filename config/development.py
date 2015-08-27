@@ -1,11 +1,8 @@
 import os
-import production_settings
-
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 
-class Config:
-    DEBUG = False
+class DevelopmentConfig:
+    BASEDIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     TESTING = False
 
     SECRET_KEY = 'im!mx2m(69)b^7n3j!yi)k!a7n(^09=^&*+pnan78hl^%_yp4u'
@@ -56,6 +53,15 @@ class Config:
     MAIL_PASSWORD = 'useaverystrongpasswordLuke'
     MAIL_DEFAULT_SENDER = 'hrportal@yandex.ru'
 
+    # Flask
+    DEBUG = True
+    DEVELOPMENT = True
+
+    SQLALCHEMY_ECHO = True
+
+    # Database
+    SQLALCHEMY_DATABASE_URI = 'postgresql://root:qwerty@localhost/hrportal'
+
     # Logger configuration
     LOG_CONFIG = {
         'version': 1,
@@ -103,38 +109,3 @@ class Config:
             ]
         }
     }
-
-
-class ProductionConfig(Config):
-    # Database
-    SQLALCHEMY_DATABASE_URI = production_settings.SQLALCHEMY_DATABASE_URI
-
-    UPLOAD_FOLDER = production_settings.UPLOAD_FOLDER
-
-    # Celery
-    CELERY_BROKER_URL = production_settings.CELERY_BROKER_URL
-    CELERY_BACKEND_URL = production_settings.CELERY_BACKEND_URL
-
-    # Email
-    MAIL_SERVER = production_settings.MAIL_SERVER
-    MAIL_PORT = production_settings.MAIL_PORT
-    MAIL_USE_SSL = production_settings.MAIL_USE_SSL
-    MAIL_USERNAME = getattr(production_settings, "MAIL_USERNAME", None)
-    MAIL_PASSWORD = getattr(production_settings, "MAIL_PASSWORD", None)
-    MAIL_DEFAULT_SENDER = production_settings.MAIL_DEFAULT_SENDER
-
-
-class DevelopmentConfig(Config):
-    # Flask
-    DEBUG = True
-    DEVELOPMENT = True
-
-    SQLALCHEMY_ECHO = True
-
-    # Database
-    SQLALCHEMY_DATABASE_URI = 'postgresql://root:qwerty@localhost/hrportal'
-
-
-class TestingConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'

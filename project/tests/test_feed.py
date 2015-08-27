@@ -3,7 +3,6 @@ import os
 from unittest.mock import patch
 from flask import url_for, jsonify
 from werkzeug.exceptions import NotFound
-from config import BASEDIR
 from project.lib.feed import get_visible_vacancies_list
 from project.models import Vacancy, City, Category
 from project.tests.utils import ProjectTestCase
@@ -34,7 +33,7 @@ class TestFeedView(ProjectTestCase):
     def test_not_completed_form(self, send_mail):
         csrf_token, url = self.get_vacancy_with_csrf()
 
-        attachment = os.path.join(BASEDIR, 'project/tests/test_feed.py')
+        attachment = os.path.join(self.app.config['BASEDIR'], 'project/tests/test_feed.py')
         new_resp = self.client.post(
             url+'form', data=dict(
                 csrf_token=csrf_token,
@@ -56,7 +55,7 @@ class TestFeedView(ProjectTestCase):
     def test_completed_form(self, send_mail):
         csrf_token, url = self.get_vacancy_with_csrf()
 
-        attachment = os.path.join(BASEDIR, 'requirements.txt')
+        attachment = os.path.join(self.app.config['BASEDIR'], 'requirements.txt')
         new_resp = self.client.post(
             url+'form', data=dict(
                 csrf_token=csrf_token,

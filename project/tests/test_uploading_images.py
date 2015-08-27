@@ -1,6 +1,5 @@
 import shutil
 import pathlib
-from config import BASEDIR
 from project.models import UploadedImage
 from project.tasks.uploads import celery_make_thumbnail as make_thumbnail
 from unittest.mock import patch
@@ -14,7 +13,7 @@ class TestUploadImage(ProjectTestCase):
     def setUp(self):
         self.app.config['UPLOAD_FOLDER'] = tempfile.mkdtemp()
         self.upload_folder = pathlib.Path(self.app.config['UPLOAD_FOLDER'])
-        path = pathlib.Path(BASEDIR)
+        path = pathlib.Path(self.app.config['BASEDIR'])
         path = (
             path / 'project' /
             'tests' / 'testdata' /

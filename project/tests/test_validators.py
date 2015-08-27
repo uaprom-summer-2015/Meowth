@@ -1,15 +1,14 @@
-from config import BASEDIR
 from os.path import join
 from project import app
 from project.lib.media.validators import AllowedMime
-from unittest import TestCase
+from project.tests.utils import ProjectTestCase
 
 
-class TessValidators(TestCase):
+class TessValidators(ProjectTestCase):
 
     def setUp(self):
         self.mimes = app.config['IMG_MIMES']
-        self.datadir = join(BASEDIR, 'project', 'tests',
+        self.datadir = join(self.app.config['BASEDIR'], 'project', 'tests',
                             'testdata', 'validators')
 
     def test_positive(self):
