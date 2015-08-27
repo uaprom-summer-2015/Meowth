@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <table cellpadding="0" cellspacing="0" width="560" align="center" style="border-collapse:collapse;">
+        <tr>
+            <td>
+                <a href="{{ host }}">
+                    <img src="cid:{{ cid }}" alt="Prom.ua">
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="color: #231f20;">{{ text | safe }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td height="50px"></td>
+        </tr>
+        <tr>
+            <td>
+                <p style="color: #c8c3c4;">{{ pagechunks.mail_footer | safe }}</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
