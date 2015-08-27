@@ -9,7 +9,8 @@ class TessValidators(TestCase):
 
     def setUp(self):
         self.mimes = app.config['IMG_MIMES']
-        self.datadir = join(BASEDIR, 'testdata', 'validators')
+        self.datadir = join(BASEDIR, 'project', 'tests',
+                            'testdata', 'validators')
 
     def test_positive(self):
         with open(join(self.datadir, 'validimage.jpg')) as image:

@@ -15,8 +15,11 @@ class TestUploadImage(ProjectTestCase):
         self.app.config['UPLOAD_FOLDER'] = tempfile.mkdtemp()
         self.upload_folder = pathlib.Path(self.app.config['UPLOAD_FOLDER'])
         path = pathlib.Path(BASEDIR)
-        path = path / 'testdata' / 'images' / 'testimage1.jpg'
-        imagefile = path
+        path = (
+            path / 'project' /
+            'tests' / 'testdata' /
+            'images' / 'testimage1.jpg'
+        )
         imagefile = FileStorage(
             stream=open(str(path), 'br'),
             filename=str(path),
