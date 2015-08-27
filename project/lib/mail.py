@@ -1,6 +1,9 @@
-from flask import request, current_app
+import os
+from flask import request, current_app, render_template
 from html2text import html2text
 from string import Template
+import magic
+from config import BASEDIR
 from project.tasks.mail import celery_send_mail
 from email.policy import EmailPolicy
 from project.models import MailTemplate
@@ -37,10 +40,11 @@ def get_message_from_form(form, vacancy_title):
 
     subject = mail_temp.subject
     html = Template(mail_temp.html).safe_substitute(**kwargs)
+    html = jinja_render_template(html)
     attachment = request.files[form.attachment.name]
     body = html2text(html)
 
-    return get_message(
+    msg = get_message(
         title=subject,
         recipients=recipients,
         html=html,
@@ -49,6 +53,9 @@ def get_message_from_form(form, vacancy_title):
         attachment=attachment,
         body=body,
     )
+
+    msg = add_image(msg, 'logo-with-text.png')
+    return msg
 
 
 def send_mail_from_form(form, vacancy_title):
@@ -71,14 +78,42 @@ def get_msg_for_reply(form, vacancy_title):
     recipients = [form.email.data]
     subject = mail_temp.subject
     html = Template(mail_temp.html).safe_substitute(**kwargs)
+    html = jinja_render_template(html)
     body = html2text(html)
-    return get_message(
+    msg = get_message(
         title=subject,
         html=html,
         recipients=recipients,
         body=body,
     )
 
+    msg = add_image(msg, 'logo-with-text.png')
+    return msg
+
 
 def offer_cv_send_mail(form):
     celery_send_mail.delay(get_message_from_form(form, 'Предложить резюме'))
+
+
+def jinja_render_template(text):
+    host = request.host_url
+    return render_template(
+        'mail.html',
+        host=host,
+        text=text,
+        cid='logo-with-text.png',
+    )
+
+
+def add_image(msg, img_name):
+    img_path = os.path.join(BASEDIR, 'project/static/img', img_name)
+    headers = [('Content-ID', '<{}>'.format(img_name))]
+    with open(img_path, 'rb') as f:
+        content_type = magic.from_file(img_path, mime=True).decode()
+        msg.attach(
+            filename=img_name,
+            data=f.read(),
+            content_type=content_type,
+            headers=headers,
+        )
+    return msg
