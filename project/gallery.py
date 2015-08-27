@@ -14,6 +14,8 @@ def remove_exif_orientation(file_path):
     if ext == '.jpg' or ext == '.jpeg':
         img = Image.open(file_path)
         exif = img._getexif()
+        if not exif:
+            return
         orientation = 1
         for (k, v) in exif.items():
             if TAGS.get(k) == 'Orientation':
