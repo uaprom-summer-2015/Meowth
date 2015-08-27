@@ -146,19 +146,20 @@ def populate(directory=None):
 
 
 @DBUtilsCommand.option(
-    '-c', '--count',
-    dest='count',
-    default=100,
-    help='Number of dummy images to be loaded',
-    type=int,
+    '-d', '--dir',
+    dest='subdir',
+    default=None,
+    help='Path to directory with images. '
+         'If its not provided, 64 same dummy girls will be uploaded.',
+    type=str,
 )
-def load_images(count=100):
+def load_images(subdir):
     """ Load dummy images to populate gallery
     """
-
     with perform(
         name='dbutils load_images',
-        before='Loading %d dummy images to gallery' % count,
+        before='Loading images to gallery',
         fail='Error occured while loading images to gallery',
+        after='Images succesfully loaded'
     ):
-        load_dummy_images(count)
+        load_dummy_images(subdir)
