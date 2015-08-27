@@ -1,19 +1,86 @@
 {% extends "admin/base.html" %}
 {% block title %}Админ-панель{% endblock %}
-{% block content %}
-    <div class="container-fluid">
-    {% for name, url in sections | sort %}
-        <div class="panel panel-body">
-          <div class="panel-body">
-            <a href="{{ url }}">{{ name }}</a>
-          </div>
+{% block page_content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Вакансии</h3>
         </div>
-    {% endfor %}
-        <!--TODO: insert this link in proper place-->
-        <div class="panel panel-body">
-          <div class="panel-body">
-            <a href="{{ url_for("auth.change_password") }}">Изменить пароль</a>
-          </div>
+
+        <div class="panel-body">
+            <ul class="nav nav-stacked">
+                <li role="presentation">
+                    <a href="{{ sections["Вакансии"] }}">Вакансии</a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ sections["Категории"] }}">Категории</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Страницы</h3>
+        </div>
+
+        <div class="panel-body">
+            <ul class="nav nav-stacked">
+                <li role="presentation">
+                    <a href="{{ sections["Страницы"] }}">Страницы</a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ sections["Блоки страниц"] }}">Блоки страниц</a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ sections["Элементы страниц"] }}">Элементы страниц</a>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Картинки</h3>
+        </div>
+
+        <div class="panel-body">
+            <ul class="nav nav-stacked">
+                <li role="presentation">
+                    <a href="{{ sections["Изображения"] }}">Изображения</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Компания</h3>
+        </div>
+
+        <div class="panel-body">
+            <ul class="nav nav-stacked">
+                <li role="presentation">
+                    <a href="{{ sections["Пользователи"] }}">Пользователи</a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ sections["Города присутствия"] }}">Города присутствия</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Почта</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="nav nav-stacked">
+                <li role="presentation">
+                    <a href="{{ sections["Шаблоны писем"] }}">Шаблоны писем</a>
+                </li>
+            </ul>
         </div>
     </div>
 {% endblock %}

@@ -157,7 +157,7 @@ class PageBlock(db.Model):
     bl = Resource('bl.pageblock')
 
     def __str__(self):
-        return '%s: %s' % (self.title, self.text or self.short_description)
+        return '%s: %s' % (self.title, self.short_description or self.text)
 
 
 class Page(db.Model):
@@ -189,7 +189,7 @@ class Page(db.Model):
     bl = Resource('bl.page')
 
     def __str__(self):
-        return '%s (%s)' % (self.title, self.url)
+        return '%s' % (self.title)
 
 
 class Token(db.Model):

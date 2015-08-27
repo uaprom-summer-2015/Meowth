@@ -1,6 +1,6 @@
 {% extends "admin/base.html" %}
 {% block title %}Блоки страниц{% endblock %}
-{% block content %}
+{% block page_content %}
     <ul class="list-group">
         {% for entry in entries %}
             <li class="list-group-item">
@@ -11,8 +11,7 @@
         {% endfor %}
 
         <li class="list-group-item list-group-item-info">
-            <a href="{{ url_for('admin.pageblock_detail') }}">Add new
-                pageblock</a>
+            <a href="{{ url_for('admin.pageblock_detail') }}">Добавить блок страниц</a>
         </li>
     </ul>
 {% endblock %}

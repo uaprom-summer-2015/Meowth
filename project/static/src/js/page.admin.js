@@ -10,6 +10,6 @@ document.addEventListener("DOMContentLoaded", (function () {
                 source: "block_list/",
                 options: result.blocks
             }),
-            document.getElementById("blocks"));
+            document.getElementById("container-blocks"));
     });
 }));

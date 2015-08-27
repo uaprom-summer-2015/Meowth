@@ -6,7 +6,7 @@
             type="text/javascript"></script>
 {% endblock %}
 
-{% block content %}
+{% block page_content %}
     {% if entry.updated_at %}
         <p>Вакансия изменена: {{ entry.updated_at | strftime }}
             {% if entry.who_updated %}
@@ -17,11 +17,11 @@
     <form method="post">
         {{ entry_form.hidden_tag() }}
         {% for field in entry_form if field.widget.input_type != 'hidden' %}
-            {{ field.label }}
-            {% if field.errors %}
-                {{field.errors}}
-            {% endif %}
             <div class="form-group">
+                {{ field.label }}
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
                 {% if field.widget.input_type != 'checkbox' %}
                     {{ field(class="form-control") }}
                 {% else %}
@@ -31,7 +31,7 @@
         {% endfor %}
         <input type="submit" class="btn btn-default" value="Сохранить">
     </form>
-    <a href="delete" onclick="return confirm('Удалить вакансию?')">
-        <button>Удалить</button>
+    <a href="{{ url_for("admin.delete_vacancy", id=entry.id)}}" class="btn btn-danger vacancy-delete" onclick="return confirm('Удалить вакансию?')">
+        Удалить
     </a>
 {% endblock %}

@@ -62,7 +62,7 @@ var SelectList = React.createClass(
         },
 
         render: function () {
-            return React.DOM.ul( null,
+            return React.DOM.div( null,
                 this.state.currentChoices.map(function (selectedValue, i) {
                     return React.createElement(SelectRow, {
                         key: i,
