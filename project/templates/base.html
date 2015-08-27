@@ -43,11 +43,14 @@
         <li><a href="{{ url_for("pages.projects") }}">Проекты</a></li>
         <li><a href="{{ url_for("pages.about") }}">О компании</a></li>
         <li><a href="{{ url_for("pages.contacts") }}">Контакты</a></li>
-        <li><button class="btn btn-action-colored">Отправить резюме</button></li>
+        <li>
+            <a href="{{ url_for('feed.get_vacancy', name_in_url='offer-cv') }}">
+                <button class="btn btn-action-colored">Предложить резюме</button>
+            </a>
+        </li>
     </ul>
 </nav>
 {% endblock %}
 {% block postscripts %}
     <script src="{{ url_for('static', filename='dist/js/hamburger.bundle.js') }}"></script>
 {% endblock %}
-

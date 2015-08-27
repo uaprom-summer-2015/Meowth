@@ -31,6 +31,8 @@
       zoom: params.zoom,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
+      scrollwheel: false,
+      disableDoubleClickZoom: true,
     }
     var map = new google.maps.Map(mapCanvas, mapOptions);
     var marker = new google.maps.Marker({
