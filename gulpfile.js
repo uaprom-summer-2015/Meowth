@@ -11,17 +11,17 @@ var source = require('vinyl-source-stream');
 var stylus = require('gulp-stylus');
 var uglify = require('gulp-uglify');
 var pkginfo = require('./package.json');
-
 var exec_sync = require('exec-sync');
+
+var debug = gutil.env.type !== 'production';
+
+var npmPackages = Object.keys(pkginfo.dependencies) || [];
 
 var settingsFile = "production_settings";
 var staticDistVariable = "STATIC_DIST";
 
-//var debug = gutil.env.type !== 'production';
-var debug = false;
-var npmPackages = Object.keys(pkginfo.dependencies) || [];
-
 var dist_path;
+
 
 if (debug) {
     dist_path = pkginfo.dist.path;
@@ -49,9 +49,6 @@ gulp.task('build:scripts:app', function (done) {
             });
             b.external(npmPackages);
 
-
-            b.external("npm-zepto");
-
             return b
                 .bundle()
                 .pipe(source(path.basename(file)))
@@ -77,7 +74,6 @@ gulp.task('build:scripts:vendor:common', function (done) {
     });
 
     var bundle = b.require(npmPackages)
-        .require("npm-zepto")
         .bundle()
         .pipe(source('common.vendor.js'))
         .pipe(buffer())

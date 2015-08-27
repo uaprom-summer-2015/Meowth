@@ -62,7 +62,6 @@ class VacancyForm(Form):
         validators=[DataRequired('Required field')]
     )
     is_hidden = BooleanField(label='Не показывать вакансию')
-    is_deleted = BooleanField(label='Удалить')
 
 
 class CategoryForm(Form):
@@ -150,11 +149,5 @@ def image_upload_form_factory(config, is_update=False):
                     AllowedMime(config['IMG_MIMES']),
                     DataRequired(),
                 ]
-            )
-        else:
-            delete = BooleanField(
-                label='Удалить',
-                description='Эта картинка будет удалена навсегда'
-                            ' (очень надолго!)',
             )
     return ImageUploadForm

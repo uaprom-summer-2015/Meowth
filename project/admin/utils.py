@@ -139,10 +139,7 @@ class GalleryImageDetail(EntryDetail):
             )
             form = form_class(obj=instance)
             if form.validate_on_submit():
-                if form.data.get('delete', False):
-                    instance.bl.delete()
-                else:
-                    instance.bl.update(form.data)
+                instance.bl.update(form.data)
                 return redirect(url_for("admin." + self.success_url))
 
         return self.render_response(entry_form=form)
