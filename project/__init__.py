@@ -30,3 +30,6 @@ def internal_server_error(error):
 
 if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     logging.info(app.url_map)
+
+if __name__ == "__main__":
+    app.run()
