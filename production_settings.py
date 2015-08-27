@@ -10,7 +10,7 @@ SQLALCHEMY_DATABASE_URI = \
 
 UPLOAD_FOLDER = os.path.join(
     BASE_DIR,
-    "hrportal/upload",
+    "upload",
 )
 
 # Celery
