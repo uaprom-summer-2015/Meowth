@@ -26,11 +26,11 @@
       {% if entry %}
     </div><div class="col-md-5 col-sm-3">
           <p>картинка доступна по ссьілке:
-            <a href="{{ request.url_root }}media/{{ entry.img_category.name }}/full/{{ entry.name.hex }}.{{ entry.ext }}">
-              {{ request.url_root }}media/{{ entry.img_category.name }}/full/{{ entry.name.hex }}.{{ entry.ext }}
-            </a>
+              <a href="{{ url_for('get_file', path='{}/full/{}.{}'.format(entry.img_category.name, entry.name.hex, entry.ext), _external=True) }}">
+                  {{ url_for('get_file', path='{}/full/{}.{}'.format(entry.img_category.name, entry.name.hex, entry.ext), _external=True) }}
+              </a>
           </p>
-          <img class="img-responsive" src="/media/{{ entry.img_category.name }}/full/{{ entry.name.hex }}.{{ entry.ext }}"/>
+          <img class="img-responsive" src="{{ url_for('get_file', path='{}/full/{}.{}'.format(entry.img_category.name, entry.name.hex, entry.ext), _external=True) }}"/>
       </div></div>
       {% endif %}
     </form>
