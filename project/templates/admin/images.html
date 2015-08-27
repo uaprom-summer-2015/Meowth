@@ -14,7 +14,7 @@
             <tr>
                 <td>
                     <a href="{{ url_for('admin.image_detail', entry_id=entry.id) }}">
-                        <img width="75px" class="responsive-image" src="{{ url_for('get_file', path='{}/thumb/{}.{}'.format(entry.img_category.name, entry.name.hex, entry.ext), _external=True) }}"/>
+                        <img width="75px" class="responsive-image" src="{{ entry.bl.get_url(is_thumbnail=True) }}"/>
                     </a>
                 </td>
                 <td>
