@@ -2,7 +2,7 @@ from flask import render_template, url_for, jsonify, redirect
 from project.admin import forms
 from project.blueprints import admin_app
 from project.lib.admin import get_actual_vacancies_list
-from project.models import PageBlock, Page, Vacancy
+from project.models import PageBlock, Page, Vacancy, UploadedImage
 from project.pages.admin import PageDetail
 from project.pages.forms import PageBlockForm, PageForm
 from project.admin.utils import (
@@ -307,6 +307,14 @@ def delete_vacancy(id):
     vacancy.is_deleted = True
     vacancy.bl.save()
     return redirect(url_for('admin.vacancy_list'))
+
+
+@admin_app.route('/image/<int:id>/delete')
+@login_required()
+def delete_image(id):
+    img = UploadedImage.bl.get(id)
+    img.bl.delete()
+    return redirect(url_for('admin.images_list'))
 
 
 # noinspection PyUnusedLocal

@@ -150,10 +150,4 @@ def image_upload_form_factory(config, is_update=False):
                     DataRequired(),
                 ]
             )
-        else:
-            delete = BooleanField(
-                label='Удалить',
-                description='Эта картинка будет удалена навсегда'
-                            ' (очень надолго!)',
-            )
     return ImageUploadForm
