@@ -1,14 +1,14 @@
 {% extends "admin/base.html" %}
 {% block title %}{{ entry.title }}{% endblock %}
-{% block content %}
+{% block page_content %}
     <form method="post">
         {{ entry_form.hidden_tag() }}
         {% for field in entry_form if field.widget.input_type != 'hidden' %}
+            <div class="form-group">
             {{ field.label }}
             {% if field.errors %}
                 {{field.errors}}
             {% endif %}
-            <div class="form-group">
                 {{ field(class="form-control") }}
             </div>
         {% endfor %}

@@ -1,6 +1,9 @@
 {% extends "admin/base.html" %}
 {% block title %}Галерея{% endblock %}
-{% block content %}
+{% block page_content %}
+    <a href="{{ url_for('admin.image_detail') }}"
+       class="btn btn-primary">Загрузить новую картинку</a>
+
     <table class="table table-stripped">
         <thead>
             <tr>
@@ -34,5 +37,5 @@
     </table>
 
     <a href="{{ url_for('admin.image_detail') }}"
-       class="btn btn-primary">Загрузить еще картинку</a>
+       class="btn btn-primary">Загрузить новую картинку</a>
 {% endblock %}
