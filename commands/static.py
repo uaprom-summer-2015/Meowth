@@ -26,13 +26,6 @@ def alt_exec(cmd, alt=None):
 StaticCommand = Manager(usage='Commands to build static')
 
 
-@StaticCommand.option(
-    '--noinput',
-    dest='noinput',
-    action='store_true',
-    default=False,
-    help='Do not ask user anything',
-)
 def npm():
     """ Run npm install script """
     with perform(
@@ -44,20 +37,46 @@ def npm():
         )
 
 
-@StaticCommand.command
-def bower():
+@StaticCommand.option(
+    '--allow-root',
+    dest='allow_root',
+    default=False,
+    help='Force scripts to allow execution by root user',
+    action='store_true',
+)
+@StaticCommand.option(
+    '--silent',
+    dest='silent',
+    default=False,
+    help='Do not ask user anything',
+    action='store_true',
+)
+def bower(allow_root, silent):
     """ Run bower install script """
     with perform(
             name='static bower',
             before='run bower install',
     ):
+        cmd_args = list()
+        if allow_root:
+            cmd_args.append("--allow-root")
+
+        if silent:
+            cmd_args.append("--silent")
+
         alt_exec(
-            cmd=["bower", "install"],
-            alt=["./node_modules/bower/bin/bower", "install"],
+            cmd=["bower", "install"] + cmd_args,
+            alt=["./node_modules/bower/bin/bower", "install"] + cmd_args,
         )
 
 
-@StaticCommand.command
+@StaticCommand.option(
+    '--deploy-type',
+    dest='deploy_type',
+    default="production",
+    help='Set deploy type '
+         '(production with minifying, development without minifying etc.)'
+)
 def gulp(deploy_type=None):
     """ Run gulp build script """
     with perform(
@@ -75,11 +94,31 @@ def gulp(deploy_type=None):
         )
 
 
-@StaticCommand.command
-def collect():
+@StaticCommand.option(
+    '--allow-root',
+    dest='allow_root',
+    default=False,
+    help='Force scripts to allow execution by root user',
+    action='store_true',
+)
+@StaticCommand.option(
+    '--deploy-type',
+    dest='deploy_type',
+    default="production",
+    help='Set deploy type '
+         '(production with minifying, development without minifying etc.)'
+)
+@StaticCommand.option(
+    '--silent',
+    dest='silent',
+    default=False,
+    help='Do not ask user anything',
+    action='store_true',
+)
+def collect(allow_root, deploy_type, silent):
     npm()
-    bower()
-    gulp(deploy_type="production")
+    bower(allow_root, silent)
+    gulp(deploy_type)
 
 
 @StaticCommand.command
