@@ -6,20 +6,24 @@
             <tr>
                 <th>Превью</th>
                 <th>Название</th>
+                <th>Категория</th>
                 <th>Описание</th>
         </thead>
         <tbody>
         {% for entry in entries %}
             <tr>
                 <td>
-                    <a href="{{ url_for('admin.gallery_image_detail', entry_id=entry.id) }}">
-                        <img class="responsive-image" src="/media/{{ entry.img_category.name }}/thumb/{{ entry.name.hex }}.{{ entry.ext }}"/>
+                    <a href="{{ url_for('admin.image_detail', entry_id=entry.id) }}">
+                        <img width="75px" class="responsive-image" src="{{ entry.bl.get_url(is_thumbnail=True) }}"/>
                     </a>
                 </td>
                 <td>
-                    <a href="{{ url_for('admin.gallery_image_detail', entry_id=entry.id) }}">
+                    <a href="{{ url_for('admin.image_detail', entry_id=entry.id) }}">
                         {{ entry.title }}
                     </a>
+                </td>
+                <td>
+                    {{ entry.img_category.name }}
                 </td>
                 <td>
                     {{ entry.description }}
@@ -29,6 +33,6 @@
         </tbody>
     </table>
 
-    <a href="{{ url_for('admin.gallery_image_detail') }}"
+    <a href="{{ url_for('admin.image_detail') }}"
        class="btn btn-primary">Загрузить еще картинку</a>
 {% endblock %}

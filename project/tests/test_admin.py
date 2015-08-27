@@ -20,7 +20,7 @@ expected_sections = dict([
     ('Страницы', '/admin/pages/'),
     ('Элементы страниц', '/admin/pagechunks/'),
     ('Шаблоны писем', '/admin/mail_templates/'),
-    ('Галерея', '/admin/gallery_images/'),
+    ('Изображения', '/admin/images/'),
 ])
 
 

@@ -19,9 +19,9 @@
         {% for column in images %}
         <div class="column">
             {% for image in column %}
-            <a href="/media/{{ image.img_category.name }}/full/{{ image.name.hex }}.{{ image.ext }}"
+            <a href="{{ image.bl.get_url() }}"
                title="{{ image.title }}">
-                <img class="thumb" src="/media/{{ image.img_category.name }}/thumb/{{ image.name.hex }}.{{ image.ext }}"
+                <img class="thumb" src="{{ image.bl.get_url(is_thumbnail=True) }}"
                      alt="{{ image.description }}">
             </a>
             {% endfor %}

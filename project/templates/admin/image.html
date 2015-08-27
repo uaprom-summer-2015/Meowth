@@ -25,7 +25,12 @@
         <input type="submit" class="btn btn-default" value="Сохранить">
       {% if entry %}
     </div><div class="col-md-5 col-sm-3">
-          <img class="img-responsive" src="/media/{{ entry.img_category.name }}/full/{{ entry.name.hex }}.{{ entry.ext }}"/>
+          <p>Картинка доступна по ссылке:
+              <a href="{{ entry.bl.get_url() }}">
+                  {{ entry.bl.get_url() }}
+              </a>
+          </p>
+          <img class="img-responsive" src="{{ entry.bl.get_url() }}"/>
       </div></div>
       {% endif %}
     </form>

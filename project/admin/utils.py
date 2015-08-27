@@ -1,6 +1,5 @@
 from flask import url_for, render_template, abort, request, current_app
 from flask.views import MethodView, View
-from project.models import UploadedImage
 from werkzeug.utils import redirect
 
 
@@ -125,7 +124,7 @@ class GalleryImageDetail(EntryDetail):
                 image = request.files['image']
                 self.model.bl.save_image(
                     image=image,
-                    img_category=UploadedImage.IMG_CATEGORY.gallery,
+                    img_category=form.data['img_category'],
                     title=form.data['title'],
                     description=form.data['description'],
                 )
@@ -147,6 +146,3 @@ class GalleryImageDetail(EntryDetail):
                 return redirect(url_for("admin." + self.success_url))
 
         return self.render_response(entry_form=form)
-
-    def render_response(self, **kwargs):
-        return render_template(self.template, **kwargs)
