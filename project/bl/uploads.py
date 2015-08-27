@@ -79,10 +79,10 @@ class UploadedImageBL(BaseBL):
     def get_url(self, is_thumbnail=False):
         model = self.model
         img_type = 'thumb' if is_thumbnail else 'full'
-        filepath = '{}/{}/{}.{}'.format(
-            model.img_category.name,
-            img_type,
-            model.name.hex,
-            model.ext,
+        filepath = '{category}/{img_type}/{name}.{ext}'.format(
+            category=model.img_category.name,
+            img_type=img_type,
+            name=model.name.hex,
+            ext=model.ext,
         )
         return url_for('get_file', path=filepath, _external=True)
