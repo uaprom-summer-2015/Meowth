@@ -1,24 +1,7 @@
-{% extends "base.html" %}
-{% from "pages/macros.html" import list_blocks %}
+{% extends "pages/base.html" %}
 {% block meta %}
     <script src="{{ url_for('static', filename='dist/js/gallery.bundle.js') }}"
             type="text/javascript"></script>
-{% endblock %}
-
-{% block gallery %}
-<div id="gallery">
-        {% for column in images %}
-            <div class="column">
-            {% for image in column %}
-                <a href="{{ url_for('get_file', path='{}/full/{}.{}'.format(image.img_category.name, image.name.hex, image.ext), _external=True) }}"
-                   title="{{ image.title }}">
-                     <img class="thumb" src="{{ url_for('get_file', path='{}/thumb/{}.{}'.format(image.img_category.name, image.name.hex, image.ext), _external=True) }}"
-                          alt="{{ image.description }}">
-                </a>
-            {% endfor %}
-            </div>
-        {% endfor %}
-</div>
 {% endblock %}
 
 {% block content %}
@@ -30,8 +13,19 @@
         </div>
     </div>
 
-    <div class="container container-pageblock">
-        {{ list_blocks(blocks) }}
-    </div>
+    {{ super() }}
 
+    <div id="gallery">
+        {% for column in images %}
+        <div class="column">
+            {% for image in column %}
+            <a href="/media/{{ image.img_category.name }}/full/{{ image.name.hex }}.{{ image.ext }}"
+               title="{{ image.title }}">
+                <img class="thumb" src="/media/{{ image.img_category.name }}/thumb/{{ image.name.hex }}.{{ image.ext }}"
+                     alt="{{ image.description }}">
+            </a>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
 {% endblock %}

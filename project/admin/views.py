@@ -304,4 +304,4 @@ def mainpage():
 # noinspection PyUnusedLocal
 @admin_app.errorhandler(403)
 def handle_forbidden(error):
-    return render_template('admin/403.html'), 403
+    return render_template('admin/errors/403.html'), 403

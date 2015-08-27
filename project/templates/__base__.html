@@ -9,57 +9,20 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    {% block header %}
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                  <a class="navbar-brand" href="/">
-                    <img alt="HRUAPROM" src="{{ url_for('static', filename='img/prom-ua-logo.png') }}">
-                  </a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="{{ url_for('feed.vacancies') }}">Вакансии</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('pages.projects') }}">Проекты</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('pages.about') }}">О компании</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('pages.contacts') }}">Контакты</a>
-                    </li>
-                </ul>
 
-            </div>
-        </nav>
-    {% endblock %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
+    {% block header %}{% endblock %}
+    {% block content %}{% endblock %}
 
-    <div class="container-fluid">
-        {% block content %}
-        {% endblock %}
-    </div>
-    {% block gallery %}
-    {% endblock %}
     {% block footer %}
-        <footer class="footer ">
-                <div class="container container-footer">
-                    <span class="footer-el footer-left"> {{ pagechunks.copyright|safe }} </span>
-                    <span class="footer-el footer-center"> {{ pagechunks.social_networks|safe }} </span>
-                    <span class="footer-el footer-right"> {{ pagechunks.contacts|safe }} </span>
-                </div>
-        </footer>
+    <footer class="footer ">
+        <div class="container container-footer">
+            <span class="footer-el footer-left"> {{ pagechunks.copyright|safe }} </span>
+            <span class="footer-el footer-center"> {{ pagechunks.social_networks|safe }} </span>
+            <span class="footer-el footer-right"> {{ pagechunks.contacts|safe }} </span>
+        </div>
+    </footer>
     {% endblock %}
+
     {% block postscripts %}{% endblock %}
 </body>
 </html>
