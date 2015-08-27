@@ -44,7 +44,14 @@ def npm():
     help='Force scripts to allow execution by root user',
     action='store_true',
 )
-def bower(allow_root):
+@StaticCommand.option(
+    '--silent',
+    dest='silent',
+    default=False,
+    help='Do not ask user anything',
+    action='store_true',
+)
+def bower(allow_root, silent):
     """ Run bower install script """
     with perform(
             name='static bower',
@@ -53,6 +60,9 @@ def bower(allow_root):
         cmd_args = list()
         if allow_root:
             cmd_args.append("--allow-root")
+
+        if silent:
+            cmd_args.append("--silent")
 
         alt_exec(
             cmd=["bower", "install"] + cmd_args,
@@ -98,9 +108,16 @@ def gulp(deploy_type=None):
     help='Set deploy type '
          '(production with minifying, development without minifying etc.)'
 )
-def collect(allow_root, deploy_type):
+@StaticCommand.option(
+    '--silent',
+    dest='silent',
+    default=False,
+    help='Do not ask user anything',
+    action='store_true',
+)
+def collect(allow_root, deploy_type, silent):
     npm()
-    bower(allow_root)
+    bower(allow_root, silent)
     gulp(deploy_type)
 
 
