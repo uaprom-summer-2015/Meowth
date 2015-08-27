@@ -15,7 +15,7 @@ expected_sections = dict([
     ('Пользователи', '/admin/users/'),
     ('Вакансии', '/admin/vacancies/'),
     ('Категории', '/admin/categories/'),
-    ('Города', '/admin/cities/'),
+    ('Города присутствия', '/admin/cities/'),
     ('Блоки страниц', '/admin/blocks/'),
     ('Страницы', '/admin/pages/'),
     ('Элементы страниц', '/admin/pagechunks/'),
@@ -54,7 +54,7 @@ class SectionsTest(ProjectTestCase):
         for name in expected_sections:
             self.assertEqual(
                 expected_sections[name],
-                url_for("admin." + SECTIONS[name].ep)
+                url_for("admin." + SECTIONS[name].endpoint)
             )
 
 
@@ -90,12 +90,12 @@ class PermissionsTest(ProjectTestCase):
                          if k not in SU_ONLY_SECTIONS])
         self.log_in('dipperpines')
         self.client.get(url_for('admin.mainpage'))
-        self.assert_context("sections", expected.items())
+        self.assert_context("sections", expected)
 
     def test_correct_sections_superuser(self):
         self.log_in('cthulhu')
         self.client.get(url_for('admin.mainpage'))
-        self.assert_context("sections", expected_sections.items())
+        self.assert_context("sections", expected_sections)
 
     def test_view_uses_correct_template(self):
         self.log_in('cthulhu')
