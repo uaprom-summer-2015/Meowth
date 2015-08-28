@@ -11,7 +11,7 @@ from project.blueprints import all_blueprints
 
 def create_app():
 
-    app = Flask(__name__, static_url_path='/static')
+    app = Flask(__name__, static_folder='../static')
     used_config = environ.get('APP_SETTINGS', 'config.ProductionConfig')
     app.config.from_object(used_config)
 

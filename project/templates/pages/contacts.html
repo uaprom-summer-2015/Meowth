@@ -11,6 +11,8 @@
 {% block postscripts %}
     {{ super() }}
     <!-- I dunno better way to include google map to the website -->
-    <script src="{{ url_for('static', filename='dist/js/map.bundle.js') }}"></script>
+{#    <script src="{{ url_for('static', filename='dist/js/map.bundle.js') }}"></script>#}
+    <script src="{{ config.STATIC_PATH }}/contacts.{{ config.FRONTEND_VERSION }}.bundle.js" type="text/javascript"></script>
+
     <script src="https://maps.googleapis.com/maps/api/js?callback=initializeMap" async defer></script>
 {% endblock %}

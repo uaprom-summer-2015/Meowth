@@ -7,8 +7,8 @@
         --><div class="sad-smile"><span>:(</span></div><!--
         --><div class="sad-smile-text">{{ pagechunks.didnt_find_vacancy|safe }}</div><!--
     --></div>
-<script src="{{ url_for('static', filename='dist/js/feed.bundle.js') }}"
-        type="text/javascript"></script>
+    <script src="{{ config.STATIC_PATH }}/vacancies.{{ config.FRONTEND_VERSION }}.bundle.js" type="text/javascript"></script>
+
 
 {% endblock %}
 {% block meta %}

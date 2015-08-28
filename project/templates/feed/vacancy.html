@@ -15,7 +15,5 @@
     <div class="container">
         <div id="vacancy-with-form"></div>
     </div>
-
-<script src="{{ url_for('static', filename='dist/js/vacancy.bundle.js') }}"
-        type="text/javascript"></script>
+    <script src="{{ config.STATIC_PATH }}/vacancy.{{ config.FRONTEND_VERSION }}.bundle.js" type="text/javascript"></script>
 {% endblock %}
