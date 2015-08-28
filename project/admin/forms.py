@@ -119,7 +119,7 @@ def image_upload_form_factory(config, is_update=False):
                 label='Категория',
                 choices=[
                     (UploadedImage.IMG_CATEGORY.other.value, 'Разное'),
-                    (UploadedImage.IMG_CATEGORY.gallery.value, 'Галлерея'),
+                    (UploadedImage.IMG_CATEGORY.gallery.value, 'Галерея'),
                 ],
                 coerce=lambda x: UploadedImage.IMG_CATEGORY(int(x)),
                 default=UploadedImage.IMG_CATEGORY.other,
