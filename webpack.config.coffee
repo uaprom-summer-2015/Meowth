@@ -6,9 +6,6 @@ ExtractTextPlugin = require 'extract-text-webpack-plugin'
 StatsPlugin = require 'stats-webpack-plugin'
 isProduction = process.env.NODE_ENV == 'production';
 
-aliases =
-  jquery: "npm-zepto"
-  ckeditor: path.join __dirname, 'project', 'frontend', "./vendor/ckeditor.js"
 
 module.exports =
   context: path.join __dirname, 'project', 'frontend'
@@ -27,10 +24,8 @@ module.exports =
     admin_pageblock: "./scripts/admin.pageblock.js"
     admin_pagechunk: "./scripts/admin.pagechunk.js"
     admin_mailtemplate: "./scripts/admin.mailtemplate.js"
-#    ckeditor: "./vendor/ckeditor.js"
     client: "./client.js"
     admin: "./admin.js"
-    vendor: Array::concat ['jquery'], keys(pkginfo.dependencies)
 
   output:
     path: path.join __dirname, 'static'
@@ -39,13 +34,12 @@ module.exports =
 
   module:
     loaders: [
-#      {test: /ckeditor\/(?!ckeditor\.js)/, loader: 'file?name=[path][name].[ext]'}
       {test: /\.coffee$/, loader: 'coffee-loader'}
-      {test: /\.css$/, exclude: /ckeditor/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")}
+      {test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")}
       {test: /\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")}
       {test: /\.(sass|scss)$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!scss-loader")}
       {test: /\.styl$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!stylus-loader")}
-      {test: /\.(woff|woff2|eot|ttf)$/, exclude: /ckeditor/, loaders: if isProduction then ['file?name=font/[hash:4].[ext]'] else ['file?name=font/[name].[ext]']}
+      {test: /\.(woff|woff2|eot|ttf)$/, loaders: if isProduction then ['file?name=font/[hash:4].[ext]'] else ['file?name=font/[name].[ext]']}
       {
         test: /.*\.(gif|png|jpg|jpeg|svg)$/,
         exclude: /ckeditor/,
@@ -57,17 +51,19 @@ module.exports =
     ]
 
   resolve:
-    alias: aliases
+    alias:
+      jquery: "npm-zepto"
+      ckeditor: "../vendor/ckeditor.js"
+
     extensions: ['', '.coffee', '.js', '.styl', '.css']
     modulesDirectories: ['node_modules', 'scripts']
 
   plugins: Array::concat(
     if isProduction then [
-      new webpack.optimize.UglifyJsPlugin({compress:false})
+      new webpack.optimize.UglifyJsPlugin({sourceMap: false})
       new StatsPlugin 'stats.json', modules: false, chunks: false, assets: false, version: false, errorDetails: false
     ] else []
     [
       new ExtractTextPlugin if isProduction then "[name].[hash].css" else "[name].trunk.css"
-      new webpack.optimize.CommonsChunkPlugin name: 'vendor', minChunks: Infinity
     ]
   )

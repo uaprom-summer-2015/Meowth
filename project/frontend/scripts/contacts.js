@@ -9,7 +9,7 @@ var DEFAULT_PARAMS = {
 };
 
 
-$(document).on("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function (event) {
     window.initializeMap = function () {
         var mapCanvas = document.getElementById("container-map");
         var params = _.transform(mapCanvas.dataset, function (result, value, key) {

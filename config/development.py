@@ -110,5 +110,5 @@ class DevelopmentConfig:
         }
     }
 
-    FRONTEND_VERSION = "trunk"
+    FRONTEND_VERSION = "61ea0dfc1175d306e7e0"
     STATIC_PATH = "/static"

@@ -1,15 +1,16 @@
-$(document).on("DOMContentLoaded", function () {
-    "use strict";
+"use strict";
+
+function toggle_nav(nav) {
+    if (nav.style.maxHeight === "0px") {
+        nav.style.maxHeight = "400px";
+    } else {
+        nav.style.maxHeight = "0px";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function (event) {
     var nav = document.getElementById('nav-collapsable');
     nav.style.maxHeight = "0px";
-
-    function toggle_nav() {
-        if (nav.style.maxHeight === "0px") {
-            nav.style.maxHeight = "400px";
-        } else {
-            nav.style.maxHeight = "0px";
-        }
-    }
 
     var hamburger = document.getElementById('hamburger');
     hamburger.addEventListener("click", function (e) {
@@ -19,6 +20,6 @@ $(document).on("DOMContentLoaded", function () {
         } else {
             this.classList.add("is-active");
         }
-        toggle_nav();
+        toggle_nav(nav);
     });
 });
