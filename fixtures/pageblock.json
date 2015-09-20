@@ -2,51 +2,51 @@
   {
     "model": "project.models.PageBlock",
     "fields": {
-      "title": "Chuze",
+      "title": "Lorem Ipsum",
       "block_type": 0,
-      "short_description": "Chuze changes the way you shop for groceries. It helps you save time, money and improve your shopping experience.",
-      "text": "Chuze changes the way you shop for groceries. It helps you save time, money and improve your shopping experience.",
-      "image": "http://stanfy.com/wp-content/uploads/2015/07/chuze1_6-e1437642749950.png"
+      "short_description": "Describes what is Lorem Ipsum",
+      "text": "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+      "image": "http://img14.deviantart.net/4151/i/2010/202/2/0/lipsum_30_by_maakatea.png"
     }
   },
   {
     "model": "project.models.PageBlock",
     "fields": {
-      "title": "Waterbalance for Apple Watch",
+      "title": "Fiftyshades",
       "block_type": 1,
-      "short_description": "An Apple Watch app that allows you to track your daily water intake even more easily. Eventually it helps you to turn drinking water into a healthy habit.",
-      "text": "An Apple Watch app that allows you to track your daily water intake even more easily. Eventually it helps you to turn drinking water into a healthy habit.",
-      "image": "http://stanfy.com/wp-content/uploads/2015/03/waterbalance-app-screen.png"
+      "short_description": "Machine generated text in style of fifty shades of grey.",
+      "text": "<p>Moving suddenly, he grabs me by the waist, pushing me against the wall. I practically convulse, making me writhe, pleasure lancing directly to my groin. Lustful, his mouth is on mine. I groan, frustrated.</p><p>Leaning down, he plants a soft kiss on my lips, tasting, making me tremble. He plants a soft wet kiss on my lips, and I tingle ... everywhere. He grabs my hair and yanks down, holding me firmly in place. My subconscious is screaming at me.</p>",
+      "image": "https://foxhugh.files.wordpress.com/2012/01/word-cloud.jpg"
     }
   },
   {
     "model": "project.models.PageBlock",
     "fields": {
-      "title": "Keypr",
+      "title": "Kafka",
       "block_type": 1,
-      "short_description": "Keypr is a new word in the hotel industry. This embedded software brings an understanding of what it means to be a quality hotel service.",
-      "text": "Keypr is a new word in the hotel industry. This embedded software brings an understanding of what it means to be a quality hotel service. Keypr enables guests to check in/out of the room, order room service, find the nearest restaurants, order a taxi and even check their guest info in the hotel – all this in only a few clicks. You don’t need to make calls or wait in queue – all you need is on the Keypr Android tablet in your room!",
-      "image": "http://stanfy.com/wp-content/uploads/2014/10/keypr.jpg"
+      "short_description": "First paragraph of famous short story",
+      "text": "<p>One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. \"What's happened to me?\" he thought. It wasn't a dream. His room, a proper human room although a little too small, lay peacefully between its four familiar walls. A collection of textile samples lay spread out on the table - Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame. It showed a lady fitted out with a fur hat and fur boa who sat upright, raising a heavy fur muff that covered the whole of her lower arm towards the viewer. Gregor then turned to look out the window at the dull weather.</p> ",
+      "image": "http://www.neonostalgia.com/wp-content/uploads/2012/10/24.jpg"
     }
   },
   {
     "model": "project.models.PageBlock",
     "fields": {
-      "title": "iOS Development",
+      "title": "Far far away",
       "block_type": 0,
-      "short_description": "Our experienced iOS engineers will help you to shape your vision of a future iPhone or iPad app.",
-      "text": "To succeed in the App Store today you must deliver absolutely the best experience to end users! Apps should be perfectly designed, intuitive, responsive, and fulfill user needs. We are ready to work as your adviser and consultant to guide you through the whole process of mobile app development, starting from ideation, UI/UX, design, engineering and right up to publication in the market. Our experienced iOS engineers will help you to shape your vision of a future iPhone or iPad app. Usually, the iOS platform is the #1 priority for many mobile app development projects. We have been furnishing our clients with robust, technically proficient and aesthetically attractive iOS apps for iPhone and iPad since 2009. We successfully implemented projects on the following fronts: Lifestyle, Education, Health & Fitness, Photo & Video, Finance, Social Networking, Travel, Entertainment and more.",
-      "image": "http://stanfy.com/wp-content/themes/Stanfy/img/ios-image.png"
+      "short_description": "I have not read this.",
+      "text": "<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p><p>The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way. On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word \"and\" and the Little Blind Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their</p>",
+      "image": "http://www.dafont.com/forum/attach/orig/3/8/380533.jpg"
     }
   },
   {
     "model": "project.models.PageBlock",
     "fields": {
-      "title": "Android Development",
+      "title": "Lorem ipsum",
       "block_type": 1,
-      "short_description": "Our team can develop an Android app for your mobile product from scratch or help your iOS app easily migrate to the Android platform.",
-      "text": "We started Android application development in 2009 after the platform expanded globally. When working with us you don’t have to worry about Android platform fragmentation and different screen resolutions - your app will be carefully tested and will work seamlessly on the most popular Android devices. Our team can develop an Android app for your mobile product from scratch or help your iOS app easily migrate to the Android platform. When porting to Android, we use native components and Android design. We started Android application development in 2009 and since that time have developed and launched a bunch of successful apps. Our team gained experience in the implementation of complex projects in different categories, including Lifestyle, Education, Health & Fitness, Media & Video, Photography, Finance, Social, Shopping, Travel & Local, Entertainment and others. We have also worked with high-tech tasks: audio processing, geolocation, video processing and animation. Each project gave us precious experience.",
-      "image": "http://crackberry.com/sites/crackberry.com/files/styles/large/public/topic_images/2013/ANDROID.png"
+      "short_description": "Actually lipsum",
+      "text": "<p>Nulla facilisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ac augue tortor. Proin pulvinar, erat ultricies commodo tincidunt, nunc odio efficitur augue, id dignissim sem lectus sit amet orci. Duis sagittis lacus non risus posuere, a faucibus felis tempus. Sed congue rutrum arcu, sed sodales tellus fermentum nec. Nulla ac justo accumsan nunc ullamcorper rutrum. Nullam ac mauris eget nisl interdum aliquam. Integer finibus felis ac massa rutrum blandit non vitae turpis.</p><p>Donec placerat lacus turpis, rhoncus elementum ligula tempor in. Sed iaculis ut dui eleifend elementum. Nulla semper lorem urna, ut sodales ipsum ornare at. In a felis dictum, lacinia nulla et, efficitur dui. Aliquam tellus leo, pharetra in eros sollicitudin, iaculis cursus massa. Curabitur ut congue elit. Sed tincidunt vulputate sapien, eu imperdiet libero blandit vitae. Duis scelerisque ac tellus consequat vehicula. Donec lacinia, massa id consectetur vestibulum, magna nibh imperdiet dolor, ac convallis ante ex eu urna. Maecenas eget pulvinar justo. Donec dictum placerat eros et sodales. Morbi et orci ut mi accumsan maximus pellentesque eu turpis. Proin volutpat mi ac neque ultricies, at pharetra turpis porttitor.</p>",
+      "image": "http://britanniastudyhotel.com/wp-content/uploads/2013/07/lipsum.jpg"
     }
   },
   {
