@@ -122,6 +122,7 @@ class ProductionConfig(Config):
     MAIL_USERNAME = getattr(production_settings, "MAIL_USERNAME", None)
     MAIL_PASSWORD = getattr(production_settings, "MAIL_PASSWORD", None)
     MAIL_DEFAULT_SENDER = production_settings.MAIL_DEFAULT_SENDER
+    MAILS_TO_SEND = production_settings.MAILS_TO_SEND
 
 
 class DevelopmentConfig(Config):

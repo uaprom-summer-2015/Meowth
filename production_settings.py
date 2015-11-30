@@ -22,3 +22,4 @@ MAIL_SERVER = "smtp.uaprom"
 MAIL_PORT = "25"
 MAIL_USE_SSL = False
 MAIL_DEFAULT_SENDER = "hrportal@hrportal.uaprom"
+MAILS_TO_SEND = ['hrportal@yandex.ru']
