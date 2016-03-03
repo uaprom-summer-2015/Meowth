@@ -11,7 +11,7 @@ var source = require('vinyl-source-stream');
 var stylus = require('gulp-stylus');
 var uglify = require('gulp-uglify');
 var pkginfo = require('./package.json');
-var exec_sync = require('exec-sync');
+var child_process = require('child_process');
 
 var debug = gutil.env.type !== 'production';
 
@@ -26,12 +26,12 @@ var dist_path;
 if (debug) {
     dist_path = pkginfo.dist.path;
 } else {
-    dist_path = exec_sync(
+    dist_path = child_process.execSync(
         "python -c '" +
         "from " + settingsFile + " import *;" +
         "print(" + staticDistVariable + ")" +
         "'"
-    );
+    ).toString().trim();
 }
 
 gulp.task('default', ['build:scripts', 'build:styles']);
