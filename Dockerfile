@@ -8,10 +8,12 @@ RUN apt-get update
 
 # Install required packages
 RUN apt-get install -y git python3-pip python3 libpq-dev curl \
-    libjpeg-dev libfreetype6-dev zlib1g-dev libpng12-dev
+    libjpeg-dev libfreetype6-dev zlib1g-dev libpng12-dev python-dev
 # Install nvm and node
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
 RUN . /root/.nvm/nvm.sh && nvm install 0.12
+# Workaround to support exec-sync:
+RUN . /root/.nvm/nvm.sh && nvm install 0.10
 
 # Change workdir to /opt/hrportal
 WORKDIR /opt/hrportal
@@ -23,6 +25,8 @@ RUN pip3 install -r requirements.txt
 
 # Build static
 RUN echo '{ "allow_root": true }' > /root/.bowerrc
+# Next line is a workaround to support exec-sync
+RUN . /root/.nvm/nvm.sh && nvm use 0.10 && npm install exec-sync && nvm use default
 RUN . /root/.nvm/nvm.sh && python3 manage.py static collect
 
 # Run app
