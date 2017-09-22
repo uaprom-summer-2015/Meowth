@@ -79,7 +79,9 @@
     "browserify": "~11.0.0",
     "bootstrap": "~3.3.5",
     "bootstrap-select": "~1.7.3",
-    "bower": "~1.4.1",
-    "exec-sync": "~0.1.6"
+    "bower": "~1.4.1"
+  },
+  "engines": {
+      "node": ">0.12"
   }
 }
