@@ -6,11 +6,28 @@ ENV STATIC_DIST /staticdata/dist
 
 RUN apt-get update
 
-RUN apt-get install -y git python3-pip python3 libpq-dev npm \
-    libjpeg-dev libfreetype6-dev zlib1g-dev libpng12-dev
+# Install required packages
+RUN apt-get install -y git python3-pip python3 libpq-dev curl \
+    libjpeg-dev libfreetype6-dev zlib1g-dev libpng12-dev python-dev
+# Install nvm and node
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh | bash
+RUN . /root/.nvm/nvm.sh && nvm install 0.12
+# Workaround to support exec-sync:
+RUN . /root/.nvm/nvm.sh && nvm install 0.10
 
-WORKDIR /hrportal
+# Change workdir to /opt/hrportal
+WORKDIR /opt/hrportal
+# Mount current dir to docker's cwd
+ADD . .
+
+# Install app's requirements
 RUN pip3 install -r requirements.txt
-RUN python3 manage.py collectstatic
 
+# Build static
+RUN echo '{ "allow_root": true }' > /root/.bowerrc
+# Next line is a workaround to support exec-sync
+RUN . /root/.nvm/nvm.sh && nvm use 0.10 && npm install exec-sync && nvm use default
+RUN . /root/.nvm/nvm.sh && python3 manage.py static collect
+
+# Run app
 CMD gunicorn project:app --log-file=- -b 0.0.0.0:8000
